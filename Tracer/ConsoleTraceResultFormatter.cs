@@ -21,7 +21,7 @@ namespace Tracer
 
         private static void PrintNode(TraceResultNode node, int level)
         {
-            var indent = string.Format("{0," + (level * 2 + 1) + "}", "");
+            var indent = string.Format($"{{0, {level * 2 + 1}}}", "");
 
             Console.Write($"{indent}Location: {node.ClassName}#{node.MethodName}");
             PrintParameters(node.Parameters);
