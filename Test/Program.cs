@@ -63,8 +63,7 @@ namespace Test
             var threads = new List<Thread>();
             for (int i = 0; i < 20; i++)
             {
-                var thread = (i % 3 == 0) ? new Thread(LongComputing3) : 
-                    new Thread(LongComputing2);
+                var thread = (i % 3 == 0) ? new Thread(LongComputing3) : new Thread(LongComputing2);
                 threads.Add(thread);
                 thread.Start(5);
             }
