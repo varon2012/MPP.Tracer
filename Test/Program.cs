@@ -31,7 +31,7 @@ namespace Test
             _tracer.StartTrace();
 
             LongComputing1(againInitial);
-            Thread.Sleep(1500);
+            Thread.Sleep(6000);
             LongComputing2(againInitial);
 
             _tracer.StopTrace();
@@ -58,6 +58,7 @@ namespace Test
             }
 
             _tracer.StartTrace();
+            _tracer.StartTrace();
 
             var threads = new List<Thread>();
             for (int i = 0; i < 20; i++)
@@ -78,30 +79,16 @@ namespace Test
 
             LongComputing1(5);
 
-            while (CheckThreadsForAlive(threads))
+            foreach (var thread in threads)
             {
+                thread.Join();
             }
 
+            _tracer.StopTrace();
             _tracer.StopTrace();
 
             var traceResult = _tracer.TraceResult;
             formatter.Format(traceResult);
-        }
-
-        private static bool CheckThreadsForAlive(IEnumerable<Thread> threads)
-        {
-            var result = false;
-
-            foreach (var thread in threads)
-            {
-                result = thread.IsAlive;
-                if (result)
-                {
-                    break;
-                }
-            }
-
-            return result;
         }
 
         private static volatile ITracer _tracer = Tracer.Tracer.Instance;
