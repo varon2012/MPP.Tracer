@@ -16,23 +16,23 @@ namespace Test
             _tracer.StopTrace();
         }
 
-        private static void LongComputing2(int anotherInitial)
+        private static void LongComputing2(object anotherInitial)
         {
             _tracer.StartTrace();
 
             Thread.Sleep(1000);
-            LongComputing1(anotherInitial);
+            LongComputing1((int) anotherInitial);
 
             _tracer.StopTrace();
         }
 
-        private static void LongComputing3(int againInitial)
+        private static void LongComputing3(object againInitial)
         {
             _tracer.StartTrace();
 
-            LongComputing1(againInitial);
+            LongComputing1((int) againInitial);
             Thread.Sleep(6000);
-            LongComputing2(againInitial);
+            LongComputing2((int) againInitial);
 
             _tracer.StopTrace();
         }
@@ -63,10 +63,10 @@ namespace Test
             var threads = new List<Thread>();
             for (int i = 0; i < 20; i++)
             {
-                var thread = (i % 3 == 0) ? new Thread(() => LongComputing3(5)) : 
-                    new Thread(() => LongComputing2(5));
+                var thread = (i % 3 == 0) ? new Thread(LongComputing3) : 
+                    new Thread(LongComputing2);
                 threads.Add(thread);
-                thread.Start();
+                thread.Start(5);
             }
 
             LongComputing1(5);
