@@ -7,37 +7,8 @@ namespace Tracer
 {
     public sealed class Tracer : ITracer
     {
-        private Tracer()
-        {
-            TraceResult = new TraceResult();
-        }
-
-        private static List<ParameterInfo> FormParameterList(System.Reflection.ParameterInfo[] parameters)
-        {
-            return parameters.Select(parameter => new ParameterInfo(parameter.Name, parameter.ParameterType)).ToList();
-        }
-
-        public void StartTrace()
-        {
-            lock (SyncRoot)
-            {
-                var stackTrace = new StackTrace(1);
-                var stackFrame = stackTrace.GetFrame(0);
-                var method = stackFrame.GetMethod();
-
-                TraceResult.StartNode(Thread.CurrentThread.ManagedThreadId,
-                    method.DeclaringType.ToString(), method.Name,
-                    FormParameterList(method.GetParameters()));
-            }
-        }
-
-        public void StopTrace()
-        {
-            lock (SyncRoot)
-            {
-                TraceResult.FinishNode(Thread.CurrentThread.ManagedThreadId);
-            }
-        }
+        private static volatile Tracer _instance;
+        private static readonly object SyncRoot = new object();
 
         public TraceResult TraceResult { get; }
 
@@ -60,7 +31,36 @@ namespace Tracer
             }
         }
 
-        private static volatile Tracer _instance;
-        private static readonly object SyncRoot = new object();
+        private Tracer()
+        {
+            TraceResult = new TraceResult();
+        }
+
+        public void StartTrace()
+        {
+            lock (SyncRoot)
+            {
+                var stackTrace = new StackTrace(1);
+                var stackFrame = stackTrace.GetFrame(0);
+                var method = stackFrame.GetMethod();
+
+                TraceResult.StartNode(Thread.CurrentThread.ManagedThreadId,
+                    method.DeclaringType.ToString(), method.Name,
+                    FormParameterList(method.GetParameters()));
+            }
+        }
+
+        private static List<ParameterInfo> FormParameterList(System.Reflection.ParameterInfo[] parameters)
+        {
+            return parameters.Select(parameter => new ParameterInfo(parameter.Name, parameter.ParameterType)).ToList();
+        }
+
+        public void StopTrace()
+        {
+            lock (SyncRoot)
+            {
+                TraceResult.FinishNode(Thread.CurrentThread.ManagedThreadId);
+            }
+        }
     }
 }

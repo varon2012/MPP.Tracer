@@ -4,6 +4,8 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
+        internal Dictionary<int, TraceResultHeadNode> HeadNodes { get; }
+
         internal TraceResult()
         {
             HeadNodes = new Dictionary<int, TraceResultHeadNode>();
@@ -24,7 +26,5 @@ namespace Tracer
         {
             HeadNodes[threadId].FinishNode();
         }
-
-        internal Dictionary<int, TraceResultHeadNode> HeadNodes { get; }
     }
 }

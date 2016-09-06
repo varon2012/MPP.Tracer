@@ -5,19 +5,29 @@ namespace Tracer
 {
     internal struct ParameterInfo
     {
+        internal string Name { get; }
+        internal Type Type { get; }
+
         internal ParameterInfo(string name, Type type)
             : this()
         {
             Name = name;
             Type = type;
         }
-
-        internal string Name { get; }
-        internal Type Type { get; }
     }
 
     internal sealed class TraceResultNode
     {
+        internal string ClassName { get; }
+        internal string MethodName { get; }
+        internal List<ParameterInfo> Parameters { get; }
+        internal DateTime StartTime { get; }
+        internal DateTime FinishTime { get; private set; }
+
+        internal List<TraceResultNode> InternalNodes { get; }
+
+        internal TimeSpan TracingTime => FinishTime - StartTime;
+
         internal TraceResultNode(string className, string methodName, List<ParameterInfo> parameters)
         {
             ClassName = className;
@@ -39,15 +49,5 @@ namespace Tracer
         {
             InternalNodes.Add(node);
         }
-
-        internal string ClassName { get; }
-        internal string MethodName { get; }
-        internal List<ParameterInfo> Parameters { get; }
-        internal DateTime StartTime { get; }
-        internal DateTime FinishTime { get; private set; }
-
-        internal List<TraceResultNode> InternalNodes { get; }
-
-        internal TimeSpan TracingTime => FinishTime - StartTime;
     }
 }

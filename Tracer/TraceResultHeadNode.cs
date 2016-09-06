@@ -4,6 +4,11 @@ namespace Tracer
 {
     internal sealed class TraceResultHeadNode
     {
+        private TraceResultNode _currentNode;
+        private readonly Stack<TraceResultNode> _nodesStack;
+
+        internal List<TraceResultNode> TopLevelNodes { get; }
+
         internal TraceResultHeadNode()
         {
             TopLevelNodes = new List<TraceResultNode>();
@@ -34,10 +39,5 @@ namespace Tracer
             _currentNode.FinishNode();
             _currentNode = (_nodesStack.Count > 0) ? _nodesStack.Pop() : null;
         }
-
-        internal List<TraceResultNode> TopLevelNodes { get; }
-
-        private TraceResultNode _currentNode;
-        private readonly Stack<TraceResultNode> _nodesStack;
     }
 }

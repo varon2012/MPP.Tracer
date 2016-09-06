@@ -7,35 +7,14 @@ namespace Test
 {
     internal sealed class Program
     {
-        private static void LongComputing1(int initial)
-        {
-            _tracer.StartTrace();
+        private static volatile ITracer _tracer = Tracer.Tracer.Instance;
 
-            Thread.Sleep(2000);
-
-            _tracer.StopTrace();
-        }
-
-        private static void LongComputing2(object anotherInitial)
-        {
-            _tracer.StartTrace();
-
-            Thread.Sleep(1000);
-            LongComputing1((int) anotherInitial);
-
-            _tracer.StopTrace();
-        }
-
-        private static void LongComputing3(object againInitial)
-        {
-            _tracer.StartTrace();
-
-            LongComputing1((int) againInitial);
-            Thread.Sleep(6000);
-            LongComputing2((int) againInitial);
-
-            _tracer.StopTrace();
-        }
+        private static readonly Dictionary<string, ITraceResultFormatter> Formatters =
+            new Dictionary<string, ITraceResultFormatter>
+            {
+                {"console", new ConsoleTraceResultFormatter()},
+                {"xml", new XmlTraceResultFormatter("TraceResult.xml")}
+            };
 
         public static void Main(string[] args)
         {
@@ -90,13 +69,34 @@ namespace Test
             formatter.Format(traceResult);
         }
 
-        private static volatile ITracer _tracer = Tracer.Tracer.Instance;
+        private static void LongComputing1(int initial)
+        {
+            _tracer.StartTrace();
 
-        private static readonly Dictionary<string, ITraceResultFormatter> Formatters =
-            new Dictionary<string, ITraceResultFormatter>
-            {
-                {"console", new ConsoleTraceResultFormatter()},
-                {"xml", new XmlTraceResultFormatter("TraceResult.xml")}
-            };
-    };
+            Thread.Sleep(2000);
+
+            _tracer.StopTrace();
+        }
+
+        private static void LongComputing2(object anotherInitial)
+        {
+            _tracer.StartTrace();
+
+            Thread.Sleep(1000);
+            LongComputing1((int)anotherInitial);
+
+            _tracer.StopTrace();
+        }
+
+        private static void LongComputing3(object againInitial)
+        {
+            _tracer.StartTrace();
+
+            LongComputing1((int)againInitial);
+            Thread.Sleep(6000);
+            LongComputing2((int)againInitial);
+
+            _tracer.StopTrace();
+        }
+    }
 }
