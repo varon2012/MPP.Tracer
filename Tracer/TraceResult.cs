@@ -14,12 +14,14 @@ namespace Tracer
         internal void StartNode(int threadId,
             string className, string methodName, List<ParameterInfo> parameters)
         {
-            if (!HeadNodes.ContainsKey(threadId))
+            TraceResultHeadNode headNode;
+            if (!HeadNodes.TryGetValue(threadId, out headNode))
             {
-                HeadNodes[threadId] = new TraceResultHeadNode();
+                headNode = new TraceResultHeadNode();
+                HeadNodes[threadId] = headNode;
             }
 
-            HeadNodes[threadId].StartNode(className, methodName, parameters);
+            headNode.StartNode(className, methodName, parameters);
         }
 
         internal void FinishNode(int threadId)
