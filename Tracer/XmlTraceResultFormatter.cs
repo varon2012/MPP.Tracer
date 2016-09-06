@@ -32,7 +32,7 @@ namespace Tracer
 
         private static void AddNodesToElement(XContainer element, TraceResultNode node)
         {
-            var timePresentation = $"{node.TracingTime.Seconds}s:{node.TracingTime.Milliseconds}ms";
+            var timePresentation = $"{Math.Round(node.TracingTime.TotalMilliseconds)}ms";
 
             var method = new XElement("method",
                 new XAttribute("name", node.MethodName),
