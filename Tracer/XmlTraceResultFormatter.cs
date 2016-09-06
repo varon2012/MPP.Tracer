@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 
 namespace Tracer
 {
@@ -6,6 +7,8 @@ namespace Tracer
     {
         public void Format(TraceResult traceResult)
         {
+            if (traceResult == null) throw new ArgumentNullException(nameof(traceResult));
+
             var document = new XDocument();
             var root = new XElement("root");
 

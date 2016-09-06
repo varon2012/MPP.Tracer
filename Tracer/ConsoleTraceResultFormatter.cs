@@ -8,6 +8,8 @@ namespace Tracer
     {
         public void Format(TraceResult traceResult)
         {
+            if (traceResult == null) throw new ArgumentNullException(nameof(traceResult));
+
             var headNodes = traceResult.HeadNodes;
             foreach (var threadId in headNodes.Keys)
             {
