@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Tracer
 {
-    public class ConsoleTraceResultFormatter : ITraceResultFormatter
+    public sealed class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
         public void Format(TraceResult traceResult)
         {

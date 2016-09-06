@@ -2,7 +2,7 @@
 
 namespace Tracer
 {
-    public class TraceResult
+    public sealed class TraceResult
     {
         public TraceResult()
         {

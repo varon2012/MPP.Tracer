@@ -16,7 +16,7 @@ namespace Tracer
         public Type Type { get; }
     }
 
-    public class TraceResultNode
+    public sealed class TraceResultNode
     {
         public TraceResultNode(string className, string methodName, List<ParameterInfo> parameters)
         {

@@ -2,7 +2,7 @@
 
 namespace Tracer
 {
-    public class TraceResultHeadNode
+    public sealed class TraceResultHeadNode
     {
         public TraceResultHeadNode()
         {

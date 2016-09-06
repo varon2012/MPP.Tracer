@@ -2,7 +2,7 @@
 
 namespace Tracer
 {
-    public class XmlTraceResultFormatter : ITraceResultFormatter
+    public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
         public void Format(TraceResult traceResult)
         {

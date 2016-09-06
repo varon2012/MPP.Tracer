@@ -5,7 +5,7 @@ using Tracer;
 
 namespace Test
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void LongComputing1(int initial)
         {

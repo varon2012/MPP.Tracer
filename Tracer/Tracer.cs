@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Tracer
 {
-    public class Tracer : ITracer
+    public sealed class Tracer : ITracer
     {
         private Tracer()
         {
