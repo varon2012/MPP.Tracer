@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace Tracer
 {
-    public struct ParameterInfo
+    internal struct ParameterInfo
     {
-        public ParameterInfo(string name, Type type)
+        internal ParameterInfo(string name, Type type)
             : this()
         {
             Name = name;
             Type = type;
         }
 
-        public string Name { get; }
-        public Type Type { get; }
+        internal string Name { get; }
+        internal Type Type { get; }
     }
 
-    public sealed class TraceResultNode
+    internal sealed class TraceResultNode
     {
-        public TraceResultNode(string className, string methodName, List<ParameterInfo> parameters)
+        internal TraceResultNode(string className, string methodName, List<ParameterInfo> parameters)
         {
             ClassName = className;
             MethodName = methodName;
@@ -30,24 +30,24 @@ namespace Tracer
             InternalNodes = new List<TraceResultNode>();
         }
 
-        public void FinishNode()
+        internal void FinishNode()
         {
             FinishTime = DateTime.Now;
         }
 
-        public void AddInternalNode(TraceResultNode node)
+        internal void AddInternalNode(TraceResultNode node)
         {
             InternalNodes.Add(node);
         }
 
-        public string ClassName { get; }
-        public string MethodName { get; }
-        public List<ParameterInfo> Parameters { get; }
-        public DateTime StartTime { get; }
-        public DateTime FinishTime { get; private set; }
+        internal string ClassName { get; }
+        internal string MethodName { get; }
+        internal List<ParameterInfo> Parameters { get; }
+        internal DateTime StartTime { get; }
+        internal DateTime FinishTime { get; private set; }
 
-        public List<TraceResultNode> InternalNodes { get; }
+        internal List<TraceResultNode> InternalNodes { get; }
 
-        public TimeSpan TracingTime => FinishTime - StartTime;
+        internal TimeSpan TracingTime => FinishTime - StartTime;
     }
 }

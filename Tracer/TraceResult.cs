@@ -4,12 +4,12 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-        public TraceResult()
+        internal TraceResult()
         {
             HeadNodes = new Dictionary<int, TraceResultHeadNode>();
         }
 
-        public void StartNode(int threadId,
+        internal void StartNode(int threadId,
             string className, string methodName, List<ParameterInfo> parameters)
         {
             if (!HeadNodes.ContainsKey(threadId))
@@ -20,11 +20,11 @@ namespace Tracer
             HeadNodes[threadId].StartNode(className, methodName, parameters);
         }
 
-        public void FinishNode(int threadId)
+        internal void FinishNode(int threadId)
         {
             HeadNodes[threadId].FinishNode();
         }
 
-        public Dictionary<int, TraceResultHeadNode> HeadNodes { get; }
+        internal Dictionary<int, TraceResultHeadNode> HeadNodes { get; }
     }
 }
