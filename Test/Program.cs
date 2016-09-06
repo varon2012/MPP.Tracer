@@ -48,8 +48,8 @@ namespace Test
             }
 
             LongComputing1(5);
-            LongComputing1(5);
-            LongComputing2(6);
+            LongComputing2(5);
+            LongComputing3(6);
 
             _tracer.StopTrace();
 
