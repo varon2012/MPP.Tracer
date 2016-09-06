@@ -50,7 +50,7 @@ namespace Tracer
             }
         }
 
-        private static List<ParameterInfo> FormParameterList(System.Reflection.ParameterInfo[] parameters)
+        private static List<ParameterInfo> FormParameterList(IEnumerable<System.Reflection.ParameterInfo> parameters)
         {
             return parameters.Select(parameter => new ParameterInfo(parameter.Name, parameter.ParameterType)).ToList();
         }
