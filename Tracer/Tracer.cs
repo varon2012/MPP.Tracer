@@ -38,12 +38,12 @@ namespace Tracer
 
         public void StartTrace()
         {
+            var stackTrace = new StackTrace(1);
+            var stackFrame = stackTrace.GetFrame(0);
+            var method = stackFrame.GetMethod();
+
             lock (SyncRoot)
             {
-                var stackTrace = new StackTrace(1);
-                var stackFrame = stackTrace.GetFrame(0);
-                var method = stackFrame.GetMethod();
-
                 TraceResult.StartNode(Thread.CurrentThread.ManagedThreadId,
                     method.DeclaringType.ToString(), method.Name,
                     FormParameterList(method.GetParameters()));
