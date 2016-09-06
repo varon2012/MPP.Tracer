@@ -96,7 +96,7 @@ namespace Test
             new Dictionary<string, ITraceResultFormatter>
             {
                 {"console", new ConsoleTraceResultFormatter()},
-                {"xml", new XmlTraceResultFormatter()}
+                {"xml", new XmlTraceResultFormatter("TraceResult.xml")}
             };
     };
 }

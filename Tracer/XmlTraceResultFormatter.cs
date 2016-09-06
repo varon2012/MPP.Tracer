@@ -5,6 +5,15 @@ namespace Tracer
 {
     public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
+        public string FileName { get; }
+
+        public XmlTraceResultFormatter(string fileName)
+        {
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+
+            FileName = fileName;
+        }
+
         public void Format(TraceResult traceResult)
         {
             if (traceResult == null) throw new ArgumentNullException(nameof(traceResult));
@@ -27,7 +36,7 @@ namespace Tracer
             }
 
             document.Add(root);
-            document.Save("TraceResult.xml");
+            document.Save(FileName);
         }
 
         private static void AddNodesToElement(XContainer element, TraceResultNode node)
