@@ -8,7 +8,7 @@ namespace Tracer
 {
     public class XmlTraceResultFormatter : ITraceResultFormatter
     {
-        void Format(TraceResult traceResult)
+        public void Format(TraceResult traceResult)
         {
 
         }

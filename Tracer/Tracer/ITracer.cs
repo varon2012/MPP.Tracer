@@ -1,6 +1,6 @@
 ﻿namespace Tracer
 {
-    interface ITracer
+    public interface ITracer
     {
         void StartTrace();
 
