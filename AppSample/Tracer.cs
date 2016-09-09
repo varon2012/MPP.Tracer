@@ -20,6 +20,11 @@ public class Tracer : ITracer
 
 	public TraceResult GetTraceResult()
 	{
+		if (!result.Validate())
+		{
+			throw new InvalidTraceException("Attempt to read trace result from tracer in invalid state!");
+		}
+
 		return result;
 	}
 

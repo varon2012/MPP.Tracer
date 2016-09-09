@@ -56,9 +56,4 @@ public class TraceResult
 	{
 		return (CurrentNode == null);
 	}
-
-	public override string ToString() 
-	{
-		return "";
-	}
 }
