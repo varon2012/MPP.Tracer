@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Threading;
 
-namespace Tracer.Classes.Tree
+namespace Tracer.Tree
 {
-    internal class RootNode : AbstractNode<ThreadNode>
+    public class RootNode : INode
     {
         private Dictionary<int, ThreadNode> threadTable;
 
@@ -16,14 +12,14 @@ namespace Tracer.Classes.Tree
             threadTable = new Dictionary<int, ThreadNode>();
         }
 
-        internal override void FixateCountStart(long startTime, CallerDescriptor caller)
+        public void FixateCountStart(long startTime, CallerDescriptor caller)
         {
             
             ThreadNode thread = GetCurrentThread();
             thread.FixateCountStart(startTime, caller);
         }
 
-        internal override void FixateCountEnd(long endTime)
+        public void FixateCountEnd(long endTime)
         {
             ThreadNode thread = GetCurrentThread();
             thread.FixateCountEnd(endTime);
@@ -42,5 +38,6 @@ namespace Tracer.Classes.Tree
            
             return thread;
         }
+
     }
 }

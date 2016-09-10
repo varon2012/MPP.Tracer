@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Tracer.Classes.Tree
+
+namespace Tracer.Tree
 {
-    internal class CallerDescriptor
+    public class CallerDescriptor
     {
         private String name;
         private String className;

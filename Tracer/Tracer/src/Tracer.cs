@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Tracer.Classes.Tree;
+using Tracer.Tree;
 
-namespace Tracer.Classes
+namespace Tracer
 {
     public class Tracer : ITracer
     {
@@ -39,7 +35,7 @@ namespace Tracer.Classes
 
         private long GetCurrentTime()
         {
-            return new DateTime().Ticks/10000; // 10000 ticks in millisecond
+            return DateTime.Now.Millisecond;
         }
 
         private CallerDescriptor GetCallerDescriptor()
