@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    internal sealed class TraceResultMethodNode
+    public sealed class TraceResultMethodNode
     {
         public string MethodName { get; private set; }
         public string ClassName { get; private set; }

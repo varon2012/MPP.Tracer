@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    internal sealed class TraceResultThreadNode
+    public sealed class TraceResultThreadNode
     {
-        private Stack<TraceResultMethodNode> methodNodesStack;
-        private List<TraceResultMethodNode> methodNodesList;
-
         private TraceResultMethodNode currentMethodNode;
+
+        private Stack<TraceResultMethodNode> methodNodesStack;
+        public List<TraceResultMethodNode> MethodNodesList { get; private set; }
 
         public TraceResultThreadNode()
         {
             this.methodNodesStack = new Stack<TraceResultMethodNode>();
-            this.methodNodesList = new List<TraceResultMethodNode>();
+            this.MethodNodesList = new List<TraceResultMethodNode>();
 
             this.currentMethodNode = null;
         }
@@ -28,7 +28,7 @@ namespace Tracer
                 TraceResultMethodNode(methodName, className, paramCount);
 
             if (this.currentMethodNode == null)
-                this.methodNodesList.Add(newNode);
+                this.MethodNodesList.Add(newNode);
             else
                 this.currentMethodNode.AddInsertedNode(newNode);
             this.methodNodesStack.Push(newNode);

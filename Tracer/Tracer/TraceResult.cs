@@ -8,28 +8,28 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-        private Dictionary<int, TraceResultThreadNode> threadNodes;
+        public Dictionary<int, TraceResultThreadNode> ThreadNodes { get; private set; }
 
         public TraceResult()
         {
-            this.threadNodes = new Dictionary<int, TraceResultThreadNode>();
+            this.ThreadNodes = new Dictionary<int, TraceResultThreadNode>();
         }
 
         public void StartNode(int threadId, string methodName, 
             string className, int paramCount)
         {
-            if (!this.threadNodes.Keys.Contains(threadId))
+            if (!this.ThreadNodes.Keys.Contains(threadId))
             {
                 TraceResultThreadNode threadNode = new TraceResultThreadNode();
-                this.threadNodes.Add(threadId, threadNode);
+                this.ThreadNodes.Add(threadId, threadNode);
             }
 
-            this.threadNodes[threadId].StartNode(methodName, className, paramCount);
+            this.ThreadNodes[threadId].StartNode(methodName, className, paramCount);
         }
 
         public void FinishNode(int threadId)
         {
-            this.threadNodes[threadId].FinishNode();
+            this.ThreadNodes[threadId].FinishNode();
         }
     }
 }
