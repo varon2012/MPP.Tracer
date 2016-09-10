@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 
 namespace Tracer
 {
-    public class Tracer : ITracer
+    public sealed class Tracer : ITracer
     {
         private static volatile Tracer instance = null;
         private static readonly object syncRoot = new object();
@@ -17,7 +18,7 @@ namespace Tracer
 
         private Tracer()
         {
-            traceResult = new TraceResult();   
+            this.traceResult = new TraceResult();   
         }
 
         public void StartTrace()
@@ -27,26 +28,30 @@ namespace Tracer
             MethodBase method = stackFrame.GetMethod();
 
             string methodName = method.Name;
-            Type className = method.DeclaringType;
+            string className = method.DeclaringType.ToString();
             int paramCount = method.GetParameters().Length;
+
+            int threadId = Thread.CurrentThread.ManagedThreadId;
 
             lock (syncRoot)
             {
-                
+                this.traceResult.StartNode(threadId, methodName, className, paramCount);
             }
         }
 
         public void StopTrace()
         {
+            int threadId = Thread.CurrentThread.ManagedThreadId;
+
             lock (syncRoot)
             {
-
+                this.traceResult.FinishNode(threadId);
             }
         }
 
         public TraceResult GetTraceResult()
         {
-            return traceResult;
+            return this.traceResult;
         }
 
         public static Tracer Instance()
