@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Diagnostics;
 
 public class ThreadJob
 {
@@ -7,12 +8,20 @@ public class ThreadJob
 
 	public void Run()
 	{
+		Stopwatch ThreadWatch = new Stopwatch();
+		ThreadWatch.Start();
+
 		UsedTracer.StartTrace();
 
 		Thread.Sleep(500);
 		foo();
 
 		UsedTracer.StopTrace();
+
+		ThreadWatch.Stop();
+		UsedTracer.SetThreadTime(ThreadWatch.ElapsedMilliseconds);
+
+		Program.SignalThreadEnded();
 	}
 
 	void foo()

@@ -11,7 +11,7 @@ public class ConsoleTraceResultFormatter : ITraceResultFormatter
 
 		foreach (var threadData in TracedThreadsData)
 		{
-			Console.WriteLine("Thread ID: {0}", threadData.Key);
+			Console.WriteLine("Thread ID: {0}; Time: {1}", threadData.Key, threadData.Value.ExecutionTime);
 
 			traceResult.GetThreadRootComponent(threadData.Key).Visit(Processor);
 		}

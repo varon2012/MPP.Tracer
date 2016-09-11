@@ -41,4 +41,9 @@ public class Tracer : ITracer
 			return callingFrame.GetMethod();
 		}
 	}
+
+	public void SetThreadTime(long time)
+	{
+		result.SetThreadTime(time);
+	}
 }

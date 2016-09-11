@@ -19,6 +19,7 @@ public class TraceResult
 	{
 		public BasicTreeNode<TraceComponent> RootComponent = null;
 		public BasicTreeNode<TraceComponent> CurrentNode = null;
+		public long ExecutionTime;
 	}
 
 	public ConcurrentDictionary<int, ThreadData> ThreadsData = new ConcurrentDictionary<int, ThreadData>();
@@ -53,8 +54,6 @@ public class TraceResult
 		}
 
 		CurrentData.CurrentNode = ComponentNode;
-
-		Console.WriteLine("Start {0}, Thread {1}", methodName, ThreadId);
 	}
 
 	public void StopComponent()
@@ -109,5 +108,11 @@ public class TraceResult
 		{
 			return null;
 		}
+	}
+
+	public void SetThreadTime(long time)
+	{
+		int ThreadId = Thread.CurrentThread.ManagedThreadId;
+		ThreadsData[ThreadId].ExecutionTime = time;
 	}
 }

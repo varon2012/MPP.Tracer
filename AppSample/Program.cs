@@ -5,6 +5,7 @@ class Program
 {
 	const int ThreadCount = 5;
 	private static Thread[] ThreadPool = new Thread[ThreadCount];
+	public static int ThreadsEndedCount = 0;
 	private static object ThreadEnderLock = new object();
 
 	static void Main(string[] args)
@@ -20,7 +21,7 @@ class Program
 			ThreadPool[i].Start();
 		}
 
-		bool ThreadsFinished = false;
+		bool ThreadsFinished;
 		do
 		{
 			ThreadsFinished = AllThreadsEnded();
@@ -34,20 +35,16 @@ class Program
 		Console.ReadLine();
 	}
 
-	private static bool AllThreadsEnded()
+	public static void SignalThreadEnded()
 	{
 		lock (ThreadEnderLock)
 		{
-			int ThreadsEndedCount = 0;
-			for (int i = 0; i < ThreadCount; i++)
-			{
-				if (!ThreadPool[i].IsAlive)
-				{
-					ThreadsEndedCount++;
-				}
-			}
-
-			return (ThreadsEndedCount == ThreadCount);
+			ThreadsEndedCount++;
 		}
+	}
+
+	private static bool AllThreadsEnded()
+	{
+		return (ThreadsEndedCount == ThreadCount);
 	}
 }

@@ -15,6 +15,9 @@ public class XmlTraceResultFormatter : ITraceResultFormatter
 			var IdAttribute = document.CreateAttribute("id");
 			IdAttribute.Value = threadData.Key.ToString();
 			ThreadNode.Attributes.Append(IdAttribute);
+			var TimeAttribute = document.CreateAttribute("time");
+			TimeAttribute.Value = threadData.Value.ExecutionTime.ToString();
+			ThreadNode.Attributes.Append(TimeAttribute);
 			Root.AppendChild(ThreadNode);
 
 			var threadRoot = traceResult.GetThreadRootComponent(threadData.Key);
