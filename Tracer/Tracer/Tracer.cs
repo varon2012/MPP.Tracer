@@ -9,13 +9,17 @@ namespace Tracer
 {
     public class Tracer : ITracer
     {
-        private TraceResult result {get;set;}
+        private TraceResult result { get; set; }
         private Stopwatch timer { get; set; }
+        private StackTrace stackTrace { get; set; }
+        private StackFrame stackFrame { get; set; }
 
         public void StartTrace()
         {
-            timer = Stopwatch.StartNew();
-            // something            
+            stackTrace = new StackTrace();
+            stackFrame = stackTrace.GetFrame(1);
+            
+            timer = Stopwatch.StartNew();  
         }
 
         public void StopTrace()
@@ -27,7 +31,10 @@ namespace Tracer
         public TraceResult GetTraceResult()
         {
             // something
-            result = new TraceResult(timer.ElapsedMilliseconds);
+            var method = stackFrame.GetMethod();
+            var parametersAmount = method.GetParameters().Length;
+            var className = method.ReflectedType.Name;
+            result = new TraceResult(timer.ElapsedMilliseconds,  className, method.Name, parametersAmount);
             return result;
         }
 

@@ -11,22 +11,31 @@ namespace Tester
         private ITracer tracer = new Tracer.Tracer();
         public void Run()
         {
-            RunCycle();
+            tracer.StartTrace();
+
+            RunCycle(204800000);
 
             tracer.StopTrace();
-            TraceResult result = tracer.GetTraceResult();
 
-            Console.WriteLine("Время: " + 0.001*result.time + " сек.");
+            TraceResult result = tracer.GetTraceResult();
+            result.PrintToConsole();
         }
 
-        private void RunCycle()
+        private void RunCycle(int repeatAmount)
         {
+            ITracer tracer = new Tracer.Tracer();
             tracer.StartTrace();
-            for (int i = 0; i < 204800000; i++)
+
+            for (int i = 0; i < repeatAmount; i++)
             {
                 int a = 1;
                 a += i;
             }
+
+            tracer.StopTrace();
+
+            TraceResult result = tracer.GetTraceResult();
+            result.PrintToConsole();
         }
 
     }
