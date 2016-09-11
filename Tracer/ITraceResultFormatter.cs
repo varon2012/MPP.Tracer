@@ -1,6 +1,7 @@
-﻿using Tracer;
-
-interface ITraceResultFormatter
+﻿namespace Tracer
 {
-    void Format(TraceResult traceResult);
+    public interface ITraceResultFormatter
+    {
+        void Format(TraceResult traceResult);
+    }
 }

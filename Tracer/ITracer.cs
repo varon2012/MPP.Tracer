@@ -1,13 +1,14 @@
-﻿using Tracer;
-
-public interface ITracer
+﻿namespace Tracer
 {
-    // метод вызывается в начале замеряемого метода
-    void StartTrace();
+    public interface ITracer
+    {
+        // метод вызывается в начале замеряемого метода
+        void StartTrace();
 
-    // метод вызывается в конце замеряемого метода
-    void StopTrace();
+        // метод вызывается в конце замеряемого метода
+        void StopTrace();
 
-    // возвращает объект с результатами измерений
-    TraceResult GetTraceResult();
+        // возвращает объект с результатами измерений
+        TraceResult GetTraceResult();
+    }
 }

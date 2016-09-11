@@ -10,7 +10,7 @@ namespace Tracer
         private readonly DateTime _startTime;
         private DateTime _endTime;
         public TimeSpan ExecutionTime => _endTime - _startTime;
-        internal int ParameterCount { get; }
+        public int ParameterCount { get; }
 
         internal List<MethodNode> InnerMethods { get; }
 

@@ -4,7 +4,7 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-        internal Dictionary<int, ThreadNode> ThreadNodes { get; }
+        public Dictionary<int, ThreadNode> ThreadNodes { get; }
 
         internal TraceResult()
         {
