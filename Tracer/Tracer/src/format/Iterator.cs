@@ -7,7 +7,7 @@ namespace Tracer.Format
     class Iterator
     {
         public int NestingLevel { get; private set; } = -1;
-        public bool AllChildVisited { get; private set;}
+        public bool NestedMethodsVisited { get; private set;}
         private List<MethodNode> methodForest;
         public List<MethodNode> MethodForest
         {
@@ -41,9 +41,9 @@ namespace Tracer.Format
 
         private void FindNextStep(MethodNode method)
         {
-            if (method.NoNestedMethods() || AllChildVisited)
+            if (method.NoNestedMethods() || NestedMethodsVisited)
             {
-                if (IsLastInList(method))
+                if (LastAtCurrentLevel(method))
                     GoLevelUp();
                 else
                     StayCurrentLevel(method);
@@ -59,23 +59,24 @@ namespace Tracer.Format
             this.methodForest = methodForest;
             methodStack.Push(this.methodForest[0]);
             NestingLevel++;
-            AllChildVisited = false;
+            NestedMethodsVisited = false;
         }
 
         private void GoLevelUp()
         {
             methodStack.Pop();
             NestingLevel--;
-            AllChildVisited = true;
+            NestedMethodsVisited = true;
         }
 
         private void StayCurrentLevel(MethodNode method)
         {
             int methodIndex = methodForest.IndexOf(method);
             methodStack.Push(methodForest[methodIndex + 1]);
+            NestedMethodsVisited = false;
         }
 
-        private bool IsLastInList(MethodNode method)
+        private bool LastAtCurrentLevel(MethodNode method)
         {
             int methodIndex = methodForest.IndexOf(method);
             return (methodIndex < methodForest.Count - 1);
