@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    class Program
+    class Tracer
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
