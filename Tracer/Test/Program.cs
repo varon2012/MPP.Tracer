@@ -11,27 +11,31 @@ namespace Test
     {
         private static volatile ITracer tracer = Tracer.Tracer.Instance();
 
-        private static Dictionary<string, ITraceResultFormatter> formatters = 
-            new Dictionary<string, ITraceResultFormatter>();
+        private static Dictionary<string, ITraceResultFormatter> formatters;
 
         private static string fileName = "Output.xml";
 
         private static Random randomTime = new Random();
-        private const int minTime = 100;
-        private const int maxTime = 250;
 
         private static List<Thread> threads = new List<Thread>();
         private const int threadCount = 16;
 
-        private static ThreadStart[] InitializeMethods()
+        private static ThreadStart[] methods;
+
+        private static void InitializeMethods()
         {
-            ThreadStart[] methods = new ThreadStart[4];
+            methods = new ThreadStart[4];
             methods[0] = SomeTestMethod1;
             methods[1] = SomeTestMethod2;
             methods[2] = SomeTestMethod3;
             methods[3] = SomeTestMethod4;
+        }
 
-            return methods;
+        private static void InitializeFormattersDictionary()
+        {
+            formatters = new Dictionary<string, ITraceResultFormatter>();
+            formatters.Add("xml", new XmlTraceResultFormatter(fileName));
+            formatters.Add("console", new ConsoleTraceResultFormatter());
         }
 
         private static void SomeTestMethod1()
@@ -74,16 +78,50 @@ namespace Test
             tracer.StopTrace();
         }
 
+        private static void SomeTestMethod5()
+        {
+            tracer.StartTrace();
+
+            SomeTestMethod1();
+            SomeTestMethod2();
+            SomeTestMethod3();
+            SomeTestMethod4();
+
+            tracer.StopTrace();
+        }
+
         private static int GetRandomTimeInMilliseconds()
         {
+            const int minTime = 100;
+            const int maxTime = 250;
             return randomTime.Next(minTime, maxTime);
         }
 
         private static int GetRandomNumberOfMethod()
         {
-            const int min = 1;
-            const int max = 4;
+            const int min = 0;
+            const int max = 3;
             return randomTime.Next(min, max);
+        }
+
+        private static void StartThreads()
+        {
+            for (int i = 0; i < threadCount; i++)
+            {
+                int methodNumber = GetRandomNumberOfMethod();
+                ThreadStart method = methods[methodNumber];
+                Thread newThread = new Thread(method);
+                threads.Add(newThread);
+                newThread.Start();
+            }
+        }
+
+        private static void StopThreads()
+        {
+            for (int i = 0; i < threadCount; i++)
+            {
+                threads[i].Join();
+            }
         }
 
         private static void SayGoodBye()
@@ -94,32 +132,24 @@ namespace Test
 
         static void Main(string[] args)
         {
-            formatters.Add("xml", new XmlTraceResultFormatter(fileName));
-            formatters.Add("console", new ConsoleTraceResultFormatter());
+            InitializeFormattersDictionary();
+            ITraceResultFormatter formatter;
+            try
+            {
+                formatter = formatters[args[0]];
+            }
+            catch (Exception)
+            {
+                formatter = new ConsoleTraceResultFormatter();
+            }
 
-            ITraceResultFormatter formatter = new ConsoleTraceResultFormatter();
-            string formatterKey = args[0];
-            if (formatters.Keys.Contains(formatterKey))
-                formatter = formatters[formatterKey];
-
-            ThreadStart[] methods = InitializeMethods();
+            InitializeMethods();
 
             tracer.StartTrace();
 
-            SomeTestMethod1();
-            SomeTestMethod2();
-            SomeTestMethod3();
-            SomeTestMethod4();
-
-            for (int i = 0; i < threadCount; i++)
-            {
-                int methodNumber = GetRandomNumberOfMethod();
-                ThreadStart method = methods[methodNumber];
-                Thread newThread = new Thread(method);
-                threads.Add(newThread);
-                newThread.Start();
-            }
+            StartThreads();
             Thread.Sleep(GetRandomTimeInMilliseconds());
+            StopThreads();
 
             tracer.StopTrace();
 
