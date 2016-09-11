@@ -17,7 +17,7 @@ namespace Tracer.Tree
             }
         }
 
-        public Boolean CountFinished
+        public Boolean TracingFinished
         {
             get
             {
@@ -30,16 +30,16 @@ namespace Tracer.Tree
             Caller = caller;
         }
 
-        public override void FixateCountEnd(long endTime)
+        public override void StopLastTrace(long endTime)
         {
-            if (NoNestedMethods() || AllCountsFinished())
+            if (NoNestedMethods() || NestedTracingsFinished())
             {
                 EndTime = endTime;
             }
             else
             {
-                MethodNode method = GetLastAddedMethod();
-                method.FixateCountEnd(endTime);
+                MethodNode method = LastAddedMethod;
+                method.StopLastTrace(endTime);
             }
         }
     }

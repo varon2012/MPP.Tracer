@@ -43,7 +43,7 @@
     <Compile Include="src\Tracer.cs" />
     <Compile Include="src\TraceResult.cs" />
     <Compile Include="src\tree\ChildNode.cs" />
-    <Compile Include="src\tree\CallerDescriptor.cs" />
+    <Compile Include="src\CallerDescriptor.cs" />
     <Compile Include="src\tree\MethodNode.cs" />
     <Compile Include="src\tree\RootNode.cs" />
     <Compile Include="src\tree\ThreadNode.cs" />

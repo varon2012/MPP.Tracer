@@ -12,20 +12,20 @@ namespace Tracer.Tree
             threadTable = new Dictionary<int, ThreadNode>();
         }
 
-        public void FixateCountStart(long startTime, CallerDescriptor caller)
+        public void AddNestedTrace(long startTime, CallerDescriptor caller)
         {
             
-            ThreadNode thread = GetCurrentThread();
-            thread.FixateCountStart(startTime, caller);
+            ThreadNode thread = CurrentThreadNode();
+            thread.AddNestedTrace(startTime, caller);
         }
 
-        public void FixateCountEnd(long endTime)
+        public void StopLastTrace(long endTime)
         {
-            ThreadNode thread = GetCurrentThread();
-            thread.FixateCountEnd(endTime);
+            ThreadNode thread = CurrentThreadNode();
+            thread.StopLastTrace(endTime);
         }
 
-        private ThreadNode GetCurrentThread()
+        private ThreadNode CurrentThreadNode()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
             if (threadTable.ContainsKey(threadId))

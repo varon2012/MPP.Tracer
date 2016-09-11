@@ -11,10 +11,10 @@ namespace Tracer.Tree
             Id = id;
         }
 
-        public override void FixateCountEnd(long endTime)
+        public override void StopLastTrace(long endTime)
         {
-            MethodNode method = GetLastAddedMethod();
-            method.FixateCountEnd(endTime);
+            MethodNode method = LastAddedMethod;
+            method.StopLastTrace(endTime);
         }
 
     }

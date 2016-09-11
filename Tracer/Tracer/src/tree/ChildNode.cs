@@ -6,43 +6,46 @@ namespace Tracer.Tree
 {
     public abstract class ChildNode : INode
     {
-        public abstract void FixateCountEnd(long endTime);
+        public abstract void StopLastTrace(long endTime);
 
-        private Stack<MethodNode> methods;
 
-        public void FixateCountStart(long startTime, CallerDescriptor caller)
+        private Stack<MethodNode> nestedMethods;
+        protected MethodNode LastAddedMethod
         {
-            if (NoNestedMethods() || AllCountsFinished())
+            get
             {
-                AddMethodToList(startTime, caller);
+                return nestedMethods.Peek();
+            }
+        }
+
+        public void AddNestedTrace(long startTime, CallerDescriptor caller)
+        {
+            if (NoNestedMethods() || NestedTracingsFinished())
+            {
+                AddNestedMethod(startTime, caller);
             }
             else
             {
-                MethodNode method = GetLastAddedMethod();
-                method.FixateCountStart(startTime, caller);
+                MethodNode method = LastAddedMethod;
+                method.AddNestedTrace(startTime, caller);
             }
         }
 
-        protected MethodNode GetLastAddedMethod()
-        {
-            return methods.Peek();
-        }
-
-        private void AddMethodToList(long startTime, CallerDescriptor caller)
+        private void AddNestedMethod(long startTime, CallerDescriptor caller)
         {
             MethodNode method = new MethodNode(caller);
             method.StartTime = startTime;
-            methods.Push(method);
+            nestedMethods.Push(method);
         }
 
         protected Boolean NoNestedMethods()
         {
-            return (methods.Count == 0);
+            return (nestedMethods.Count == 0);
         }
 
-        protected Boolean AllCountsFinished()
+        protected Boolean NestedTracingsFinished()
         {
-            return GetLastAddedMethod().CountFinished;
+            return LastAddedMethod.TracingFinished;
         }
     }
 }

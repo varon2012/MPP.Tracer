@@ -2,7 +2,7 @@
 { 
     public interface INode
     {
-        void FixateCountStart(long startTime, CallerDescriptor caller);
-        void FixateCountEnd(long endTime);
+        void AddNestedTrace(long startTime, CallerDescriptor caller);
+        void StopLastTrace(long endTime);
     }
 }

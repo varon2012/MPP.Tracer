@@ -19,13 +19,13 @@ namespace Tracer
         {
             long currentTime = GetCurrentTime();
             CallerDescriptor caller = GetCallerDescriptor();
-            rootNode.FixateCountStart(currentTime, caller);
+            rootNode.AddNestedTrace(currentTime, caller);
         }
 
         public void StopTrace()
         {
             long currentTime = GetCurrentTime();
-            rootNode.FixateCountEnd(currentTime);
+            rootNode.StopLastTrace(currentTime);
         }
 
         public TraceResult GetTraceResult()
