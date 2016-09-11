@@ -8,5 +8,10 @@ namespace Tracer
 {
     public class TraceResult
     {
+        public long time { get; set; }
+        public TraceResult(long time) 
+        {
+            this.time = time;
+        }
     }
 }
