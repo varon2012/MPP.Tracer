@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITraceResultFormatter.cs" />
     <Compile Include="ThreadNode.cs" />
     <Compile Include="ITracer.cs" />
     <Compile Include="Tracer.cs" />

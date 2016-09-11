@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
     public sealed class ThreadNode
     {
-
-        internal List<MethodNode> MethodNodes { get; }
+        public List<MethodNode> MethodNodes { get; }
 
         private readonly Stack<MethodNode> _methodStack;
         private MethodNode _currentNode;
 
         private readonly DateTime _startTime;
         private DateTime _endTime;
-        internal TimeSpan ExecutionTime => _endTime - _startTime;
+        public TimeSpan ExecutionTime => _endTime - _startTime;
 
         internal ThreadNode()
         {

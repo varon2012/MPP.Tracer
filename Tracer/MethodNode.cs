@@ -5,11 +5,11 @@ namespace Tracer
 {
     public sealed class MethodNode
     {
-        internal string MethodName { get; }
-        internal string ClassName { get; }
+        public string MethodName { get; }
+        public string ClassName { get; }
         private readonly DateTime _startTime;
         private DateTime _endTime;
-        internal TimeSpan ExecutionTime => _endTime - _startTime;
+        public TimeSpan ExecutionTime => _endTime - _startTime;
         internal int ParameterCount { get; }
 
         internal List<MethodNode> InnerMethods { get; }
@@ -33,6 +33,5 @@ namespace Tracer
         {
             InnerMethods.Add(new MethodNode(className, methodName, paramCount));
         }
-
     }
 }

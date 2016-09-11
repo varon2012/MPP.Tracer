@@ -4,7 +4,6 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-
         internal Dictionary<int, ThreadNode> ThreadNodes { get; }
 
         internal TraceResult()
@@ -25,8 +24,9 @@ namespace Tracer
 
         internal void StopTraceMethod(int id)
         {
-            ThreadNodes[id].StopTraceMethod();
+            ThreadNode node;
+            ThreadNodes.TryGetValue(id, out node);
+            node?.StopTraceMethod();
         }
-
     }
 }
