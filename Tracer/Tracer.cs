@@ -1,30 +1,69 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
 
 namespace Tracer
 {
-    class Tracer: ITracer
+    public class Tracer: ITracer
     {
 
-        private ConcurrentStack<TracerNode> _tray = new ConcurrentStack<TracerNode>();
+        private static Tracer _instance;
+        private static readonly object Lock = new object();
+
+        public static Tracer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (Lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new Tracer();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        private Tracer()
+        {
+            _traceResult = new TraceResult();
+        }
+
+        private TraceResult _traceResult;
+
+        public void ClearTraceResult()
+        {
+            _traceResult = new TraceResult();
+        }
 
         public void StartTrace()
         {
-            
+            MethodBase method = new StackTrace().GetFrame(1).GetMethod();
+            lock (Lock)
+            {
+                _traceResult.StartTraceMethod(Thread.CurrentThread.ManagedThreadId, 
+                method.GetType().Name, 
+                method.Name, 
+                method.GetParameters().Length);
+            }
         }
 
         public void StopTrace()
         {
-            throw new NotImplementedException();
+            lock (Lock)
+            { 
+                _traceResult.StopTraceMethod(Thread.CurrentThread.ManagedThreadId);
+            }
+           
         }
 
         public TraceResult GetTraceResult()
         {
-            throw new NotImplementedException();
+            return _traceResult;
         }
     }
 
