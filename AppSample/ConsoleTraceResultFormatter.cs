@@ -5,13 +5,16 @@ public class ConsoleTraceResultFormatter : ITraceResultFormatter
 	const string PaddingSpace = "  ";
 	const string PaddingEnd = "* ";
 
-	private int padding = 0;
-
 	public void Format(TraceResult traceResult)
 	{
-		Console.WriteLine("Thread ID: {0}", traceResult.ThreadId);
+		var TracedThreadsData = traceResult.ThreadsData;
 
-		traceResult.RootComponent.Visit(Processor);
+		foreach (var threadData in TracedThreadsData)
+		{
+			Console.WriteLine("Thread ID: {0}", threadData.Key);
+
+			traceResult.GetThreadRootComponent(threadData.Key).Visit(Processor);
+		}
 	}
 
 	public void Processor(TraceResult.TraceComponent component, int depth)
