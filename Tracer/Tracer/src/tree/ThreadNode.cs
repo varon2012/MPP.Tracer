@@ -13,7 +13,7 @@ namespace Tracer.Tree
 
         public override void StopLastTrace(long endTime)
         {
-            MethodNode method = LastAddedMethod;
+            MethodNode method = GetLastAddedMethod();
             method.StopLastTrace(endTime);
         }
 

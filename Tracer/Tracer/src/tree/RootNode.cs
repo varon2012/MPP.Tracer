@@ -5,18 +5,18 @@ namespace Tracer.Tree
 {
     public class RootNode : INode
     {
-        private Dictionary<int, ThreadNode> threadTable;
+        public Dictionary<int, ThreadNode> ThreadTable { get; private set; }
 
         internal RootNode()
         {
-            threadTable = new Dictionary<int, ThreadNode>();
+            ThreadTable = new Dictionary<int, ThreadNode>();
         }
 
-        public void AddNestedTrace(long startTime, CallerDescriptor caller)
+        public void AddNestedTrace(long startTime, MethodDescriptor descriptor)
         {
             
             ThreadNode thread = CurrentThreadNode();
-            thread.AddNestedTrace(startTime, caller);
+            thread.AddNestedTrace(startTime, descriptor);
         }
 
         public void StopLastTrace(long endTime)
@@ -28,13 +28,13 @@ namespace Tracer.Tree
         private ThreadNode CurrentThreadNode()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
-            if (threadTable.ContainsKey(threadId))
+            if (ThreadTable.ContainsKey(threadId))
             {
-                return threadTable[threadId];
+                return ThreadTable[threadId];
             }
 
             ThreadNode thread = new ThreadNode(threadId);
-            threadTable.Add(threadId, thread);
+            ThreadTable.Add(threadId, thread);
            
             return thread;
         }

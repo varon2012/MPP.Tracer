@@ -5,14 +5,13 @@ namespace Tracer.Tree
     public class MethodNode : ChildNode
     {
         public long StartTime { private get; set; }
-        public long TraceTime { get; private set; }
-        public CallerDescriptor Caller { private get;  set; }
+        public MethodDescriptor Descriptor { get;  private set; }
 
         public long EndTime
         {
             set
             {
-                    TraceTime = value - StartTime;
+                    Descriptor.TraceTime = value - StartTime;
                     
             }
         }
@@ -21,13 +20,13 @@ namespace Tracer.Tree
         {
             get
             {
-                return (TraceTime > 0);
+                return (Descriptor.TraceTime > 0);
             }
         }
 
-        public MethodNode(CallerDescriptor caller)
+        public MethodNode(MethodDescriptor descriptor)
         {
-            Caller = caller;
+            Descriptor = descriptor;
         }
 
         public override void StopLastTrace(long endTime)
@@ -38,7 +37,7 @@ namespace Tracer.Tree
             }
             else
             {
-                MethodNode method = LastAddedMethod;
+                MethodNode method = GetLastAddedMethod();
                 method.StopLastTrace(endTime);
             }
         }

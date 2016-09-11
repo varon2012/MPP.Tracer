@@ -7,7 +7,6 @@ namespace Tracer
 {
     public class Tracer : ITracer
     {
-        private TraceResult traceResult;
         private RootNode rootNode;
 
         public Tracer()
@@ -18,8 +17,8 @@ namespace Tracer
         public void StartTrace()
         {
             long currentTime = GetCurrentTime();
-            CallerDescriptor caller = GetCallerDescriptor();
-            rootNode.AddNestedTrace(currentTime, caller);
+            MethodDescriptor descriptor = GetMethodDescriptor();
+            rootNode.AddNestedTrace(currentTime, descriptor);
         }
 
         public void StopTrace()
@@ -30,6 +29,7 @@ namespace Tracer
 
         public TraceResult GetTraceResult()
         {
+            TraceResult traceResult = new TraceResult(rootNode);
             return traceResult;
         }
 
@@ -38,7 +38,7 @@ namespace Tracer
             return DateTime.Now.Millisecond;
         }
 
-        private CallerDescriptor GetCallerDescriptor()
+        private MethodDescriptor GetMethodDescriptor()
         {
             StackTrace stackTrace = new StackTrace();
             MethodBase methodBase = stackTrace.GetFrame(2).GetMethod();
@@ -47,7 +47,7 @@ namespace Tracer
             String callerClass = methodBase.DeclaringType.ToString();
             int parametersNumber = methodBase.GetParameters().Length;
 
-            return new CallerDescriptor(callerName, callerClass, parametersNumber);
+            return new MethodDescriptor(callerName, callerClass, parametersNumber);
         }
     }
 }

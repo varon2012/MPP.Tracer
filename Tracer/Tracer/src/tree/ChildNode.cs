@@ -9,43 +9,46 @@ namespace Tracer.Tree
         public abstract void StopLastTrace(long endTime);
 
 
-        private Stack<MethodNode> nestedMethods;
-        protected MethodNode LastAddedMethod
+        internal List<MethodNode> NestedMethods { get; private set; }
+
+        public ChildNode()
         {
-            get
-            {
-                return nestedMethods.Peek();
-            }
+            NestedMethods = new List<MethodNode>();
         }
 
-        public void AddNestedTrace(long startTime, CallerDescriptor caller)
+        public void AddNestedTrace(long startTime, MethodDescriptor descriptor)
         {
             if (NoNestedMethods() || NestedTracingsFinished())
             {
-                AddNestedMethod(startTime, caller);
+                AddNestedMethod(startTime, descriptor);
             }
             else
             {
-                MethodNode method = LastAddedMethod;
-                method.AddNestedTrace(startTime, caller);
+                MethodNode method = GetLastAddedMethod();
+                method.AddNestedTrace(startTime, descriptor);
             }
         }
 
-        private void AddNestedMethod(long startTime, CallerDescriptor caller)
+        private void AddNestedMethod(long startTime, MethodDescriptor descriptor)
         {
-            MethodNode method = new MethodNode(caller);
+            MethodNode method = new MethodNode(descriptor);
             method.StartTime = startTime;
-            nestedMethods.Push(method);
+            NestedMethods.Add(method);
         }
 
-        protected Boolean NoNestedMethods()
+        protected MethodNode GetLastAddedMethod()
         {
-            return (nestedMethods.Count == 0);
+            return NestedMethods[NestedMethods.Count - 1];
         }
 
-        protected Boolean NestedTracingsFinished()
+        public bool NoNestedMethods()
         {
-            return LastAddedMethod.TracingFinished;
+            return (NestedMethods.Count == 0);
+        }
+
+        protected bool NestedTracingsFinished()
+        {
+            return GetLastAddedMethod().TracingFinished;
         }
     }
 }
