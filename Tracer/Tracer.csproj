@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleTraceResultFormatter.cs" />
     <Compile Include="ITraceResultFormatter.cs" />
     <Compile Include="ThreadNode.cs" />
     <Compile Include="ITracer.cs" />

@@ -21,7 +21,6 @@ namespace Tracer
             ClassName = className;
             ParameterCount = paramCount;
             _startTime = DateTime.Now;
-            _endTime = DateTime.Now;
         }
 
         internal void StopTrace()

@@ -53,7 +53,7 @@
     <ProjectReference Include="..\Tracer\Tracer.csproj">
       <Project>{f34d0f30-5697-4b6a-9ec6-7aba6d397cae}</Project>
       <Name>Tracer</Name>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
