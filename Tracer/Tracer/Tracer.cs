@@ -1,0 +1,242 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Reflection;
+using System.Diagnostics;
+
+namespace BSUIR.Mishin.Tracer
+{
+    public class Tracer : ITracer {
+        public static Tracer Instance = new Tracer();
+
+        private object _lockObj = new object();
+        private object _lockCloseObj = new object();
+
+        private bool _isStarted;
+        private List<TracerInfo> _traceStack;
+        private List<TracerThreadTree> _threadStack;
+        private int _id;
+
+        private int _Id {
+            get { return _id++; }
+        }
+
+        public struct TracerThreadTree {
+            public int ThreadId;
+            public List<TracerTree> Child;
+        };
+        public struct TracerTree {
+            public TracerInfo Element;
+            public List<TracerTree> Child;
+        };
+
+        public class TracerInfo {
+            public string MethodName, ClassName;
+            public double Time;
+            public int CountParams;
+
+            private DateTime _startTime;
+            private int _id;
+            private Thread _currentThread;
+            private int _threadId;
+
+            public TracerInfo() {
+                _currentThread = Thread.CurrentThread;
+            }
+
+            public Thread GetThread() { return _currentThread; }
+
+            public int GetThreadId() { return _threadId; }
+            public void SetThreadId(int id) { _threadId = id; }
+
+            public int GetId() { return _id; }
+            public void SetId(int id) { _id = id; }
+
+            public void SetStartTime(DateTime time) { _startTime = time; }
+            public DateTime GetStartTime() { return _startTime; }
+        };
+
+
+        public Tracer() {
+            lock (_lockObj) {
+                _id = 1;
+                _traceStack = new List<TracerInfo>();
+                _threadStack = new List<TracerThreadTree>();
+                _isStarted = false;
+            }
+        }
+
+        public void Start() {
+            _isStarted = true;
+        }
+
+        public void StartTrace() {
+            lock (_lockObj) {
+                Start();
+
+                TracerInfo currentMethod = GetTracerInfo();
+                TracerThreadTree currentThread = _threadStack.Find( (thread) => thread.ThreadId == currentMethod.GetThreadId() );
+
+                if (currentThread.ThreadId == 0) {
+                    currentThread = new TracerThreadTree();
+                    currentThread.Child = new List<TracerTree>();
+                    currentThread.ThreadId = currentMethod.GetThreadId();
+                    _threadStack.Add(currentThread);
+                }
+
+                AddElementToList(currentMethod, _Id);
+                _traceStack.Add(currentMethod);
+            }
+        }
+
+        public void StopTrace() {
+            lock (_lockObj) {
+                if (_traceStack.Count == 0) return;
+                TracerInfo currentTracer = GetTracerInfo();
+                TracerInfo last;
+
+                for (int i = _traceStack.Count - 1; i >= 0; i--) {
+                    last = _traceStack[i];
+
+                    if (last.GetThreadId() == currentTracer.GetThreadId()) {
+                        _traceStack.RemoveAt(i);
+                        last.Time = (DateTime.UtcNow - last.GetStartTime()).TotalMilliseconds;
+
+                        if (last.ClassName == currentTracer.ClassName && last.MethodName == currentTracer.MethodName)
+                            return;
+                    }
+                }
+            }
+        }
+
+        private TracerInfo GetLastMethodInThread(int currentThreadId) {
+            TracerInfo method;
+
+            for (int i = _traceStack.Count - 1; i >= 0; i--) {
+                method = _traceStack[i];
+                if (currentThreadId == method.GetThreadId())
+                    return method;
+            }
+
+            return null;
+        }
+
+        private void AddElementToList(TracerInfo element, int id) {
+            int threadId = element.GetThreadId();
+
+            element.SetId(id);
+            TracerInfo last = GetLastMethodInThread(threadId);
+
+            List<TracerTree> tracerTree = _threadStack.Find(elem => elem.ThreadId == threadId).Child;
+
+            TracerTree tree = new TracerTree();
+            tree.Element = element;
+            tree.Child = new List<TracerTree>();
+
+            if (last == null) {
+                tracerTree.Add(tree);
+                return;
+            }
+
+            FindElementInTree(last, tracerTree).Child.Add(tree);
+        }
+
+        private TracerTree FindElementInTree(TracerInfo element, List<TracerTree> header) {
+            TracerTree child = new TracerTree();
+
+            for (int i = 0; i < header.Count; i++) {
+                child = header[i];
+                if (child.Element.GetId() == element.GetId()) return child;
+                if (child.Child.Count > 0) {
+                    child = FindElementInTree(element, child.Child);
+                    if (child.Element.GetId() == element.GetId()) return child;
+                }
+            }
+
+            return child;
+        }
+
+        private TracerInfo GetTracerInfo() {
+            TracerInfo result = new TracerInfo();
+
+            result.SetStartTime(DateTime.UtcNow);
+            result.SetThreadId(Thread.CurrentThread.ManagedThreadId);
+
+            StackTrace stackTrace = new StackTrace();
+            StackFrame frame;
+
+            for (int i = 0; i < stackTrace.FrameCount; i++) {
+                frame = stackTrace.GetFrame(i);
+                MethodBase method = frame.GetMethod();
+                Type type = method.DeclaringType;
+
+                if (type != typeof(Tracer)) {
+                    result.MethodName = method.Name;
+                    result.ClassName = type.FullName;
+
+                    result.CountParams = method.GetParameters().Length;
+
+                    return result;
+                }
+            }
+
+            return result;
+        }
+
+        public Object GetTraceObj() {
+            return _threadStack;
+        }
+
+        public List<TracerThreadTree> Stop() {
+            lock (_lockCloseObj) {
+                if (!_isStarted)
+                    throw new Exception("Tracer is not started");
+
+                int currentThreadId = Thread.CurrentThread.ManagedThreadId;
+                Thread currentJoinThread;
+                TracerInfo last;
+
+                while ((currentJoinThread = GetAnotherThread(currentThreadId, _traceStack)) != null) {
+                    currentJoinThread.Join();
+
+                    for (int i = _traceStack.Count - 1; i >= 0; i--) {
+                        last = _traceStack[i];
+
+                        if (last.GetThreadId() == currentJoinThread.ManagedThreadId) {
+                            _traceStack.RemoveAt(i);
+                            last.Time = (DateTime.UtcNow - last.GetStartTime()).TotalMilliseconds;
+                        }
+                    }
+                }
+
+                for (int i = _traceStack.Count - 1; i >= 0; i--) {
+                    last = _traceStack[i];
+
+                    _traceStack.RemoveAt(i);
+                    last.Time = (DateTime.UtcNow - last.GetStartTime()).TotalMilliseconds;
+                }
+
+                _isStarted = false;
+                List<TracerThreadTree> tempList = _threadStack;
+                _threadStack = new List<TracerThreadTree>();
+                _traceStack.Clear();
+                _id = 0;
+
+                return tempList;
+            }
+        }
+
+        private Thread GetAnotherThread(int currentId, List<TracerInfo> traceStack) {
+            for (int i = traceStack.Count - 1; i >= 0; i--) {
+                TracerInfo tracer = traceStack[i];
+                if (tracer.GetThreadId() != currentId) return tracer.GetThread();
+            }
+
+            return null;
+        }
+
+    }
+}
