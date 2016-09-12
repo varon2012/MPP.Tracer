@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using Tracer.Tree;
+using MPPTracer.Tree;
 
-namespace Tracer
+namespace MPPTracer
 {
     public class Tracer : ITracer
     {
@@ -35,7 +35,7 @@ namespace Tracer
 
         private long GetCurrentTime()
         {
-            return DateTime.Now.Millisecond;
+            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
 
         private MethodDescriptor GetMethodDescriptor()

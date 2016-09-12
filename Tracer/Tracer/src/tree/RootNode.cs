@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-namespace Tracer.Tree
+namespace MPPTracer.Tree
 {
     public class RootNode : INode
     {
@@ -33,7 +33,7 @@ namespace Tracer.Tree
                 return ThreadTable[threadId];
             }
 
-            ThreadNode thread = new ThreadNode(threadId);
+            ThreadNode thread = new ThreadNode();
             ThreadTable.Add(threadId, thread);
            
             return thread;

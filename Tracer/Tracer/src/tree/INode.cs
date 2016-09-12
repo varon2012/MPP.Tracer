@@ -1,4 +1,4 @@
-﻿namespace Tracer.Tree
+﻿namespace MPPTracer.Tree
 { 
     public interface INode
     {

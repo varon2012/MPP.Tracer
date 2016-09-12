@@ -1,10 +1,10 @@
 ﻿
 using System.Collections.Generic;
-using Tracer.Tree;
+using MPPTracer.Tree;
 
-namespace Tracer.Format
+namespace MPPTracer.Format
 {
-    class Iterator
+    class TreeRacer
     {
         public int NestingLevel { get; private set; } = -1;
         public bool NestedMethodsVisited { get; private set;}
@@ -18,7 +18,7 @@ namespace Tracer.Format
         }
         private Stack<MethodNode> methodStack;
 
-        public Iterator()
+        public TreeRacer()
         {
             methodStack = new Stack<MethodNode>();
         }
@@ -71,6 +71,7 @@ namespace Tracer.Format
 
         private void StayCurrentLevel(MethodNode method)
         {
+            methodStack.Pop();
             int methodIndex = methodForest.IndexOf(method);
             methodStack.Push(methodForest[methodIndex + 1]);
             NestedMethodsVisited = false;
@@ -79,7 +80,7 @@ namespace Tracer.Format
         private bool LastAtCurrentLevel(MethodNode method)
         {
             int methodIndex = methodForest.IndexOf(method);
-            return (methodIndex < methodForest.Count - 1);
+            return (methodIndex == methodForest.Count - 1);
         }
     }
 }

@@ -1,15 +1,8 @@
 ﻿
-namespace Tracer.Tree
+namespace MPPTracer.Tree
 {
     public class ThreadNode : ChildNode
     {
-
-        public int Id { get; private set;}
-
-        internal ThreadNode(int id)
-        {
-            Id = id;
-        }
 
         public override void StopLastTrace(long endTime)
         {

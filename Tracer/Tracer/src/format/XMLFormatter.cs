@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tracer.Format
+namespace MPPTracer.Format
 {
     public class XMLFormatter : IFormatter
     {
@@ -14,11 +14,11 @@ namespace Tracer.Format
                                            "</thread>";
         private const string METHOD_TAG = "<method name={0} time={1} class={2} params={3}>\n+"+
                                                     "{4}\n"+
-                                               "</method>";
+                                           "</method>";
 
         public string Format(TraceResult traceResult)
         {
-            
+            return null;
         }
     }
 }

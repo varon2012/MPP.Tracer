@@ -1,18 +1,31 @@
 ﻿
 using System.Collections.Generic;
-using Tracer.Tree;
+using MPPTracer.Tree;
 
-namespace Tracer
+namespace MPPTracer
 {
     public class TraceResult
     {
         private RootNode Root { get; set; }
-        public List<int> Threads { get; private set; }
+        public int ThreadsCount
+        {
+            get
+            {
+                Dictionary<int, ThreadNode> threads = Root.ThreadTable;
+                return threads.Count;
+            }
+        }
+        private List<int> threadsId;
 
         public TraceResult(RootNode root)
         {
             Root = root;
-            Threads = new List<int>(Root.ThreadTable.Keys);
+            threadsId = new List<int>(Root.ThreadTable.Keys);
+        }
+
+        public int GetThreadId(int index)
+        {
+            return threadsId[index];
         }
 
         public List<MethodNode> GetThreadForest(int threadId)
@@ -21,6 +34,6 @@ namespace Tracer
             return threadTable[threadId].NestedMethods;
         }
 
-
+        
     }
 }

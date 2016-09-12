@@ -1,5 +1,5 @@
 ﻿
-namespace Tracer.Format
+namespace MPPTracer.Format
 {
     public interface IFormatter
     {

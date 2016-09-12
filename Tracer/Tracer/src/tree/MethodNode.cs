@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tracer.Tree
+namespace MPPTracer.Tree
 {
     public class MethodNode : ChildNode
     {

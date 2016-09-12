@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Tracer
+namespace MPPTracer
 {
     public class MethodDescriptor
     {

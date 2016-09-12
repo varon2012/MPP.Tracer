@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Tracer.Tree
+namespace MPPTracer.Tree
 {
     public abstract class ChildNode : INode
     {
