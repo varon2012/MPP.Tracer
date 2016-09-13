@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 
+using BSUIR.Mishin.Tracer.Types;
+
 namespace BSUIR.Mishin.Tracer.Formatter {
     public class JsonView: ITracerFormatter {
-        private List<Tracer.TracerThreadTree> _threadList;
-
-        public JsonView(List<Tracer.TracerThreadTree> threadList) {
-            _threadList = threadList;
+        public string Parse(List<TracerThreadTree> threadList) {
+            return ParseFromObjToString(threadList);
         }
 
-        public string Parse() {
-            string jsonString = JsonConvert.SerializeObject(_threadList);
+        public Stream ParseToStream(List<TracerThreadTree> threadList) {
+            return ParseFromObjToStream(threadList);
+        }
+
+        private string ParseFromObjToString(List<TracerThreadTree> list) {
+            string jsonString = JsonConvert.SerializeObject(list);
 
             string fileName = DateTime.UtcNow.ToFileTimeUtc().ToString() + ".json";
             FileStream file = new FileStream(fileName, FileMode.Create, FileAccess.Write);
@@ -27,8 +31,8 @@ namespace BSUIR.Mishin.Tracer.Formatter {
             return fileName;
         }
 
-        public Stream ParseToStream() {
-            string jsonString = JsonConvert.SerializeObject(_threadList);
+        private Stream ParseFromObjToStream(List<TracerThreadTree> list) {
+            string jsonString = JsonConvert.SerializeObject(list);
             Stream stream = new MemoryStream();
 
             using (StreamWriter writer = new StreamWriter(stream)) {

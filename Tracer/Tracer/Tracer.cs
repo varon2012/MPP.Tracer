@@ -7,12 +7,29 @@ using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
 
+using BSUIR.Mishin.Tracer.Types;
+
 namespace BSUIR.Mishin.Tracer
 {
     public class Tracer : ITracer {
-        public static Tracer Instance = new Tracer();
+        private static Tracer _instance;
 
-        private object _lockObj = new object();
+        public static Tracer Instance {
+            get {
+
+                if (_instance == null) {
+                    lock (_lockObj) {
+                        if (_instance == null) {
+                            _instance = new Tracer();
+                        }
+                    }
+                }
+
+                return _instance;
+            }
+        }
+
+        private static object _lockObj = new object();
         private object _lockCloseObj = new object();
 
         private bool _isStarted;
@@ -24,49 +41,11 @@ namespace BSUIR.Mishin.Tracer
             get { return _id++; }
         }
 
-        public struct TracerThreadTree {
-            public int ThreadId;
-            public List<TracerTree> Child;
-        };
-        public struct TracerTree {
-            public TracerInfo Element;
-            public List<TracerTree> Child;
-        };
-
-        public class TracerInfo {
-            public string MethodName, ClassName;
-            public double Time;
-            public int CountParams;
-
-            private DateTime _startTime;
-            private int _id;
-            private Thread _currentThread;
-            private int _threadId;
-
-            public TracerInfo() {
-                _currentThread = Thread.CurrentThread;
-            }
-
-            public Thread GetThread() { return _currentThread; }
-
-            public int GetThreadId() { return _threadId; }
-            public void SetThreadId(int id) { _threadId = id; }
-
-            public int GetId() { return _id; }
-            public void SetId(int id) { _id = id; }
-
-            public void SetStartTime(DateTime time) { _startTime = time; }
-            public DateTime GetStartTime() { return _startTime; }
-        };
-
-
-        public Tracer() {
-            lock (_lockObj) {
-                _id = 1;
-                _traceStack = new List<TracerInfo>();
-                _threadStack = new List<TracerThreadTree>();
-                _isStarted = false;
-            }
+        private Tracer() {
+            _id = 1;
+            _traceStack = new List<TracerInfo>();
+            _threadStack = new List<TracerThreadTree>();
+            _isStarted = false;
         }
 
         public void Start() {
@@ -186,14 +165,14 @@ namespace BSUIR.Mishin.Tracer
             return result;
         }
 
-        public Object GetTraceObj() {
+        public List<TracerThreadTree> GetThreadList() {
             return _threadStack;
         }
 
         public List<TracerThreadTree> Stop() {
             lock (_lockCloseObj) {
                 if (!_isStarted)
-                    throw new Exception("Tracer is not started");
+                    throw new InvalidOperationException("Tracer is not started");
 
                 int currentThreadId = Thread.CurrentThread.ManagedThreadId;
                 Thread currentJoinThread;

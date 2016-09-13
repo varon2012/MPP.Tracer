@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 
 using BSUIR.Mishin.Tracer;
+using BSUIR.Mishin.Tracer.Types;
 
 namespace BSUIR.Mishin.Tracer.Formatter {
     interface ITracerFormatter {
-        string Parse();
-        Stream ParseToStream();
+        string Parse(List<TracerThreadTree> threadList);
+        Stream ParseToStream(List<TracerThreadTree> threadList);
     }
 }

@@ -9,6 +9,7 @@ using System.IO;
 
 using BSUIR.Mishin.Tracer;
 using BSUIR.Mishin.Tracer.Formatter;
+using BSUIR.Mishin.Tracer.Types;
 
 namespace Test {
     class Program {
@@ -28,12 +29,12 @@ namespace Test {
 
             CreateThreads();
 
-            List<Tracer.TracerThreadTree> traceList = Tracer.Instance.Stop();
+            List<TracerThreadTree> traceList = Tracer.Instance.Stop();
 
-            ConsoleView consoleView = new ConsoleView(traceList);
-            consoleView.Parse();
-            JsonView jsonView = new JsonView(traceList);
-            Console.WriteLine("File name: " + jsonView.Parse());
+            ConsoleView consoleView = new ConsoleView();
+            consoleView.Parse(traceList);
+            JsonView jsonView = new JsonView();
+            Console.WriteLine("File name: " + jsonView.Parse(traceList));
 
             Console.ReadKey();
         }

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BSUIR.Mishin.Tracer.Types;
+
 namespace BSUIR.Mishin.Tracer {
     interface ITracer {
         void Start();
-        List<Tracer.TracerThreadTree> Stop();
+        List<TracerThreadTree> Stop();
 
         void StartTrace();
         void StopTrace();

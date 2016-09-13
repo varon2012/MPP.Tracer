@@ -5,33 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+using BSUIR.Mishin.Tracer.Types;
+
 namespace BSUIR.Mishin.Tracer.Formatter {
     public class ConsoleView: ITracerFormatter {
-        private List<Tracer.TracerThreadTree> _threadList;
-
-        public ConsoleView(List<Tracer.TracerThreadTree> threadList) {
-            _threadList = threadList;
-        }
-
-        public string Parse() {
+        public string Parse(List<TracerThreadTree> threadList) {
             StringBuilder line = new StringBuilder();
 
-            for (int i = 0; i < _threadList.Count; i++) {
-                line.Append("Thread number: ").AppendLine(_threadList[i].ThreadId.ToString())
-                    .Append(GetTracersTree(_threadList[i].Child, ""))
+            for (int i = 0; i < threadList.Count; i++) {
+                line.Append("Thread number: ").AppendLine(threadList[i].ThreadId.ToString())
+                    .Append(GetTracersTree(threadList[i].Child, ""))
                     .AppendLine("------");
             }
 
             Console.WriteLine(line.ToString());
-            return "";
+            return string.Empty;
         }
 
-        private string GetTracersTree(List<Tracer.TracerTree> tree, string separator) {
+        private string GetTracersTree(List<TracerTree> tree, string separator) {
             StringBuilder line = new StringBuilder();
 
             for (int i = 0; i < tree.Count; i++) {
-                Tracer.TracerTree tracer = tree[i];
-                Tracer.TracerInfo tracerInfo = tracer.Element;
+                TracerTree tracer = tree[i];
+                TracerInfo tracerInfo = tracer.Element;
 
                 line.Append(separator)
                     .Append("Method: ").Append(tracerInfo.MethodName).Append(", ")
@@ -45,8 +41,8 @@ namespace BSUIR.Mishin.Tracer.Formatter {
             return line.ToString();
         }
 
-        public Stream ParseToStream() {
-            string stringObj = Parse();
+        public Stream ParseToStream(List<TracerThreadTree> threadList) {
+            string stringObj = Parse(threadList);
             Stream stream = new MemoryStream();
 
             using (StreamWriter writer = new StreamWriter(stream)) {
