@@ -7,6 +7,10 @@ namespace Tracer
     {
         public void Format(TraceResult traceResult)
         {
+            if (traceResult == null)
+            {
+                return;
+            }
             foreach (int threadId in traceResult.ThreadNodes.Keys)
             {
                 Console.WriteLine(

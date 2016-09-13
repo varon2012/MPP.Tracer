@@ -22,8 +22,11 @@ namespace Test
                 _tracer.StartTrace();
                 Thread.Sleep(100);
                 _tracer.StopTrace();
-                Tracer.ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
-                formatter.Format(_tracer.GetTraceResult());
+                Tracer.XmlTraceResultFormatter xmlTraceResultFormatter = new XmlTraceResultFormatter("testXML.xml");
+                xmlTraceResultFormatter.Format(_tracer.GetTraceResult());
+                Tracer.ConsoleTraceResultFormatter consoleTraceResultFormatter = new ConsoleTraceResultFormatter();
+
+                consoleTraceResultFormatter.Format(_tracer.GetTraceResult());
             });
             thread.Start();
             Console.ReadLine();

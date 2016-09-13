@@ -37,7 +37,10 @@ namespace Tracer
 
         public void ClearTraceResult()
         {
-            _traceResult = new TraceResult();
+            lock (Lock)
+            {
+                _traceResult = new TraceResult();
+            }
         }
 
         public void StartTrace()
@@ -46,7 +49,7 @@ namespace Tracer
             lock (Lock)
             {
                 _traceResult.StartTraceMethod(Thread.CurrentThread.ManagedThreadId, 
-                method.GetType().Name, 
+                method.DeclaringType.Name, 
                 method.Name, 
                 method.GetParameters().Length);
             }
