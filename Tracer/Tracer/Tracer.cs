@@ -15,24 +15,26 @@ namespace Tracer
         private static readonly Object syncObj = new Object();
         private TraceResult traceResult;
 
-        public Tracer()
+        private Tracer()
         {
             traceResult = new TraceResult();
         }
 
-        public static Tracer Instance()
+        public static Tracer Instance
         {
-            if (instance == null)
-            {
-                lock (syncObj)
+            get{
+                if (instance == null)
                 {
-                    if (instance == null)
+                    lock (syncObj)
                     {
-                        instance = new Tracer();
+                        if (instance == null)
+                        {
+                            instance = new Tracer();
+                        }
                     }
                 }
+                return instance;
             }
-            return instance;
         }
 
         public void StartTrace()

@@ -10,7 +10,12 @@ namespace Tracer
 {
     public class TraceResult
     {
-        public ConcurrentDictionary<int, MyTree> threadDictionary = new ConcurrentDictionary<int, MyTree>();
+        public ConcurrentDictionary<int, MyTree> threadDictionary { get; set; }
+
+        public TraceResult()
+        {
+            threadDictionary = new ConcurrentDictionary<int, MyTree>();
+        }
 
         public void AddMethod(int threadID, MethodBase methodBase, DateTime startTime)
         {

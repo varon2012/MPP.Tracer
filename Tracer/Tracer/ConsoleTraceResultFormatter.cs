@@ -20,7 +20,7 @@ namespace Tracer
             foreach (int key in traceResult.threadDictionary.Keys)
             {
                 Console.WriteLine("Thread id: " + key);
-                foreach (TreeNode node in traceResult.threadDictionary[key].climbTree())
+                foreach (TreeNode node in traceResult.threadDictionary[key].ClimbTree())
                 {
                     Console.WriteLine(GetTabSequence(node.level) + node.methodName + " " + node.paramsCount + " " + node.totalTime + " " + node.className);
                 }

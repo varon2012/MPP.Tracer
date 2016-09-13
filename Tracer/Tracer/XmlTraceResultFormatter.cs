@@ -17,7 +17,7 @@ namespace Tracer
                 XElement threadElement = new XElement("thread");
                 threadElement.SetAttributeValue("id", key);
                 root.Add(threadElement);
-                foreach (TreeNode node in traceResult.threadDictionary[key].climbTree()){
+                foreach (TreeNode node in traceResult.threadDictionary[key].ClimbTree()){
                     XElement methodElement = new XElement("mathod");
                     methodElement.SetAttributeValue("methodName", node.methodName);
                     methodElement.SetAttributeValue("paramsCount", node.paramsCount);
