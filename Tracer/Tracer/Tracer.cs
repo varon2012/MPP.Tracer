@@ -9,6 +9,13 @@ namespace Tracer
 {
     public class Tracer : ITracer
     {
+
+        public static Tracer Instance { get { return lazy.Value; } }
+        private static readonly Lazy<Tracer> lazy = new Lazy<Tracer>(() => new Tracer());
+        private Tracer()
+        {
+        }
+
         private TraceResult result { get; set; } = new TraceResult();
         private StackTrace stackTrace { get; set; }
         private StackFrame stackFrame { get; set; }

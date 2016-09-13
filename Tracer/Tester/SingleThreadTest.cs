@@ -9,7 +9,7 @@ namespace Tester
 {
     class SingleThreadTest : ITest
     {
-        private ITracer tracer = new Tracer.Tracer();
+        private ITracer tracer = Tracer.Tracer.Instance;
         public void Run()
         {
             tracer.StartTrace();
