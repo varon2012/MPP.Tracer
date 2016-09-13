@@ -16,7 +16,8 @@ namespace Tester
         }
         private static void Init()
         {
-            test = new SingleThreadTest();
+
+            test = new MultiThreadTest();
             test.Run();
         }
     }
