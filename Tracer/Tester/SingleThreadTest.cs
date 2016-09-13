@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tracer;
+using System.Threading;
 namespace Tester
 {
     class SingleThreadTest : ITest
@@ -13,29 +14,30 @@ namespace Tester
         {
             tracer.StartTrace();
 
-            RunCycle(204800000);
+            Thread.Sleep(500);
+            RunCycle(500);
 
             tracer.StopTrace();
 
-            TraceResult result = tracer.GetTraceResult();
-            result.PrintToConsole();
+            PrintTestResults();
         }
 
-        private void RunCycle(int repeatAmount)
+        private void RunCycle(int sleepTime)
         {
-            ITracer tracer = new Tracer.Tracer();
             tracer.StartTrace();
 
-            for (int i = 0; i < repeatAmount; i++)
-            {
-                int a = 1;
-                a += i;
-            }
+            Thread.Sleep(sleepTime);
 
             tracer.StopTrace();
+        }
 
-            TraceResult result = tracer.GetTraceResult();
-            result.PrintToConsole();
+        private void PrintTestResults()
+        {
+            var traceResult = tracer.GetTraceResult();
+            foreach (TraceResultItem analyzedItem in traceResult)
+            {
+                analyzedItem.PrintToConsole();
+            }
         }
 
     }
