@@ -9,33 +9,42 @@ namespace Tracer
 {
     public class Tracer : ITracer
     {
-        private TraceResult result { get; set; }
-        private Stopwatch timer { get; set; }
+        private TraceResult result { get; set; } = new TraceResult();
         private StackTrace stackTrace { get; set; }
         private StackFrame stackFrame { get; set; }
 
         public void StartTrace()
         {
-            stackTrace = new StackTrace();
-            stackFrame = stackTrace.GetFrame(1);
+            AddTraceItem();            
             
-            timer = Stopwatch.StartNew();  
         }
 
         public void StopTrace()
         {
-            // something
-            timer.Stop();
+            stackTrace = new StackTrace();
+            stackFrame = stackTrace.GetFrame(1);
+            string currentMethodName = stackFrame.GetMethod().Name;
+            TraceResultItem analyzedItem = result.Find(currentMethodName);
+            analyzedItem.StopRuntimeMeasuring();
         }
 
         public TraceResult GetTraceResult()
         {
-            // something
+            return result;
+        }
+
+        private void AddTraceItem()
+        {
+            stackTrace = new StackTrace();
+            stackFrame = stackTrace.GetFrame(2);
+
             var method = stackFrame.GetMethod();
             var parametersAmount = method.GetParameters().Length;
             var className = method.ReflectedType.Name;
-            result = new TraceResult(timer.ElapsedMilliseconds,  className, method.Name, parametersAmount);
-            return result;
+
+            var newAnalyzedItem = new TraceResultItem(new Stopwatch(), className, method.Name, parametersAmount);
+            result.Add(newAnalyzedItem);
+            
         }
 
     }
