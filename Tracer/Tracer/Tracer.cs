@@ -71,11 +71,25 @@ namespace BSUIR.Mishin.Tracer
             }
         }
 
+        private bool CheckTraceStackToMethod(TracerInfo currentTracer) {
+            TracerInfo last;
+            for (int i = _traceStack.Count - 1; i >= 0; i--) {
+                last = _traceStack[i];
+                if (last.GetThreadId() == currentTracer.GetThreadId()) {
+                    if (last.ClassName == currentTracer.ClassName && last.MethodName == currentTracer.MethodName)
+                        return true;
+                }
+            }
+            return false;
+        }
+
         public void StopTrace() {
             lock (_lockObj) {
                 if (_traceStack.Count == 0) return;
                 TracerInfo currentTracer = GetTracerInfo();
                 TracerInfo last;
+
+                if (!CheckTraceStackToMethod(currentTracer)) return;
 
                 for (int i = _traceStack.Count - 1; i >= 0; i--) {
                     last = _traceStack[i];
