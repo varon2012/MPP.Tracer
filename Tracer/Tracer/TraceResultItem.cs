@@ -13,13 +13,15 @@ namespace Tracer
         public string className { get; set; }
         public string methodName { get; set; }
         public int parametersAmount { get; set; }
+        public int threadId { get; set; }
 
-        public TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount)
+        public TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount, int threadId)
         {
             this.methodName = methodName;
             this.parametersAmount = parametersAmount;
             this.className = className;
             this.timer = timer;
+            this.threadId = threadId;
             try
             {
                 timer.Start();
@@ -39,7 +41,7 @@ namespace Tracer
         
         public void PrintToConsole()
         {
-            Console.WriteLine(className + "->" + methodName + " (кол-во параметров - " + parametersAmount + ") выполнялся " + time * 0.001 + " сек.");
+            Console.WriteLine("["+ threadId + "] "+className + "->" + methodName + " (кол-во параметров - " + parametersAmount + ") выполнялся " + time * 0.001 + " сек.");
         }
     }
 }

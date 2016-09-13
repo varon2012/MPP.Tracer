@@ -32,9 +32,9 @@ namespace Tracer
         {
             analyzedItems.Add(item);
         }
-        public TraceResultItem Find(string value)
+        public TraceResultItem Find(string methodName, int threadId)
         {
-            return analyzedItems.Find(TraceResultItem => TraceResultItem.methodName == value);
+            return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId));
         }
     }
 }
