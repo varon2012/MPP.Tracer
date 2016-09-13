@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +7,34 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class TraceResult
+    public class TraceResult : IEnumerable
     {
-        public long time { get; set; }
-        public string className { get; set; }
-        public string methodName { get; set; }
-        public int parametersAmount { get; set; }
+        private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
 
-
-        public TraceResult(long time, string className, string methodName, int parametersAmount) 
+        public IEnumerator GetEnumerator()
         {
-            this.time = time;
-            this.methodName = methodName;
-            this.parametersAmount = parametersAmount;
-            this.className = className;
+            return analyzedItems.GetEnumerator();
         }
-        public void PrintToConsole()
+
+        public TraceResultItem this[int index]
         {
-            Console.WriteLine(className + "->" + methodName + " (кол-во параметров - " + parametersAmount+ ") выполнялся " + time * 0.001 + " сек." );
+            get
+            {
+                return analyzedItems[index];
+            }
+            set
+            {
+                analyzedItems[index] = value;
+            }   
+
+        }
+        public void Add(TraceResultItem item)
+        {
+            analyzedItems.Add(item);
+        }
+        public TraceResultItem Find(string value)
+        {
+            return analyzedItems.Find(TraceResultItem => TraceResultItem.methodName == value);
         }
     }
 }
