@@ -2,6 +2,8 @@
 
 public class XmlTraceResultFormatter : ITraceResultFormatter
 {
+	public string OutputFileName = "TracerOutput.xml";
+
 	public void Format(TraceResult traceResult)
 	{
 		XmlDocument document = new XmlDocument();
@@ -12,19 +14,21 @@ public class XmlTraceResultFormatter : ITraceResultFormatter
 		foreach (var threadData in tracedThreadsData)
 		{
 			var ThreadNode = document.CreateElement("thread");
+
 			var IdAttribute = document.CreateAttribute("id");
 			IdAttribute.Value = threadData.Key.ToString();
 			ThreadNode.Attributes.Append(IdAttribute);
 			var TimeAttribute = document.CreateAttribute("time");
 			TimeAttribute.Value = threadData.Value.ExecutionTime.ToString();
 			ThreadNode.Attributes.Append(TimeAttribute);
+
 			Root.AppendChild(ThreadNode);
 
 			var threadRoot = traceResult.GetThreadRootComponent(threadData.Key);
 			ProcessNode(threadRoot, document, ThreadNode);
 		}
 
-		document.Save("TestXml.xml");
+		document.Save(OutputFileName);
 	}
 
 	public void ProcessNode(BasicTreeNode<TraceResult.TraceComponent> node, XmlDocument document, XmlElement parent)

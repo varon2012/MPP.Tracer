@@ -20,8 +20,6 @@ public class ThreadJob
 
 		ThreadWatch.Stop();
 		UsedTracer.SetThreadTime(ThreadWatch.ElapsedMilliseconds);
-
-		Program.SignalThreadEnded();
 	}
 
 	void foo()

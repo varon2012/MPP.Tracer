@@ -5,8 +5,6 @@ class Program
 {
 	const int ThreadCount = 5;
 	private static Thread[] ThreadPool = new Thread[ThreadCount];
-	public static int ThreadsEndedCount = 0;
-	private static object ThreadEnderLock = new object();
 
 	static void Main(string[] args)
 	{
@@ -21,11 +19,10 @@ class Program
 			ThreadPool[i].Start();
 		}
 
-		bool ThreadsFinished;
-		do
+		foreach (var thread in ThreadPool)
 		{
-			ThreadsFinished = AllThreadsEnded();
-		} while (!ThreadsFinished);
+			thread.Join();
+		}
 
 		// Print result
 		var result = MyTracer.GetTraceResult();
@@ -33,18 +30,5 @@ class Program
 		formatter.Format(result);
 
 		Console.ReadLine();
-	}
-
-	public static void SignalThreadEnded()
-	{
-		lock (ThreadEnderLock)
-		{
-			ThreadsEndedCount++;
-		}
-	}
-
-	private static bool AllThreadsEnded()
-	{
-		return (ThreadsEndedCount == ThreadCount);
 	}
 }
