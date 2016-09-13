@@ -10,10 +10,9 @@ namespace Tracer
     {
         private static string GetTabSequence(int count)
         {
-            string result = "";
-            for (int i = 0; i < count; i++)
-                result += "\t";
-            return result;
+            StringBuilder sb = new StringBuilder("");
+            sb.Append('\t', count);
+            return sb.ToString();
         }
 
         public void Format(TraceResult traceResult)
