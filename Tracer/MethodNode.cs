@@ -21,6 +21,7 @@ namespace Tracer
             ClassName = className;
             ParameterCount = paramCount;
             _startTime = DateTime.Now;
+            _endTime = DateTime.Now;
         }
 
         internal void StopTrace()
@@ -28,9 +29,9 @@ namespace Tracer
             _endTime = DateTime.Now;
         }
 
-        internal void AddInnerMethod(string className, string methodName, int paramCount)
+        internal void AddInnerMethod(MethodNode node)
         {
-            InnerMethods.Add(new MethodNode(className, methodName, paramCount));
+            InnerMethods.Add(node);
         }
     }
 }

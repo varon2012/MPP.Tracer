@@ -19,6 +19,9 @@ namespace Test
                 Thread.Sleep(50);
                 MethodFive(12);
                 _tracer.StopTrace();
+                _tracer.StartTrace();
+                Thread.Sleep(100);
+                _tracer.StopTrace();
                 Tracer.ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
                 formatter.Format(_tracer.GetTraceResult());
             });

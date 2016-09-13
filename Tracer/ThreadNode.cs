@@ -17,6 +17,7 @@ namespace Tracer
         internal ThreadNode()
         {
             _startTime = DateTime.Now;
+            _endTime = DateTime.Now;
             MethodNodes = new List<MethodNode>();
             _methodStack = new Stack<MethodNode>();
             _currentNode = null;
@@ -31,8 +32,8 @@ namespace Tracer
             }
             else
             {
-                _currentNode.AddInnerMethod(className, methodName, paramCount);
-                _methodStack.Push(node);
+                _currentNode.AddInnerMethod(node);
+                _methodStack.Push(_currentNode);
             }
             _currentNode = node;
         }
