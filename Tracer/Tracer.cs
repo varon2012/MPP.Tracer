@@ -23,7 +23,7 @@ namespace Tracer
             throw new NotImplementedException();
         }
 
-        public TraceResult GeTraceResult()
+        public TraceResult GetTraceResult()
         {
             throw new NotImplementedException();
         }
