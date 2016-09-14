@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    interface ITraceResultFormatter
+    public interface ITraceResultFormatter
     {
         void Format(TraceResult traceResult);
     }
