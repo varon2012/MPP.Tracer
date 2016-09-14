@@ -4,26 +4,26 @@ using Tracer.Model.InputModel;
 
 namespace Tracer.Tree
 {
-    public class TraceTree
+    internal class TraceTree
     {
-        #region Public Members
+        #region Internal Members
 
-        public Dictionary<int, TraceNode<ThreadDataModel>> Threads { get; private set; }
+        internal Dictionary<int, TraceNode<ThreadDataModel>> Threads { get; private set; }
 
         #endregion
 
         #region Ctor
 
-        public TraceTree()
+        internal TraceTree()
         {
             Threads = new Dictionary<int, TraceNode<ThreadDataModel>>();
         }
 
         #endregion
 
-        #region Public Methods
+        #region Internal Methods
 
-        public void StartThread(TracerInputModel model)
+        internal void StartThread(TracerInputModel model)
         {
             TraceNode<ThreadDataModel> thread;
             if (!Threads.TryGetValue(model.ThreadId,out thread))
@@ -34,7 +34,7 @@ namespace Tracer.Tree
             thread.StartMethod(MapOnMethodDataModel(model));
         }
 
-        public void EndThread(int threadId)
+        internal void EndThread(int threadId)
         {
             Threads[threadId].EndMethod();
         }

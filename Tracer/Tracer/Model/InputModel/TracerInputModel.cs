@@ -2,7 +2,7 @@
 
 namespace Tracer.Model.InputModel
 {
-    public class TracerInputModel
+    internal class TracerInputModel
     {
         public int ThreadId { get; set; }
         public string ClassName { get; set; }

@@ -4,7 +4,7 @@ using Tracer.Contracts;
 
 namespace Tracer.Model.DataModel
 {
-    public class MethodDataModel: ILeadTime 
+    internal class MethodDataModel: ILeadTime 
     {
         public string ClassName { get; set; }
         public string MethodName { get; set; }

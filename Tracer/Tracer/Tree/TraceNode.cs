@@ -5,7 +5,7 @@ using Tracer.Contracts;
 
 namespace Tracer.Tree
 {
-    public class TraceNode<DataType> where
+    internal class TraceNode<DataType> where
         DataType: ILeadTime 
     {
         #region Private Members
@@ -16,15 +16,15 @@ namespace Tracer.Tree
 
         #endregion
 
-        #region Public Members
-        public DataType Data { get; private set; }
-        public List<TraceNode<MethodDataModel>> Methods { get; private set; }
+        #region Internal Members
+        internal DataType Data { get; private set; }
+        internal List<TraceNode<MethodDataModel>> Methods { get; private set; }
 
         #endregion
 
         #region Ctor
 
-        public TraceNode(DataType model)
+        internal TraceNode(DataType model)
         {
             Data =  model;
             Methods = new List<TraceNode<MethodDataModel>>();
@@ -32,9 +32,9 @@ namespace Tracer.Tree
 
         #endregion
 
-        #region Public Methods
+        #region Internal Methods
 
-        public void StartMethod(MethodDataModel model)
+        internal void StartMethod(MethodDataModel model)
         {
             if (_currentMethodNode == null)
             {
@@ -49,7 +49,7 @@ namespace Tracer.Tree
             }
         }
 
-        public void EndMethod()
+        internal void EndMethod()
         {
             if(_currentMethodNode._currentMethodNode == null)
             {
@@ -65,18 +65,6 @@ namespace Tracer.Tree
         }
 
         #endregion
-
-        //#region Private Methods
-
-        //private void IsLeaf()
-        //{
-        //    if (_curentMethodNode.)
-        //    {
-
-        //    }
-        //}
-
-        //#endregion
     }
 }
 

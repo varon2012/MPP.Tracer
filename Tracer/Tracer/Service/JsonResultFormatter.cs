@@ -10,9 +10,22 @@ namespace Tracer.Service
     {
         #region Private Constants
 
-        private const string delimeter = "\\";
-        private const string fileName = "Json.txt";
+        private const string defaultName = "Json.txt";
 
+        #endregion
+
+        #region Private Members
+
+        private readonly char delimeter = Path.DirectorySeparatorChar;
+        private readonly string _fileName;
+
+        #endregion
+
+        #region Ctor
+        public JsonResultFormatter(string fileName = defaultName)
+        {
+            _fileName = (string.IsNullOrEmpty(fileName)) ? defaultName : fileName;
+        }
         #endregion
 
         #region Public Methods
@@ -20,7 +33,7 @@ namespace Tracer.Service
         public void Format(TraceResult traceResult)
         {
             var serializedObject =  JsonConvert.SerializeObject(traceResult,Formatting.Indented);
-            File.WriteAllText(Environment.CurrentDirectory +delimeter + fileName, serializedObject); 
+            File.WriteAllText(Environment.CurrentDirectory +delimeter + _fileName, serializedObject); 
         }
 
         #endregion

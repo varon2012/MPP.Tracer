@@ -11,7 +11,7 @@ namespace Tracer.Service
         public void Format(TraceResult traceResult)
         {
             if (traceResult == null || traceResult.Threads == null)
-                throw new Exception("TraceResult is empty");
+                throw new ArgumentNullException("TraceResult is empty");
             foreach (var thread in traceResult.Threads)
             {
                 Console.WriteLine(string.Format("Thread id: {0}, Lead time: {1}",thread.Id.ToString(), thread.LeadTime));

@@ -14,14 +14,14 @@ namespace Tracer.Service
     {
         #region Private Members
 
-        private static Tracer _tracer = new Tracer();
+        private static readonly Tracer _tracer = new Tracer();
         private TraceTree _traceTree;
         private ReaderWriterLockSlim _treeLock = new ReaderWriterLockSlim();
 
         #endregion
 
         #region Ctor
-        public Tracer()
+        private Tracer()
         {
             _traceTree = new TraceTree();
         }
