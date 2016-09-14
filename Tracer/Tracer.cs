@@ -1,31 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
 
 namespace Tracer
 {
     public class Tracer : ITracer
     {
-        private TraceResult fTraceResult;
+        private readonly TraceResult fTraceResult;
 
         private static volatile Tracer _tracerInstance;
         private static readonly object SyncRoot = new object();
 
         public void StartTrace()
         {
-            throw new NotImplementedException();
+            var stackTrace = new StackTrace(1);
+            StackFrame currentFrame = stackTrace.GetFrame(0);
+            MethodBase currentMethod = currentFrame.GetMethod();
+
+            fTraceResult.InitMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
         }
 
         public void StopTrace()
         {
-            throw new NotImplementedException();
+            fTraceResult.FinishMethodTrace(Thread.CurrentThread.ManagedThreadId);
         }
 
         public TraceResult GetTraceResult()
         {
-            throw new NotImplementedException();
+            return fTraceResult;
         }
 
         // Static
@@ -46,7 +49,7 @@ namespace Tracer
             return _tracerInstance;
         }
 
-        // Internal
+        // Internals
 
         private Tracer()
         {

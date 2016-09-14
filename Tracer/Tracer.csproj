@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ITracer.cs" />
+    <Compile Include="MethodTraceInfo.cs" />
+    <Compile Include="ThreadTraceInfo.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceResult.cs" />
