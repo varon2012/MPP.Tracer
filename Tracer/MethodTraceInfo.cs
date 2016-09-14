@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Tracer
 {
-    internal class MethodTraceInfo
+    internal sealed class MethodTraceInfo
     {
         private readonly List<MethodTraceInfo> fNestedCalls;
         private readonly Stopwatch fStopwatch;

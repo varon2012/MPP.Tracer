@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Tracer
 {
-    public class XmlTraceResultFormatter : ITraceResultFormatter
+    public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
         private Stream fOutStream;
 

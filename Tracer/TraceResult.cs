@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Tracer
 {
-    public class TraceResult
+    public sealed class TraceResult
     {
         private readonly ConcurrentDictionary<int, ThreadTraceInfo> fThreadsTraceInfo;
 

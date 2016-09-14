@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tracer
 {
-    internal class ThreadTraceInfo
+    internal sealed class ThreadTraceInfo
     {
         private readonly Stack<MethodTraceInfo> fCallStack;
         private readonly List<MethodTraceInfo> fTracedMethods;
