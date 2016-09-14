@@ -1,75 +1,56 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using System.Collections.Concurrent;
 
 public class TraceResult
 {
-	public class TraceComponent
-	{
-		public string MethodName;
-		public string ClassName;
-		public int ExecutionTime;
-		public int ParamCount;
-
-		public Stopwatch Watch = new Stopwatch();
-	}
-
-	public class ThreadData
-	{
-		public BasicTreeNode<TraceComponent> RootComponent = null;
-		public BasicTreeNode<TraceComponent> CurrentNode = null;
-		public long ExecutionTime;
-	}
-
 	public ConcurrentDictionary<int, ThreadData> ThreadsData = new ConcurrentDictionary<int, ThreadData>();
 
 	public void StartComponent(string methodName, int paramCount, string className)
 	{
-		int ThreadId = Thread.CurrentThread.ManagedThreadId;
+		int threadId = Thread.CurrentThread.ManagedThreadId;
 
 		// Add new thread data, if it is first call in thread
-		if (!ThreadsData.ContainsKey(ThreadId))
+		if (!ThreadsData.ContainsKey(threadId))
 		{
-			ThreadData NewThreadData = new ThreadData();
-			ThreadsData.TryAdd(ThreadId, NewThreadData);
+			ThreadData newThreadData = new ThreadData();
+			ThreadsData.TryAdd(threadId, newThreadData);
 		}
 
-		var CurrentData = ThreadsData[ThreadId];
-		TraceComponent NewComponent = new TraceComponent();
-		NewComponent.Watch.Start();
-		NewComponent.MethodName = methodName;
-		NewComponent.ParamCount = paramCount;
-		NewComponent.ClassName = className;
+		var currentData = ThreadsData[threadId];
+		TraceComponent newComponent = new TraceComponent();
+		newComponent.Watch.Start();
+		newComponent.MethodName = methodName;
+		newComponent.ParamCount = paramCount;
+		newComponent.ClassName = className;
 
-		var ComponentNode = new BasicTreeNode<TraceComponent>(NewComponent, CurrentData.CurrentNode);
+		var ComponentNode = new BasicTreeNode<TraceComponent>(newComponent, currentData.CurrentNode);
 
-		if (CurrentData.CurrentNode == null)
+		if (currentData.CurrentNode == null)
 		{
-			CurrentData.RootComponent = ComponentNode;
+			currentData.RootComponent = ComponentNode;
 		}
 		else
 		{
-			CurrentData.CurrentNode.Children.Add(ComponentNode);
+			currentData.CurrentNode.Children.Add(ComponentNode);
 		}
 
-		CurrentData.CurrentNode = ComponentNode;
+		currentData.CurrentNode = ComponentNode;
 	}
 
 	public void StopComponent()
 	{
-		var CurrentData = GetCurrentThreadData();
+		var currentData = GetCurrentThreadData();
 
-		if (CurrentData.CurrentNode == null)
+		if (currentData.CurrentNode == null)
 		{
 			throw new InvalidTraceException("Trace has been stopped before start.");
 		}
 
-		var component = CurrentData.CurrentNode.Data;
+		var component = currentData.CurrentNode.Data;
 		component.Watch.Stop();
 		component.ExecutionTime = component.Watch.Elapsed.Milliseconds;
 
-		CurrentData.CurrentNode = CurrentData.CurrentNode.Parent;
+		currentData.CurrentNode = currentData.CurrentNode.Parent;
 	}
 
 	public bool Validate()
@@ -87,27 +68,13 @@ public class TraceResult
 
 	public BasicTreeNode<TraceComponent> GetThreadRootComponent(int ThreadId)
 	{
-		try
-		{
-			return ThreadsData[ThreadId].RootComponent;
-		}
-		catch (Exception)
-		{
-			return null;
-		}
+		return ThreadsData[ThreadId].RootComponent;
 	}
 
 	private ThreadData GetCurrentThreadData()
 	{
-		int ThreadId = Thread.CurrentThread.ManagedThreadId;
-		try
-		{
-			return ThreadsData[ThreadId];
-		}
-		catch (Exception)
-		{
-			return null;
-		}
+		int threadId = Thread.CurrentThread.ManagedThreadId;
+		return ThreadsData[threadId];
 	}
 
 	public void SetThreadTime(long time)

@@ -2,6 +2,4 @@
 {
 	void StartTrace();
 	void StopTrace();
-
-	TraceResult GetTraceResult();
 }

@@ -8,48 +8,48 @@ public class ThreadJob
 
 	public void Run()
 	{
-		Stopwatch ThreadWatch = new Stopwatch();
-		ThreadWatch.Start();
+		Stopwatch threadWatch = new Stopwatch();
+		threadWatch.Start();
 
 		UsedTracer.StartTrace();
 
 		Thread.Sleep(500);
-		foo();
+		Foo();
 
 		UsedTracer.StopTrace();
 
-		ThreadWatch.Stop();
-		UsedTracer.SetThreadTime(ThreadWatch.ElapsedMilliseconds);
+		threadWatch.Stop();
+		UsedTracer.SetThreadTime(threadWatch.ElapsedMilliseconds);
 	}
 
-	void foo()
+	void Foo()
 	{
 		UsedTracer.StartTrace();
 
 		Random rand = new Random();
 		Thread.Sleep(350 + rand.Next() % 800);
 
-		bar();
-		lol();
+		Bar();
+		Lol();
 
 		Thread.Sleep(150);
 
 		UsedTracer.StopTrace();
 	}
 
-	void bar()
+	void Bar()
 	{
 		UsedTracer.StartTrace();
 
 		Random rand = new Random();
 		Thread.Sleep(350 + rand.Next() % 800);
 
-		lol();
+		Lol();
 
 		UsedTracer.StopTrace();
 	}
 
-	void lol()
+	void Lol()
 	{
 		UsedTracer.StartTrace();
 

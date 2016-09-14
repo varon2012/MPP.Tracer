@@ -2,8 +2,8 @@
 
 public class ConsoleTraceResultFormatter : ITraceResultFormatter
 {
-	const string PaddingSpace = "  ";
-	const string PaddingEnd = "* ";
+	private const string PaddingSpace = "  ";
+	private const string PaddingEnd = "* ";
 
 	public void Format(TraceResult traceResult)
 	{
@@ -17,7 +17,7 @@ public class ConsoleTraceResultFormatter : ITraceResultFormatter
 		}
 	}
 
-	public void Processor(TraceResult.TraceComponent component, int depth)
+	public void Processor(TraceComponent component, int depth)
 	{
 		WritePadding(depth - 1);
 

@@ -3,47 +3,46 @@ using System.Reflection;
 
 public class Tracer : ITracer
 {
-	private TraceResult result = new TraceResult();
+	private TraceResult _result;
 
-	private object ValidatorLock = new object();
-	private object StackFrameGetterLock = new object();
-
-	public void StartTrace()
+	public TraceResult Result
 	{
-		var method = GetCurrentMethodInfo();
-		result.StartComponent(method.Name, method.GetParameters().Length, method.DeclaringType.Name);
-	}
-
-	public void StopTrace()
-	{
-		result.StopComponent();
-	}
-
-	public TraceResult GetTraceResult()
-	{
-		lock (ValidatorLock)
+		get
 		{
-			if (!result.Validate())
+			if (!_result.Validate())
 			{
 				throw new InvalidTraceException("Attempt to read trace result from tracer in invalid state!");
 			}
 
-			return result;
+			return _result;
 		}
+	}
+
+	public Tracer()
+	{
+		_result = new TraceResult();
+	}
+
+	public void StartTrace()
+	{
+		var method = GetCurrentMethodInfo();
+		_result.StartComponent(method.Name, method.GetParameters().Length, method.DeclaringType.Name);
+	}
+
+	public void StopTrace()
+	{
+		_result.StopComponent();
 	}
 
 	public MethodBase GetCurrentMethodInfo()
 	{
-		lock (StackFrameGetterLock)
-		{
-			StackTrace stackTrace = new StackTrace();
-			StackFrame callingFrame = stackTrace.GetFrame(2);
-			return callingFrame.GetMethod();
-		}
+		StackTrace stackTrace = new StackTrace();
+		StackFrame callingFrame = stackTrace.GetFrame(2);
+		return callingFrame.GetMethod();
 	}
 
 	public void SetThreadTime(long time)
 	{
-		result.SetThreadTime(time);
+		_result.SetThreadTime(time);
 	}
 }

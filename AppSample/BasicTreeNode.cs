@@ -2,11 +2,28 @@
 
 public class BasicTreeNode<T>
 {
-	public List<BasicTreeNode<T>> Children = new List<BasicTreeNode<T>>();
-	public BasicTreeNode<T> Parent = null;
+	#region Fields
+	private List<BasicTreeNode<T>> _children = new List<BasicTreeNode<T>>();
+	private BasicTreeNode<T> _parent;
 	public T Data;
+	#endregion
 
-	public delegate void ProcessorFunction(T data, int depth);
+	#region Properties
+	public List<BasicTreeNode<T>> Children
+	{
+		get
+		{
+			return _children;
+		}
+	}
+
+	public BasicTreeNode<T> Parent
+	{
+		get
+		{
+			return _parent;
+		}
+	}
 
 	public int Depth
 	{
@@ -24,18 +41,22 @@ public class BasicTreeNode<T>
 			return depth;
 		}
 	}
+	#endregion
+
+	public delegate void ProcessorFunction(T data, int depth);
 
 	public BasicTreeNode(T data, BasicTreeNode<T> parent = null)
 	{
 		Data = data;
-		Parent = parent;
+		_parent = parent;
+		_children = new List<BasicTreeNode<T>>();
 	}
 
 	public void Visit(ProcessorFunction function)
 	{
 		function(Data, Depth);
 
-		foreach (var child in Children)
+		foreach (var child in _children)
 		{
 			child.Visit(function);
 		}

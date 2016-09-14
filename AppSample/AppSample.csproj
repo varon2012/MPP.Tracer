@@ -50,6 +50,8 @@
     <Compile Include="ITraceResultFormatter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadData.cs" />
+    <Compile Include="TraceComponent.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="TraceResult.cs" />
     <Compile Include="ThreadJob.cs" />

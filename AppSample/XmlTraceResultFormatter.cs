@@ -2,36 +2,41 @@
 
 public class XmlTraceResultFormatter : ITraceResultFormatter
 {
-	public string OutputFileName = "TracerOutput.xml";
+	public string OutputFileName;
+
+	public XmlTraceResultFormatter(string outputFileName = "TracerOutput.xml")
+	{
+		OutputFileName = outputFileName;
+	}
 
 	public void Format(TraceResult traceResult)
 	{
 		XmlDocument document = new XmlDocument();
-		var Root = document.CreateElement("root");
-		document.AppendChild(Root);
+		var root = document.CreateElement("root");
+		document.AppendChild(root);
 
 		var tracedThreadsData = traceResult.ThreadsData;
 		foreach (var threadData in tracedThreadsData)
 		{
-			var ThreadNode = document.CreateElement("thread");
+			var threadNode = document.CreateElement("thread");
 
 			var IdAttribute = document.CreateAttribute("id");
 			IdAttribute.Value = threadData.Key.ToString();
-			ThreadNode.Attributes.Append(IdAttribute);
+			threadNode.Attributes.Append(IdAttribute);
 			var TimeAttribute = document.CreateAttribute("time");
 			TimeAttribute.Value = threadData.Value.ExecutionTime.ToString();
-			ThreadNode.Attributes.Append(TimeAttribute);
+			threadNode.Attributes.Append(TimeAttribute);
 
-			Root.AppendChild(ThreadNode);
+			root.AppendChild(threadNode);
 
 			var threadRoot = traceResult.GetThreadRootComponent(threadData.Key);
-			ProcessNode(threadRoot, document, ThreadNode);
+			ProcessNode(threadRoot, document, threadNode);
 		}
 
 		document.Save(OutputFileName);
 	}
 
-	public void ProcessNode(BasicTreeNode<TraceResult.TraceComponent> node, XmlDocument document, XmlElement parent)
+	public void ProcessNode(BasicTreeNode<TraceComponent> node, XmlDocument document, XmlElement parent)
 	{
 		// Create node for current method
 		var methodNode = document.CreateElement("method");
@@ -49,9 +54,9 @@ public class XmlTraceResultFormatter : ITraceResultFormatter
 		nodeAttributes[2].Value = node.Data.ClassName;
 		nodeAttributes[3].Value = node.Data.ParamCount.ToString();
 
-		foreach (var Attribute in nodeAttributes)
+		foreach (var attribute in nodeAttributes)
 		{
-			methodNode.Attributes.Append(Attribute);
+			methodNode.Attributes.Append(attribute);
 		}
 
 		parent.AppendChild(methodNode);

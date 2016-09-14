@@ -1,33 +1,43 @@
 ﻿using System;
 using System.Threading;
 
-class Program
+internal class Program
 {
-	const int ThreadCount = 5;
-	private static Thread[] ThreadPool = new Thread[ThreadCount];
-
-	static void Main(string[] args)
+	private static void Main(string[] args)
 	{
-		Tracer MyTracer = new Tracer();
-		ThreadJob.UsedTracer = MyTracer;
+		const int threadCount = 5;
+		Thread[] threadPool = new Thread[threadCount];
+
+		Tracer tracer = new Tracer();
+		ThreadJob.UsedTracer = tracer;
 
 		ThreadJob Job = new ThreadJob();
 
-		for (int i = 0; i < ThreadCount; i++)
+		for (int i = 0; i < threadCount; i++)
 		{
-			ThreadPool[i] = new Thread(Job.Run);
-			ThreadPool[i].Start();
+			threadPool[i] = new Thread(Job.Run);
+			threadPool[i].Start();
 		}
 
-		foreach (var thread in ThreadPool)
+		foreach (var thread in threadPool)
 		{
 			thread.Join();
 		}
 
 		// Print result
-		var result = MyTracer.GetTraceResult();
-		var formatter = new XmlTraceResultFormatter();
-		formatter.Format(result);
+		var result = tracer.Result;
+
+		int xmlArgIndex = Array.FindIndex(args, x => x.Equals("-xml"));
+		const int notFoundIndex = -1;
+
+		if (xmlArgIndex != notFoundIndex)
+		{
+			var xmlFormatter = new XmlTraceResultFormatter();
+			xmlFormatter.Format(result);
+		}
+
+		var consoleFormatter = new ConsoleTraceResultFormatter();
+		consoleFormatter.Format(result);
 
 		Console.ReadLine();
 	}
