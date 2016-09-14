@@ -11,11 +11,11 @@ namespace TracerTest
 {
     class Program
     {
-        private static volatile ITracer Tracer = global::Tracer.Tracer.GetInstance();
+        private static volatile ITracer _tracer = Tracer.Tracer.GetInstance();
 
         static void Main(string[] args)
         {
-            Tracer.StartTrace();
+            _tracer.StartTrace();
 
             var threads = new List<Thread>();
 
@@ -32,40 +32,40 @@ namespace TracerTest
                 thread.Join();
             }
 
-            Tracer.StopTrace();
+            _tracer.StopTrace();
         }
 
         static void LongRecursiveCalculations(object recursionLevelObj)
         {
-            Tracer.StartTrace();
+            _tracer.StartTrace();
             Thread.Sleep(50);
             int recursionLevel = (int)(recursionLevelObj ?? 0);
             if (recursionLevel < 5)
             {
                 LongRecursiveCalculations(recursionLevel + 1);
             }
-            Tracer.StopTrace();
+            _tracer.StopTrace();
         }
 
         static void LongCalculations(object o)
         {
-            Tracer.StartTrace();
+            _tracer.StartTrace();
             Thread.Sleep(100);
-            Tracer.StopTrace();
+            _tracer.StopTrace();
         }
 
         static void WriteResult()
         {
             ITraceResultFormatter formatter;
-            TraceResult traceResult = Tracer.GetTraceResult();
+            TraceResult traceResult = _tracer.GetTraceResult();
 
             formatter = new ConsoleTraceResultFormatter();
-            formatter.Format(Tracer.GetTraceResult());
+            formatter.Format(_tracer.GetTraceResult());
 
             using (Stream fileStream = File.Create("TraceResult.xml"))
             {
                 formatter = new XmlTraceResultFormatter(fileStream);
-                formatter.Format(Tracer.GetTraceResult());
+                formatter.Format(_tracer.GetTraceResult());
             }
         }
     }
