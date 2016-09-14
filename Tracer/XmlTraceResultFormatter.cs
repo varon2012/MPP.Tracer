@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Tracer
 {
-    public class XmlTraceResultFormatter: ITraceResultFormatter
+    public class XmlTraceResultFormatter : ITraceResultFormatter
     {
 
         private string _path;
@@ -56,15 +56,23 @@ namespace Tracer
             XElement root = new XElement("root");
             foreach (int threadId in traceResult.ThreadNodes.Keys)
             {
-                XElement thread = new XElement("thread", 
-                    new XAttribute("id", threadId), 
+                XElement thread = new XElement("thread",
+                    new XAttribute("id", threadId),
                     new XAttribute("time", traceResult.ThreadNodes[threadId].ExecutionTime.Milliseconds));
                 AddMethods(traceResult.ThreadNodes[threadId].MethodNodes, thread);
                 root.Add(thread);
             }
 
             doc.Add(root);
-            doc.Save(_path);
+            try
+            {
+                doc.Save(_path);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Saving file failed. Access denied.");
+            }
+            
         }
 
         private void AddMethods(List<MethodNode> methodNodes, XElement root)
