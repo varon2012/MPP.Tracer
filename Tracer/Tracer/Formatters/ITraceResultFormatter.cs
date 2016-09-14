@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tester
+namespace Tracer.Formatters
 {
-    interface ITest
+    public interface ITraceResultFormatter
     {
-        void Run();
-        void PrintTestResults();
+        void Format(TraceResult traceResult);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tracer;
+using Tracer.Formatters;
 using System.Threading;
 
 namespace Tester
@@ -19,19 +20,19 @@ namespace Tester
             Thread secondThread = new Thread(RunLongThread);
             Thread thirdThread = new Thread(RunThread);
 
-            Thread.Sleep(500);
-
             firstThread.Start();
             secondThread.Start();
             thirdThread.Start();
+
+            RunCycle(150);
+            RunAnotherCycle(400, 2);
 
             tracer.StopTrace();
 
             firstThread.Join();
             secondThread.Join();           
             thirdThread.Join();
-
-            PrintTestResults();
+            
         }
 
         private void RunCycle(int sleepTime)
@@ -42,22 +43,32 @@ namespace Tester
 
             tracer.StopTrace();
         }
+        private void RunAnotherCycle(int sleepTime, int multiplier)
+        {
+            tracer.StartTrace();
+            Thread.Sleep(sleepTime*multiplier);
+            tracer.StopTrace();
+        }
         private void RunThread()
         {
             RunCycle(500);
         }
         private void RunLongThread()
         {
-            RunCycle(1500);
+            RunAnotherCycle(500,2);
         }
 
-        private void PrintTestResults()
+        public void PrintTestResults()
         {
             var traceResult = tracer.GetTraceResult();
-            foreach (TraceResultItem analyzedItem in traceResult)
-            {
-                analyzedItem.PrintToConsole();
-            }
+
+            ITraceResultFormatter formatter = new XmlTraceResultFormatter();
+            formatter.Format(traceResult);
+
+            formatter = new ConsoleTraceResultFormatter();
+            formatter.Format(traceResult);
+
+
         }
 
     }

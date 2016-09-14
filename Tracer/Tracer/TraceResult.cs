@@ -10,6 +10,7 @@ namespace Tracer
     public class TraceResult : IEnumerable
     {
         private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
+        public List<int> threadIds { get; } = new List<int>();
 
         public IEnumerator GetEnumerator()
         {
@@ -36,5 +37,12 @@ namespace Tracer
         {
             return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId));
         }
+
+        public void MarkThread(int id)
+        {
+            if (!threadIds.Contains(id))
+                threadIds.Add(id);
+        }
+
     }
 }

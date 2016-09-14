@@ -18,8 +18,6 @@ namespace Tester
             RunCycle(500);
 
             tracer.StopTrace();
-
-            PrintTestResults();
         }
 
         private void RunCycle(int sleepTime)
@@ -31,7 +29,7 @@ namespace Tester
             tracer.StopTrace();
         }
 
-        private void PrintTestResults()
+        public void PrintTestResults()
         {
             var traceResult = tracer.GetTraceResult();
             foreach (TraceResultItem analyzedItem in traceResult)

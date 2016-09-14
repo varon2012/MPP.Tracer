@@ -19,6 +19,7 @@ namespace Tester
 
             test = new MultiThreadTest();
             test.Run();
+            test.PrintTestResults();
         }
     }
 }

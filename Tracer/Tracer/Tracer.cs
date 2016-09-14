@@ -63,7 +63,8 @@ namespace Tracer
             var threadId = Thread.CurrentThread.ManagedThreadId;
 
             var newAnalyzedItem = new TraceResultItem(new Stopwatch(), className, method.Name, parametersAmount, threadId);
-            result.Add(newAnalyzedItem);            
+            result.Add(newAnalyzedItem);
+            result.MarkThread(threadId);
         }
 
         private StackFrame ResetStackFrame(int depth)
