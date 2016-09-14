@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -11,10 +12,13 @@ namespace Tracer
 
         private string _path;
 
-        private bool IsValidPath(string path)
+        private static bool IsValidPath(string path)
         {
-            Regex driveCheck = new Regex(@"^[a-zA-Z]:\\$");
-            if (!driveCheck.IsMatch(path.Substring(0, 3))) return false;
+            if (Path.IsPathRooted(path))
+            {
+                Regex driveCheck = new Regex(@"^[a-zA-Z]:\\$");
+                if (!driveCheck.IsMatch(path.Substring(0, 3))) return false;
+            }
             string strTheseAreInvalidFileNameChars = new string(Path.GetInvalidPathChars());
             strTheseAreInvalidFileNameChars += @":/?*" + "\"";
             Regex containsABadCharacter = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
@@ -29,6 +33,10 @@ namespace Tracer
 
         public XmlTraceResultFormatter(string filePath)
         {
+            if (!IsValidPath(filePath))
+            {
+                throw new ArgumentException("this path is invalid");
+            }
             _path = filePath;
         }
 

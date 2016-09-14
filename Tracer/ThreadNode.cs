@@ -16,8 +16,8 @@ namespace Tracer
 
         internal ThreadNode()
         {
-            _startTime = DateTime.Now;
-            _endTime = DateTime.Now;
+            _startTime = DateTime.UtcNow;
+            _endTime = DateTime.UtcNow;
             MethodNodes = new List<MethodNode>();
             _methodStack = new Stack<MethodNode>();
             _currentNode = null;
@@ -40,10 +40,10 @@ namespace Tracer
 
         internal void StopTraceMethod()
         {
-            _currentNode.StopTrace();
+            _currentNode.RegisterMethodEnd();
             if (_methodStack.Count == 0)
             {
-                _endTime = DateTime.Now;
+                _endTime = DateTime.UtcNow;
                 _currentNode = null;
             }
             else

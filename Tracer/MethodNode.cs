@@ -20,13 +20,13 @@ namespace Tracer
             MethodName = methodName;
             ClassName = className;
             ParameterCount = paramCount;
-            _startTime = DateTime.Now;
-            _endTime = DateTime.Now;
+            _startTime = DateTime.UtcNow;
+            _endTime = DateTime.UtcNow;
         }
 
-        internal void StopTrace()
+        internal void RegisterMethodEnd()
         {
-            _endTime = DateTime.Now;
+            _endTime = DateTime.UtcNow;
         }
 
         internal void AddInnerMethod(MethodNode node)
