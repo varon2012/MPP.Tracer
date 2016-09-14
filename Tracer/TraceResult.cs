@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Tracer
@@ -28,5 +29,7 @@ namespace Tracer
             }
             threadsTraceInfo.FinishMethodTrace();
         }
+
+        internal IEnumerable<KeyValuePair<int, ThreadTraceInfo>> ThreadsTraceInfo => fThreadsTraceInfo;
     }
 }

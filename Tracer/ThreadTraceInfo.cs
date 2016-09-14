@@ -36,5 +36,7 @@ namespace Tracer
             fCallStack.Peek().FinishMethodTrace();
             fCallStack.Pop();
         }
+
+        internal IEnumerable<MethodTraceInfo> TracedMethods => fTracedMethods;
     }
 }
