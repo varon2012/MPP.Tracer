@@ -47,8 +47,8 @@ namespace MPPTracer.Tree
 
         public MethodNode GetNextAddedMethod()
         {
-            int methodIndex = NestedMethods.IndexOf((MethodNode)this);
-            return NestedMethods[methodIndex + 1];
+            int methodIndex = ParentNode.NestedMethods.IndexOf((MethodNode)this);
+            return ParentNode.NestedMethods[methodIndex + 1];
         }
 
         private void AddNestedMethod(long startTime, MethodDescriptor descriptor)

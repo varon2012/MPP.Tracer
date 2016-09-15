@@ -76,13 +76,24 @@ namespace MPPTracer.Format
                 rootMethod = null;
             RootLevel--;
             NestedMethodsVisited = true;
-            if(rootMethod != null && rootMethod.IsLastAtLevel())
-                GoLevelUp();
+            if(rootMethod != null)
+            {
+                if (rootMethod.IsLastAtLevel())
+                {
+                    GoLevelUp();
+                }
+                else
+                {
+                    GoCurrentLevel();
+                }     
+            }
         }
 
         private void GoCurrentLevel()
         {
+            wayStack.Pop();
             rootMethod = rootMethod.GetNextAddedMethod();
+            wayStack.Push(rootMethod);
             NestedMethodsVisited = false;
         }
 
