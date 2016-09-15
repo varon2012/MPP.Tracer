@@ -17,7 +17,7 @@ namespace Tracer
 
             foreach (KeyValuePair<int, ThreadTraceInfo> threadTraceInfo in traceResult.ThreadsTraceInfo)
             {
-                Console.WriteLine($"Thread id: {threadTraceInfo.Key}");
+                Console.WriteLine($"Thread id: {threadTraceInfo.Key}, execution time: {threadTraceInfo.Value.ExecutionTime}");
                 foreach (MethodTraceInfo tracedMethod in threadTraceInfo.Value.TracedMethods)
                 {
                     PrintMethodTraceInfo(tracedMethod);

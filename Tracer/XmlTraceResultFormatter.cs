@@ -8,7 +8,7 @@ namespace Tracer
 {
     public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
-        private Stream fOutStream;
+        private Stream _outStream;
 
         public XmlTraceResultFormatter(Stream outStream)
         {
@@ -16,7 +16,7 @@ namespace Tracer
             {
                 throw new ArgumentNullException(nameof(outStream));
             }
-            fOutStream = outStream;
+            _outStream = outStream;
         }
 
         public void Format(TraceResult traceResult)
@@ -31,7 +31,10 @@ namespace Tracer
 
             foreach (KeyValuePair<int, ThreadTraceInfo> threadTraceInfo in traceResult.ThreadsTraceInfo)
             {
-                var threadElementInfo = new XElement("thread", new XAttribute("id", threadTraceInfo.Key));
+                var threadElementInfo = new XElement("thread");
+                threadElementInfo.Add(new XAttribute("id", threadTraceInfo.Key));
+                threadElementInfo.Add(new XAttribute("time", threadTraceInfo.Value.ExecutionTime));
+
                 foreach (MethodTraceInfo methodTraceInfo in threadTraceInfo.Value.TracedMethods)
                 {
                     threadElementInfo.Add(MethodTraceInfoToXElement(methodTraceInfo));
@@ -41,7 +44,7 @@ namespace Tracer
             }
 
             document.Add(root);
-            document.Save(fOutStream);
+            document.Save(_outStream);
         }
 
         // Static internals
@@ -52,6 +55,7 @@ namespace Tracer
             result.Add(new XAttribute("name", methodTraceInfo.Name));
             result.Add(new XAttribute("time", methodTraceInfo.ExecutionTime));
             result.Add(new XAttribute("class", methodTraceInfo.ClassName));
+            result.Add(new XAttribute("params", methodTraceInfo.ParametersCount));
 
             foreach (MethodTraceInfo nestedMethodTraceInfo in methodTraceInfo.NestedCalls)
             {

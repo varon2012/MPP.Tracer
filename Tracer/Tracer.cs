@@ -7,10 +7,17 @@ namespace Tracer
 {
     public sealed class Tracer : ITracer
     {
-        private readonly TraceResult fTraceResult;
+        private readonly TraceResult _traceResult;
 
         private static volatile Tracer _tracerInstance;
         private static readonly object SyncRoot = new object();
+
+        private Tracer()
+        {
+            _traceResult = new TraceResult();
+        }
+
+        // Public
 
         public void StartTrace()
         {
@@ -18,17 +25,17 @@ namespace Tracer
             StackFrame currentFrame = stackTrace.GetFrame(0);
             MethodBase currentMethod = currentFrame.GetMethod();
 
-            fTraceResult.InitMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
+            _traceResult.StartMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
         }
 
         public void StopTrace()
         {
-            fTraceResult.FinishMethodTrace(Thread.CurrentThread.ManagedThreadId);
+            _traceResult.StopMethodTrace(Thread.CurrentThread.ManagedThreadId);
         }
 
         public TraceResult GetTraceResult()
         {
-            return fTraceResult;
+            return _traceResult;
         }
 
         // Static
@@ -47,13 +54,6 @@ namespace Tracer
             }
 
             return _tracerInstance;
-        }
-
-        // Internals
-
-        private Tracer()
-        {
-            fTraceResult = new TraceResult();
         }
     }
 }

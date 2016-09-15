@@ -1,42 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tracer
 {
     internal sealed class ThreadTraceInfo
     {
-        private readonly Stack<MethodTraceInfo> fCallStack;
-        private readonly List<MethodTraceInfo> fTracedMethods;
+        private readonly Stack<MethodTraceInfo> _callStack;
+        private readonly List<MethodTraceInfo> _tracedMethods;
 
         internal ThreadTraceInfo()
         {
-            fCallStack = new Stack<MethodTraceInfo>();
-            fTracedMethods = new List<MethodTraceInfo>();
+            _callStack = new Stack<MethodTraceInfo>();
+            _tracedMethods = new List<MethodTraceInfo>();
         }
 
-        internal void InitMethodTrace(MethodTraceInfo methodTraceInfo)
+        internal void StartMethodTrace(MethodTraceInfo methodTraceInfo)
         {
-            if (fCallStack.Count == 0)
+            if (_callStack.Count == 0)
             {
-                fTracedMethods.Add(methodTraceInfo);
+                _tracedMethods.Add(methodTraceInfo);
             }
             else
             {
-                fCallStack.Peek().AddNestedCall(methodTraceInfo);
+                _callStack.Peek().AddNestedCall(methodTraceInfo);
             }
-            fCallStack.Push(methodTraceInfo);
+            _callStack.Push(methodTraceInfo);
         }
 
-        internal void FinishMethodTrace()
+        internal void StopMethodTrace()
         {
-            if (fCallStack.Count == 0)
+            if (_callStack.Count == 0)
             {
                 throw new InvalidOperationException("can't finish method trace: empty call stack");
             }
-            fCallStack.Peek().FinishMethodTrace();
-            fCallStack.Pop();
+            _callStack.Peek().StopMethodTrace();
+            _callStack.Pop();
         }
 
-        internal IEnumerable<MethodTraceInfo> TracedMethods => fTracedMethods;
+        internal IEnumerable<MethodTraceInfo> TracedMethods => _tracedMethods;
+        internal long ExecutionTime => _tracedMethods.Select(x => x.ExecutionTime).Sum();
     }
 }

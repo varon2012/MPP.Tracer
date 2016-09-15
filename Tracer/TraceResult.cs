@@ -7,29 +7,29 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-        private readonly ConcurrentDictionary<int, ThreadTraceInfo> fThreadsTraceInfo;
+        private readonly ConcurrentDictionary<int, ThreadTraceInfo> _threadsTraceInfo;
 
         internal TraceResult()
         {
-            fThreadsTraceInfo = new ConcurrentDictionary<int, ThreadTraceInfo>();
+            _threadsTraceInfo = new ConcurrentDictionary<int, ThreadTraceInfo>();
         }
 
-        internal void InitMethodTrace(int threadId, MethodBase method)
+        internal void StartMethodTrace(int threadId, MethodBase method)
         {
-            ThreadTraceInfo threadsTraceInfo = fThreadsTraceInfo.GetOrAdd(threadId, new ThreadTraceInfo());
-            threadsTraceInfo.InitMethodTrace(new MethodTraceInfo(method));
+            ThreadTraceInfo threadsTraceInfo = _threadsTraceInfo.GetOrAdd(threadId, new ThreadTraceInfo());
+            threadsTraceInfo.StartMethodTrace(new MethodTraceInfo(method));
         }
 
-        internal void FinishMethodTrace(int threadId)
+        internal void StopMethodTrace(int threadId)
         {
             ThreadTraceInfo threadsTraceInfo;
-            if (!fThreadsTraceInfo.TryGetValue(threadId, out threadsTraceInfo))
+            if (!_threadsTraceInfo.TryGetValue(threadId, out threadsTraceInfo))
             {
                 throw new ArgumentException("invalid thread id");
             }
-            threadsTraceInfo.FinishMethodTrace();
+            threadsTraceInfo.StopMethodTrace();
         }
 
-        internal IEnumerable<KeyValuePair<int, ThreadTraceInfo>> ThreadsTraceInfo => fThreadsTraceInfo;
+        internal IEnumerable<KeyValuePair<int, ThreadTraceInfo>> ThreadsTraceInfo => _threadsTraceInfo;
     }
 }
