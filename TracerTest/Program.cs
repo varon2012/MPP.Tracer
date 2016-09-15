@@ -45,13 +45,50 @@ namespace TracerTest
             {
                 LongRecursiveCalculations(recursionLevel + 1);
             }
+            LongCalculations(10);
+
             _tracer.StopTrace();
         }
 
         static void LongCalculations(object o)
         {
             _tracer.StartTrace();
+
+            for (int i = 0; i < 6; i++)
+            {
+                ShortCalculations();
+            }
+
             Thread.Sleep(100);
+            _tracer.StopTrace();
+        }
+
+        static void ShortCalculations()
+        {
+            _tracer.StartTrace();
+            Thread.Sleep(10);
+
+            var threads = new List<Thread>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var thread = new Thread(ShortCalculations2);
+                threads.Add(thread);
+                thread.Start();
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                threads[i].Join();
+            }
+
+            _tracer.StopTrace();
+        }
+
+        static void ShortCalculations2()
+        {
+            _tracer.StartTrace();
+            Thread.Sleep(10);
             _tracer.StopTrace();
         }
 
