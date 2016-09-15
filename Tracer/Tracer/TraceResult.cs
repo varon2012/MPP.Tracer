@@ -11,6 +11,7 @@ namespace Tracer
     {
         private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
         public List<int> threadIds { get; } = new List<int>();
+        public int callDepth { get; set; }
 
         public IEnumerator GetEnumerator()
         {
