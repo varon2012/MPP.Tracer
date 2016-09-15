@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -9,7 +10,6 @@ namespace Tracer
 {
     public class XmlTraceResultFormatter : ITraceResultFormatter
     {
-
         private string _path;
 
         private static bool IsValidPath(string path)
@@ -33,10 +33,10 @@ namespace Tracer
 
         public XmlTraceResultFormatter(string filePath)
         {
-            if (!IsValidPath(filePath))
+            /*if (!IsValidPath(filePath))
             {
                 throw new ArgumentException("this path is invalid");
-            }
+            }*/
             _path = filePath;
         }
 
@@ -54,6 +54,7 @@ namespace Tracer
             }
             XDocument doc = new XDocument();
             XElement root = new XElement("root");
+
             foreach (int threadId in traceResult.ThreadNodes.Keys)
             {
                 XElement thread = new XElement("thread",
@@ -64,15 +65,7 @@ namespace Tracer
             }
 
             doc.Add(root);
-            try
-            {
-                doc.Save(_path);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Saving file failed. Access denied.");
-            }
-            
+            doc.Save(_path);
         }
 
         private void AddMethods(List<MethodNode> methodNodes, XElement root)
@@ -88,6 +81,5 @@ namespace Tracer
                 root.Add(method);
             }
         }
-
     }
 }

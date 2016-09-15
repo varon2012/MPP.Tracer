@@ -68,11 +68,32 @@ namespace Test
         {
             _tracer.StartTrace();
             Thread.Sleep(80);
+
+            for (int i = 0; i < 20; ++i)
+            {
+                new Thread(() =>
+                {
+                    MethodSix();
+                    MethodTwo(10);
+                }).Start();
+            }
+
             MethodTwo(42);
             MethodThree(1, true, 1);
             _tracer.StopTrace();
         }
 
+        static void MethodSix()
+        {
+            _tracer.StartTrace();
 
+            MethodTwo(10);
+            Thread.Sleep(10);
+            MethodTwo(10);
+
+            Thread.Sleep(20);
+
+            _tracer.StopTrace();
+        }
     }
 }
