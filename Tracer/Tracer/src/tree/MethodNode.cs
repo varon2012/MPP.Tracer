@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MPPTracer.Format;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace MPPTracer.Tree
 {
-    public class MethodNode : ChildNode
+    public class MethodNode : ChildNode, IEnumerable<KeyValuePair<int, MethodDescriptor>>
     {
         public long StartTime { private get; set; }
         public MethodDescriptor Descriptor { get;}
@@ -42,6 +44,17 @@ namespace MPPTracer.Tree
                 MethodNode method = GetLastAddedMethod();
                 method.StopLastTrace(endTime);
             }
+        }
+
+        public IEnumerator<KeyValuePair<int, MethodDescriptor>> GetEnumerator()
+        {
+            IEnumerator<KeyValuePair<int, MethodDescriptor>> enumerator = new TreeEnumerator(this);
+            return enumerator;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

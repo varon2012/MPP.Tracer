@@ -6,15 +6,33 @@ using System;
 
 namespace MPPTracer.Format
 {
-    class TreeRacer
+    class TreeEnumerator : IEnumerator<KeyValuePair<int,MethodDescriptor>>
     {
         private int RootLevel { get; set; }
-        public int MethodLevel { get; private set; }
-        public bool NestedMethodsVisited { get; private set; }
+        private int MethodLevel { get; set; }
+        private bool NestedMethodsVisited { get; set; }
         private MethodNode rootMethod;
+        private MethodDescriptor currentDescriptor;
         private Stack<MethodNode> wayStack;
 
-        public TreeRacer(MethodNode rootMethod)
+        public KeyValuePair<int, MethodDescriptor> Current
+        {
+            get
+            {
+                return new KeyValuePair<int, MethodDescriptor>(MethodLevel, currentDescriptor);
+            }
+        }
+
+        object IEnumerator.Current
+        {
+            get
+            {
+                return Current;
+            }
+        }
+
+
+        public TreeEnumerator(MethodNode rootMethod)
         {
             this.rootMethod = rootMethod;
             wayStack = new Stack<MethodNode>();
@@ -23,10 +41,11 @@ namespace MPPTracer.Format
             NestedMethodsVisited = false;
         }
 
-        public MethodDescriptor getNextDescriptor()
+        private MethodDescriptor getNextDescriptor()
         {
             if (StackIsEmpty())
                 return null;
+
             MethodLevel = RootLevel;
             MethodNode method = wayStack.Peek();
             FindNextStep();
@@ -70,14 +89,12 @@ namespace MPPTracer.Format
         private void GoLevelUp()
         {
             wayStack.Pop();
-            if (!StackIsEmpty())
-                rootMethod = wayStack.Peek();
-            else
-                rootMethod = null;
             RootLevel--;
             NestedMethodsVisited = true;
-            if(rootMethod != null)
+
+            if(!StackIsEmpty())
             {
+                rootMethod = wayStack.Peek();
                 if (rootMethod.IsLastAtLevel())
                 {
                     GoLevelUp();
@@ -97,5 +114,20 @@ namespace MPPTracer.Format
             NestedMethodsVisited = false;
         }
 
+        public void Dispose()
+        {
+            
+        }
+
+        public bool MoveNext()
+        {
+            currentDescriptor = getNextDescriptor();
+            return (currentDescriptor != null);
+        }
+
+        public void Reset()
+        {
+            
+        }
     }
 }
