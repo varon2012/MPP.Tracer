@@ -33,6 +33,7 @@ namespace TracerTest
             }
 
             _tracer.StopTrace();
+            WriteResult();
         }
 
         static void LongRecursiveCalculations(object recursionLevelObj)
