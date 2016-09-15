@@ -11,7 +11,7 @@ namespace TracerTest
 {
     class Program
     {
-        private static volatile ITracer _tracer = Tracer.Tracer.GetInstance();
+        private static readonly ITracer _tracer = Tracer.Tracer.GetInstance();
 
         static void Main(string[] args)
         {
