@@ -19,10 +19,12 @@ namespace Tester
             Thread firstThread = new Thread(RunThread);
             Thread secondThread = new Thread(RunLongThread);
             Thread thirdThread = new Thread(RunThread);
+            Thread fourthThread = new Thread(RunLongThread);
 
             firstThread.Start();
             secondThread.Start();
             thirdThread.Start();
+            fourthThread.Start();
 
             RunCycle(150);
             RunAnotherCycle(400, 2);
@@ -32,6 +34,7 @@ namespace Tester
             firstThread.Join();
             secondThread.Join();           
             thirdThread.Join();
+            fourthThread.Join();
             
         }
 

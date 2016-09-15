@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
+using System.Xml;
 namespace Tracer.Formatters
 {
     public  class XmlTraceResultFormatter : ITraceResultFormatter
@@ -20,7 +20,7 @@ namespace Tracer.Formatters
             XElement rootElement = GenerateThreadMarkup(traceResult.threadIds, xmlTraceResult);
 
             resultFile.Add(rootElement);
-            resultFile.Save("TraceResult.xml");
+            SaveToFile(resultFile,"TraceResult.xml");
         }
 
         private void AddMethodNesting(int maximumDepth, List<XElement> xmlTraceResult)
@@ -81,11 +81,14 @@ namespace Tracer.Formatters
             {
                 if (id.Equals(Int32.Parse(resultItem.Attribute("tid").Value)))
                 {
-                    xmlThread.Add(resultItem);
                     threadRuntime += Double.Parse(resultItem.Attribute("time").Value.Replace('.', ','));
+                    resultItem.Attribute("time").Value += 's';
+                    xmlThread.Add(resultItem);
+                    
                 }
             }
             xmlThread.Add(new XAttribute("time", threadRuntime));
+            xmlThread.Attribute("time").Value += 's';
             return xmlThread;
         }
 
@@ -126,6 +129,18 @@ namespace Tracer.Formatters
             foreach (XElement childElement in element.Descendants())
                 if (childElement.Attribute(attribute) != null)
                     childElement.Attribute(attribute).Remove();
+        }
+        private void SaveToFile(XDocument xmlDocument, string path)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "\t",
+                OmitXmlDeclaration = true
+            };
+            using (XmlWriter writer = XmlWriter.Create(path, settings))
+                xmlDocument.Save(writer);
+
         }
 
     }

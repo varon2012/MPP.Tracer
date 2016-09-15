@@ -12,6 +12,13 @@ namespace Tracer
         private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
         public List<int> threadIds { get; } = new List<int>();
         public int callDepth { get; set; }
+        public int Count
+        {
+            get
+            {
+                return analyzedItems.Count;
+            }
+        }
 
         public IEnumerator GetEnumerator()
         {
@@ -43,6 +50,11 @@ namespace Tracer
         {
             if (!threadIds.Contains(id))
                 threadIds.Add(id);
+        }
+
+        public void Sort()
+        {
+            analyzedItems.Sort((x, y) => x.threadId.CompareTo(y.threadId));
         }
 
     }

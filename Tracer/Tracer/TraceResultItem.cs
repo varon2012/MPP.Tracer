@@ -41,9 +41,9 @@ namespace Tracer
             time = Math.Round(timer.Elapsed.TotalSeconds, 3);
         }
         
-        public void PrintToConsole()
+        public override string ToString()
         {
-            Console.WriteLine("<{0}>[{1}] {2}->{3} (параметры: {4}): {5} сек.", threadId, callDepth, className, methodName, parametersAmount, time );
+            return string.Format("Поток {0}: {1}->{2}(параметры: {3}): {4} сек.", threadId, className, methodName, parametersAmount, time );
         }
     }
 }
