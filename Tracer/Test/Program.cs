@@ -104,9 +104,18 @@ namespace Test
         private static void TestMethod3(int testParam1, string testParam2, object testParam3)
         {
             _tracer.StartTrace();
-
-            TestMethod1(testParam1);
+            for(int i = 0; i< 10; i++)
+            {
+                TestMethod1(testParam1);
+            }
             Thread.Sleep(500);
+
+            for (int i = 0; i < 4; i++)
+            {
+                var thread = new Thread(() => { TestMethod2(testParam1, testParam2); });
+                thread.Start();
+            }
+
             TestMethod2(testParam1,testParam2);
 
             _tracer.StopTrace();

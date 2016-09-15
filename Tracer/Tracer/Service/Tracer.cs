@@ -37,7 +37,15 @@ namespace Tracer.Service
 
         public TraceResult GetTraceResult()
         {
-            return Map(_traceTree);
+            _treeLock.EnterReadLock();
+            try
+            {
+                return Map(_traceTree);
+            }
+            finally
+            {
+                _treeLock.ExitReadLock();
+            }
         }
 
         public void StartTrace()
