@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
+
 namespace MPPTracer.Tree
 {
     public class RootNode : INode
     {
-        public Dictionary<int, ThreadNode> ThreadTable { get; private set; }
+        private Dictionary<int, ThreadNode> ThreadTable { get; }
 
         internal RootNode()
         {
@@ -24,6 +25,12 @@ namespace MPPTracer.Tree
             ThreadNode thread = CurrentThreadNode();
             thread.StopLastTrace(endTime);
         }
+
+        public IEnumerator<KeyValuePair<int,ThreadNode>> GetThreadEnumerator()
+        {
+            return ThreadTable.GetEnumerator();
+        }
+
 
         private ThreadNode CurrentThreadNode()
         {

@@ -10,33 +10,41 @@ namespace TracerTest
 {
     class TestClass
     {
+        static Tracer tracer = new Tracer();
         static void Main(string[] args)
         {
             TestClass test = new TestClass();
-            Tracer tracer = new Tracer();
-
-            tracer.StartTrace();
-                test.longMethod();
-                tracer.StartTrace();
-                    test.longMethod();
-                tracer.StopTrace();
-            tracer.StopTrace();
-
-            tracer.StartTrace();
-                test.longMethod();
-            tracer.StopTrace();
-
+            test.method1();
             TraceResult result = tracer.GetTraceResult();
             ConsoleFormatter formatter = new ConsoleFormatter();
             String formatResult = formatter.Format(result);
             Console.WriteLine(formatResult);
             Console.ReadLine();
-            
+
         }
 
         private void longMethod()
         {
             System.Threading.Thread.Sleep(1000);
         }
+
+        private void method1()
+        {
+            tracer.StartTrace();
+                longMethod();
+                method2();
+            tracer.StopTrace();
+        }
+        private void method2()
+        {
+            tracer.StartTrace();
+                longMethod();
+            tracer.StopTrace();
+        }
+        private void method3()
+        {
+
+        }
+
     }
 }

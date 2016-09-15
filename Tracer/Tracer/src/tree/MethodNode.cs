@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MPPTracer.Tree
 {
     public class MethodNode : ChildNode
     {
         public long StartTime { private get; set; }
-        public MethodDescriptor Descriptor { get;  private set; }
+        public MethodDescriptor Descriptor { get;}
+    
 
         public long EndTime
         {
@@ -24,7 +26,7 @@ namespace MPPTracer.Tree
             }
         }
 
-        public MethodNode(MethodDescriptor descriptor)
+        public MethodNode(MethodDescriptor descriptor, ChildNode parent) : base(parent)
         {
             Descriptor = descriptor;
         }

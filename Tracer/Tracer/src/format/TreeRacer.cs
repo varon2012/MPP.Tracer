@@ -1,86 +1,90 @@
 ﻿
 using System.Collections.Generic;
 using MPPTracer.Tree;
+using System.Collections;
+using System;
 
 namespace MPPTracer.Format
 {
     class TreeRacer
     {
-        public int NestingLevel { get; private set; } = -1;
-        public bool NestedMethodsVisited { get; private set;}
-        private List<MethodNode> methodForest;
-        public List<MethodNode> MethodForest
-        {
-            set
-            {
-                GoLevelDown(value);
-            }
-        }
-        private Stack<MethodNode> methodStack;
+        private int RootLevel { get; set; }
+        public int MethodLevel { get; private set; }
+        public bool NestedMethodsVisited { get; private set; }
+        private MethodNode rootMethod;
+        private Stack<MethodNode> wayStack;
 
-        public TreeRacer()
+        public TreeRacer(MethodNode rootMethod)
         {
-            methodStack = new Stack<MethodNode>();
+            this.rootMethod = rootMethod;
+            wayStack = new Stack<MethodNode>();
+            wayStack.Push(rootMethod);
+            RootLevel = 0;
+            NestedMethodsVisited = false;
         }
 
         public MethodDescriptor getNextDescriptor()
         {
             if (StackIsEmpty())
                 return null;
-
-            MethodNode method = methodStack.Peek();
-            FindNextStep(method);
+            MethodLevel = RootLevel;
+            MethodNode method = wayStack.Peek();
+            FindNextStep();
 
             return method.Descriptor;
         }
 
         private bool StackIsEmpty()
         {
-            return (methodStack.Count == 0);
+            return (wayStack.Count == 0);
         }
 
-        private void FindNextStep(MethodNode method)
+        private void FindNextStep()
         {
-            if (method.NoNestedMethods() || NestedMethodsVisited)
+            if (rootMethod.NoNestedMethods() || NestedMethodsVisited)
             {
-                if (LastAtCurrentLevel(method))
+                if (rootMethod.IsLastAtLevel())
+                {
                     GoLevelUp();
+                }
                 else
-                    StayCurrentLevel(method);
+                {
+                    GoCurrentLevel();
+                }
             }
             else
             {
-                GoLevelDown(method.NestedMethods);
+                GoLevelDown();
             }
         }
 
-        private void GoLevelDown(List<MethodNode> methodForest)
+        private void GoLevelDown()
         {
-            this.methodForest = methodForest;
-            methodStack.Push(this.methodForest[0]);
-            NestingLevel++;
+            rootMethod = rootMethod.GetFirstNestedMethod();
+            wayStack.Push(rootMethod);
+            RootLevel++;
             NestedMethodsVisited = false;
+
         }
 
         private void GoLevelUp()
         {
-            methodStack.Pop();
-            NestingLevel--;
+            wayStack.Pop();
+            if (!StackIsEmpty())
+                rootMethod = wayStack.Peek();
+            else
+                rootMethod = null;
+            RootLevel--;
             NestedMethodsVisited = true;
+            if(rootMethod != null && rootMethod.IsLastAtLevel())
+                GoLevelUp();
         }
 
-        private void StayCurrentLevel(MethodNode method)
+        private void GoCurrentLevel()
         {
-            methodStack.Pop();
-            int methodIndex = methodForest.IndexOf(method);
-            methodStack.Push(methodForest[methodIndex + 1]);
+            rootMethod = rootMethod.GetNextAddedMethod();
             NestedMethodsVisited = false;
         }
 
-        private bool LastAtCurrentLevel(MethodNode method)
-        {
-            int methodIndex = methodForest.IndexOf(method);
-            return (methodIndex == methodForest.Count - 1);
-        }
     }
 }

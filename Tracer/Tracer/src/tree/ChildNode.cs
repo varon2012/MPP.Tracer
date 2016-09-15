@@ -7,13 +7,13 @@ namespace MPPTracer.Tree
     public abstract class ChildNode : INode
     {
         public abstract void StopLastTrace(long endTime);
+        private List<MethodNode> NestedMethods { get;}
+        private ChildNode ParentNode { get; }
 
-
-        internal List<MethodNode> NestedMethods { get; private set; }
-
-        public ChildNode()
+        public ChildNode(ChildNode parent)
         {
             NestedMethods = new List<MethodNode>();
+            ParentNode = parent;
         }
 
         public void AddNestedTrace(long startTime, MethodDescriptor descriptor)
@@ -29,9 +29,31 @@ namespace MPPTracer.Tree
             }
         }
 
+        private bool IsLastAddedMethod(ChildNode method)
+        {
+            int methodIndex = NestedMethods.IndexOf((MethodNode)method);
+            return (methodIndex == NestedMethods.Count - 1);
+        }
+
+        public bool IsLastAtLevel()
+        {
+            return ParentNode.IsLastAddedMethod(this);
+        }
+
+        public MethodNode GetFirstNestedMethod()
+        {
+            return NestedMethods[0];
+        }
+
+        public MethodNode GetNextAddedMethod()
+        {
+            int methodIndex = NestedMethods.IndexOf((MethodNode)this);
+            return NestedMethods[methodIndex + 1];
+        }
+
         private void AddNestedMethod(long startTime, MethodDescriptor descriptor)
         {
-            MethodNode method = new MethodNode(descriptor);
+            MethodNode method = new MethodNode(descriptor, this);
             method.StartTime = startTime;
             NestedMethods.Add(method);
         }

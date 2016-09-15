@@ -5,9 +5,9 @@ namespace MPPTracer
 {
     public class MethodDescriptor
     {
-        public String Name { get; private set; }
-        public String ClassName { get; private set; }
-        public int ParamsNumber { get; private set; }
+        public String Name { get; }
+        public String ClassName { get; }
+        public int ParamsNumber { get; }
         public long TraceTime { get; set; }
 
         public MethodDescriptor(String name, String className, int paramsNumber)

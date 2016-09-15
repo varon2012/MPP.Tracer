@@ -11,32 +11,33 @@ namespace MPPTracer.Format
         private const string THREAD_TAG = "thread id={0}\n";
         private const string METHOD_TAG = "method name={0} time={1}ms class={2} params={3}\n";
 
-
-        private TreeRacer iterator = new TreeRacer();
+        private TreeRacer iterator;
 
         public string Format(TraceResult traceResult)
         {
             string result = "";
-            for(int i = 0; i < traceResult.ThreadsCount; i++ )
+            IEnumerator<KeyValuePair<int, ThreadNode>> enumerator = traceResult.GetEnumerator();
+            while(enumerator.MoveNext())
             {
-                int threadID = traceResult.GetThreadId(i);
+                int threadID = enumerator.Current.Key;
+                ThreadNode thread = enumerator.Current.Value;
                 result += string.Format(THREAD_TAG, threadID);
-                result += CreateMethodTree(traceResult.GetThreadForest(threadID));
+                result += CreateMethodTree(thread.GetFirstNestedMethod());
             }
 
             return result;
 
         }
 
-        private string CreateMethodTree(List<MethodNode> methods)
+        private string CreateMethodTree(MethodNode rootMethod)
         {
             string methodTree = "";
-            iterator.MethodForest = methods;
+            iterator = new TreeRacer(rootMethod);
             MethodDescriptor descriptor = iterator.getNextDescriptor();
             while (descriptor != null)
             {
                 string methodLine = string.Format(METHOD_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
-                methodTree += CreateIndent(iterator.NestingLevel) + methodLine;
+                methodTree += CreateIndent(iterator.MethodLevel) + methodLine;
                 descriptor = iterator.getNextDescriptor();
             }
             return methodTree;

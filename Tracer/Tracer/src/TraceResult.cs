@@ -1,39 +1,29 @@
 ﻿
 using System.Collections.Generic;
 using MPPTracer.Tree;
+using System.Collections;
+using System;
 
 namespace MPPTracer
 {
-    public class TraceResult
+    public class TraceResult : IEnumerable<KeyValuePair<int, ThreadNode>>
     {
-        private RootNode Root { get; set; }
-        public int ThreadsCount
-        {
-            get
-            {
-                Dictionary<int, ThreadNode> threads = Root.ThreadTable;
-                return threads.Count;
-            }
-        }
-        private List<int> threadsId;
+        private RootNode Root { get; }
 
         public TraceResult(RootNode root)
         {
             Root = root;
-            threadsId = new List<int>(Root.ThreadTable.Keys);
         }
 
-        public int GetThreadId(int index)
+        public IEnumerator<KeyValuePair<int, ThreadNode>> GetEnumerator()
         {
-            return threadsId[index];
+            return Root.GetThreadEnumerator();
+            
         }
 
-        public List<MethodNode> GetThreadForest(int threadId)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            Dictionary<int, ThreadNode> threadTable = Root.ThreadTable;
-            return threadTable[threadId].NestedMethods;
+            return this.GetEnumerator();
         }
-
-        
     }
 }
