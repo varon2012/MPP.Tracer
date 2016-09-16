@@ -4,18 +4,16 @@ using System.Collections.Generic;
 
 namespace MPPTracer.Format
 {
-    public class XMLFormatter : IFormatter
+    public class XMLFormatter : Formatter
     {
-        private const string TAB = "    ";
-        private const string NL = "\n";
-        private const string ROOT_OPEN_TAG = "<root>\n";
-        private const string ROOT_CLOSE_TAG = "</root>\n";
-        private const string THREAD_OPEN_TAG = "<thread id={0}>\n";
-        private const string THREAD_CLOSE_TAG = "</thread>\n";
-        private const string METHOD_OPEN_TAG = "<method name={0} time={1} class={2} params={3}>\n";
-        private const string METHOD_CLOSE_TAG = "</method>\n";
+        private const string ROOT_OPEN_TAG = "<root>"+NL;
+        private const string ROOT_CLOSE_TAG = "</root>"+NL;
+        private const string THREAD_OPEN_TAG = "<thread id={0}>"+NL;
+        private const string THREAD_CLOSE_TAG = "</thread>"+NL;
+        private const string METHOD_OPEN_TAG = "<method name={0} time={1} class={2} params={3}>"+NL;
+        private const string METHOD_CLOSE_TAG = "</method>"+NL;
 
-        public string Format(TraceResult traceResult)
+        public override string Format(TraceResult traceResult)
         {
             return CreateRootTag(traceResult);
         }
@@ -62,14 +60,5 @@ namespace MPPTracer.Format
             return tagList;
         }
 
-        private string CreateIndent(int nestingLevel)
-        {
-            string indent = "";
-            for (int i = 0; i < nestingLevel; i++)
-            {
-                indent += TAB;
-            }
-            return indent;
-        }
     }
 }

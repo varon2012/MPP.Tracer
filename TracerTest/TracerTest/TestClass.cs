@@ -17,7 +17,7 @@ namespace TracerTest
             test.method1();
             test.method3();
             TraceResult result = tracer.GetTraceResult();
-            IFormatter formatter = new XMLFormatter();
+            IFormatter formatter = new ConsoleFormatter();
             string formatResult = formatter.Format(result);
             Console.WriteLine(formatResult);
             Console.ReadLine();
