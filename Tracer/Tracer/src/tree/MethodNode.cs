@@ -1,24 +1,11 @@
-﻿using MPPTracer.Format;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 
 namespace MPPTracer.Tree
 {
-    public class MethodNode : ChildNode
+    public class MethodNode : InternalNode
     {
-        public long StartTime { private get; set; }
+        public readonly long startTime;
         public MethodDescriptor Descriptor { get;}
-    
-
-        public long EndTime
-        {
-            set
-            {
-                    Descriptor.TraceTime = value - StartTime;
-                    
-            }
-        }
 
         public Boolean TracingFinished
         {
@@ -28,16 +15,17 @@ namespace MPPTracer.Tree
             }
         }
 
-        public MethodNode(MethodDescriptor descriptor, ChildNode parent) : base(parent)
+        public MethodNode(long startTime, MethodDescriptor descriptor, InternalNode parent) : base(parent)
         {
             Descriptor = descriptor;
+            this.startTime = startTime;
         }
 
         public override void StopLastTrace(long endTime)
         {
             if (NoNestedMethods() || NestedTracingsFinished())
             {
-                EndTime = endTime;
+                Descriptor.TraceTime = endTime - startTime;
             }
             else
             {

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MPPTracer;
 using MPPTracer.Format;
 using System.Threading;
@@ -40,11 +37,12 @@ namespace TracerTest
             List<Thread> threadList = new List<Thread>();
             for(int i = 0; i < 10; i++)
             {
-                Thread thread = (i % 2 == 0) ? new Thread(method2) : new Thread(method1);
+                Thread thread = (i % 2 == 0) ? new Thread(method1) : new Thread(method2);
                 threadList.Add(thread);
                 thread.Start();
             }
-
+            method1();
+            method2();
             method3();
             foreach(Thread thread in threadList)
             {
@@ -73,11 +71,10 @@ namespace TracerTest
         {
             tracer.StartTrace();
                 longMethod();
-                method3();
-                //method1();
+                method4();
             tracer.StopTrace();
         }
-        private void method3()
+        private void method3(double par1 = 0)
         {
             tracer.StartTrace();
             longMethod();
@@ -85,7 +82,7 @@ namespace TracerTest
             method4();
             tracer.StopTrace();
         }
-        private void method4()
+        private void method4(int par1=0, long par=0)
         {
             tracer.StartTrace();
             longMethod();

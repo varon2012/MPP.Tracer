@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace MPPTracer.Tree
 {
-    public abstract class ChildNode : INode
+    public abstract class InternalNode : INode
     {
         public abstract void StopLastTrace(long endTime);
         private List<MethodNode> NestedMethods { get;}
-        private ChildNode ParentNode { get; }
+        private InternalNode ParentNode { get; }
 
-        public ChildNode(ChildNode parent)
+        public InternalNode(InternalNode parent)
         {
             NestedMethods = new List<MethodNode>();
             ParentNode = parent;
@@ -29,7 +29,7 @@ namespace MPPTracer.Tree
             }
         }
 
-        private bool IsLastAddedMethod(ChildNode method)
+        private bool IsLastAddedMethod(InternalNode method)
         {
             int methodIndex = NestedMethods.IndexOf((MethodNode)method);
             return (methodIndex == NestedMethods.Count - 1);
@@ -57,8 +57,7 @@ namespace MPPTracer.Tree
 
         private void AddNestedMethod(long startTime, MethodDescriptor descriptor)
         {
-            MethodNode method = new MethodNode(descriptor, this);
-            method.StartTime = startTime;
+            MethodNode method = new MethodNode(startTime, descriptor, this);
             NestedMethods.Add(method);
         }
 

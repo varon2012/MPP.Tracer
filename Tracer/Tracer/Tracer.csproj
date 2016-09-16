@@ -46,7 +46,7 @@
     <Compile Include="src\format\XMLFormatter.cs" />
     <Compile Include="src\Tracer.cs" />
     <Compile Include="src\TraceResult.cs" />
-    <Compile Include="src\tree\ChildNode.cs" />
+    <Compile Include="src\tree\InternalNode.cs" />
     <Compile Include="src\MethodDescriptor.cs" />
     <Compile Include="src\tree\MethodNode.cs" />
     <Compile Include="src\tree\RootNode.cs" />

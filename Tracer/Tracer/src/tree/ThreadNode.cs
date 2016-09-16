@@ -1,7 +1,7 @@
 ﻿
 namespace MPPTracer.Tree
 {
-    public class ThreadNode : ChildNode
+    public class ThreadNode : InternalNode
     {
         public ThreadNode() : base(null)
         {
