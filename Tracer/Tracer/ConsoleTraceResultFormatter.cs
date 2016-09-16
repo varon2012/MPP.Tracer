@@ -13,13 +13,10 @@ namespace Tracer
             {
                 Console.WriteLine("Thread ID: {0}", threadId);
 
-                if (threadNodes[threadId].MethodNodesList != null)
+                foreach (var node in threadNodes[threadId].MethodNodesList)
                 {
-                    foreach (var node in threadNodes[threadId].MethodNodesList)
-                    {
-                        PrintMethodNode(node, baseIndent);
-                        Console.WriteLine();
-                    }
+                    PrintMethodNode(node, baseIndent);
+                    Console.WriteLine();
                 }
 
                 Console.WriteLine();
@@ -34,14 +31,11 @@ namespace Tracer
             Console.WriteLine("{0}Params: {1}", indent, methodNode.ParamCount);
             Console.WriteLine("{0}Time (ms): {1}", indent, methodNode.TotalTime.TotalMilliseconds);
 
-            if (methodNode.InsertedNodes != null)
+            string newIndent = indent + baseIndent;
+            foreach (var node in methodNode.InsertedNodes)
             {
-                string newIndent = indent + baseIndent;
-                foreach (var node in methodNode.InsertedNodes)
-                {
-                    PrintMethodNode(node, newIndent);
-                    Console.WriteLine();
-                }
+                PrintMethodNode(node, newIndent);
+                Console.WriteLine();
             }
         }
     }

@@ -36,13 +36,11 @@ namespace Tracer
                 XAttribute id = new XAttribute("id", threadId);
                 thread.Add(id);
 
-                if (threadNodes[threadId].MethodNodesList != null)
+                foreach (var node in threadNodes[threadId].MethodNodesList)
                 {
-                    foreach (var node in threadNodes[threadId].MethodNodesList)
-                    {
-                        AddMethodNode(thread, node);
-                    }
+                    AddMethodNode(thread, node);
                 }
+
                 root.Add(thread);
             }
         }
@@ -63,13 +61,11 @@ namespace Tracer
             method.Add(parameters);
             method.Add(totalTime);
 
-            if (methodNode.InsertedNodes != null)
+            foreach (var node in methodNode.InsertedNodes)
             {
-                foreach (var node in methodNode.InsertedNodes)
-                {
-                    AddMethodNode(method, node);
-                }
+                AddMethodNode(method, node);
             }
+
             element.Add(method);
         }
     }
