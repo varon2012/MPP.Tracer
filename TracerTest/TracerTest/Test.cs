@@ -5,23 +5,40 @@ using System.Text;
 using System.Threading.Tasks;
 using MPPTracer;
 using MPPTracer.Format;
+using System.Threading;
 
 namespace TracerTest
 {
-    class TestClass
+    class Test
     {
-        static Tracer tracer = new Tracer();
+        static Tracer tracer = Tracer.Instance;
         static void Main(string[] args)
         {
-            TestClass test = new TestClass();
-            test.method1();
-            test.method3();
+            Test test = new Test();
+            test.startTesting();
+        }
+
+        public void startTesting()
+        {
+            List<Thread> threadList = new List<Thread>();
+            for(int i = 0; i < 10; i++)
+            {
+                Thread thread = (i % 2 == 0) ? new Thread(method2) : new Thread(method1);
+                threadList.Add(thread);
+                thread.Start();
+            }
+
+            method3();
+            foreach(Thread thread in threadList)
+            {
+                thread.Join();
+            }
+
             TraceResult result = tracer.GetTraceResult();
-            IFormatter formatter = new ConsoleFormatter();
+            IFormatter formatter = new XMLFormatter();
             string formatResult = formatter.Format(result);
             Console.WriteLine(formatResult);
             Console.ReadLine();
-
         }
 
         private void longMethod()
@@ -34,7 +51,6 @@ namespace TracerTest
             tracer.StartTrace();
                 longMethod();
                 method3();
-                method2();
             tracer.StopTrace();
         }
         private void method2()
@@ -42,7 +58,7 @@ namespace TracerTest
             tracer.StartTrace();
                 longMethod();
                 method3();
-                method3();
+                //method1();
             tracer.StopTrace();
         }
         private void method3()

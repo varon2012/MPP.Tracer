@@ -7,6 +7,7 @@ namespace MPPTracer.Tree
     public class RootNode : INode
     {
         private Dictionary<int, ThreadNode> ThreadTable { get; }
+        private static object syncRoot = new object();
 
         internal RootNode()
         {
@@ -39,9 +40,13 @@ namespace MPPTracer.Tree
             {
                 return ThreadTable[threadId];
             }
-
+            
             ThreadNode thread = new ThreadNode();
-            ThreadTable.Add(threadId, thread);
+            lock (syncRoot)
+            {
+                ThreadTable.Add(threadId, thread);
+            }
+            
            
             return thread;
         }

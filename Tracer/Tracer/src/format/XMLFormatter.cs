@@ -51,7 +51,9 @@ namespace MPPTracer.Format
                 string indent = CreateIndent(nestingLevel);
 
                 string methodTag = indent + string.Format(METHOD_OPEN_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
-                methodTag += CreateMethodTagList(rootMethod.GetFirstNestedMethod(), nestingLevel + 1);
+                
+methodTag += CreateMethodTagList(rootMethod.GetFirstNestedMethod(), nestingLevel + 1);
+
                 methodTag += indent + METHOD_CLOSE_TAG;
                 tagList += methodTag;
                 rootMethod = rootMethod.GetNextAddedMethod();

@@ -8,10 +8,29 @@ namespace MPPTracer
     public class Tracer : ITracer
     {
         private RootNode rootNode;
+        private static volatile Tracer instance;
+        private static object syncRoot = new object();
 
-        public Tracer()
+        private Tracer()
         {
             rootNode = new RootNode();
+        }
+        public static Tracer Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if(instance == null)
+                        {
+                            instance = new Tracer();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
         public void StartTrace()
