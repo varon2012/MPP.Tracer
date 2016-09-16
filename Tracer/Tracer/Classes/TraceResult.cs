@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+using Trace.Classes.Information;
 
 namespace Trace.Classes
 {
     public class TraceResult
     {
-        private List<Entity> entities;
-        
+        private ConcurrentDictionary<int, ThreadInfo> threadsInfo;
+
         public TraceResult()
         {
-            entities = new List<Entity>();
-        } 
+            this.threadsInfo = new ConcurrentDictionary<int, ThreadInfo>();
+        }
+
+        public void StartMethodTrace(int idThread, MethodBase methodBase)
+        {
+            var threadInfo = threadsInfo.GetOrAdd(idThread, new ThreadInfo());
+        }
     }
 }

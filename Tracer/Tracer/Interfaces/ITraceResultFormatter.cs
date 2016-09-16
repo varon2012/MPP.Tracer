@@ -2,7 +2,7 @@
 
 namespace Trace.Interfaces
 {
-    interface ITraceResultFormatter
+    internal interface ITraceResultFormatter
     {
         void Format(TraceResult traceResult);
     }

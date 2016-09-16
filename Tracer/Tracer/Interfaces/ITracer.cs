@@ -1,6 +1,8 @@
-﻿namespace Trace.Classes
+﻿using Trace.Classes;
+
+namespace Trace.Interfaces
 {
-    interface ITracer
+    internal interface ITracer
     {
         void StartTrace();
 

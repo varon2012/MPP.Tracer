@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Entity.cs" />
     <Compile Include="Classes\Formatters\ConsoleTraceResultFormatter.cs" />
     <Compile Include="Classes\Formatters\XmlTraceResultFormatter.cs" />
+    <Compile Include="Classes\Information\MethodInfo.cs" />
+    <Compile Include="Classes\Information\ThreadInfo.cs" />
     <Compile Include="Interfaces\ITracer.cs" />
     <Compile Include="Classes\Tracer.cs" />
     <Compile Include="Classes\TraceResult.cs" />

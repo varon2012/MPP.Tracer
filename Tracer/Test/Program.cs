@@ -1,15 +1,14 @@
-﻿using System;
-using Trace.Classes;
+﻿using Trace.Classes;
 
 namespace Test
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static readonly Tracer Tracer = new Tracer();
+
+        private static void Main(string[] args)
         {
-            Tracer tracer = new Tracer();
-            tracer.StartTrace();
-            Console.ReadLine();
+            
         }
     }
 }
