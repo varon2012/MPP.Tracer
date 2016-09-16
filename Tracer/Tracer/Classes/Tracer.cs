@@ -7,26 +7,24 @@ namespace Trace.Classes
     public class Tracer : ITracer
     {
         private readonly TraceResult _traceResult;
-        private readonly object _threadLock;
 
         public Tracer()
         {
             _traceResult = new TraceResult();
-            _threadLock = new object();
         }
 
         public void StartTrace()
         {
-            var stackTrace = new StackTrace(1);
-            var stackFrame = stackTrace.GetFrame(0);
+            var method = new StackTrace(1).GetFrame(0).GetMethod();
             var idThread = Thread.CurrentThread.ManagedThreadId;
 
-
+            _traceResult.StartListenThread(idThread, method);
         }
 
         public void StopTrace()
         {
-            
+            var idThread = Thread.CurrentThread.ManagedThreadId;
+            _traceResult.StopListenThread(idThread);
         }
 
         public TraceResult GetTraceResult()

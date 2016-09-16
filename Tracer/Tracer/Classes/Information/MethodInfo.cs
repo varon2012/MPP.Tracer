@@ -1,29 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Trace.Classes.Information
 {
-    internal class MethodInfo
+    public class MethodInfo
     {
-        private List<MethodInfo> _nestedMethods;
-        private Stopwatch _stopwatch;
         public string Name { get; }
         public string ClassName { get; }
         public int CountParameters { get; }
+        public List<MethodInfo> NestedMethods { get; }
+        private Stopwatch _stopwatch;
 
-        public MethodInfo(string name, string className, int countParameters)
+        public MethodInfo(MethodBase methodBase)
         {
-            CreateStopWatch();
-            Name = name;
-            ClassName = className;
-            CountParameters = countParameters;
-            _nestedMethods = new List<MethodInfo>();
+            CreateStopwatch();
+            Name = methodBase.Name;
+            ClassName = methodBase.DeclaringType?.ToString();
+            CountParameters = methodBase.GetParameters().Length;
+            NestedMethods = new List<MethodInfo>();
         }
 
-        private void CreateStopWatch()
+        public void AddNestedMethod(MethodInfo nestedMethod)
+        {
+            NestedMethods.Add(nestedMethod);
+        }
+
+        public void StopMeteringTime()  
+        {
+            _stopwatch.Stop();
+        }
+
+        public long GetExecutionTime()
+        {
+            return _stopwatch.ElapsedMilliseconds;
+        }
+
+        private void CreateStopwatch()
         {
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
         }
+
     }
 }

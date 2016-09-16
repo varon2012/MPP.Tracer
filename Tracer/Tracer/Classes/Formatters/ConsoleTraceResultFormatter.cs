@@ -1,7 +1,7 @@
 ﻿using System;
 using Trace.Interfaces;
 
-namespace Trace.Classes
+namespace Trace.Classes.Formatters
 {
     class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
