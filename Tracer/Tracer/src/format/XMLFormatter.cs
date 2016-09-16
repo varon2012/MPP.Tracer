@@ -1,6 +1,7 @@
 ﻿using MPPTracer.Tree;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MPPTracer.Format
 {
@@ -10,12 +11,18 @@ namespace MPPTracer.Format
         private const string ROOT_CLOSE_TAG = "</root>"+NL;
         private const string THREAD_OPEN_TAG = "<thread id={0}>"+NL;
         private const string THREAD_CLOSE_TAG = "</thread>"+NL;
-        private const string METHOD_OPEN_TAG = "<method name={0} time={1} class={2} params={3}>"+NL;
+        private const string METHOD_OPEN_TAG = "<method name={0} time={1}ms class={2} params={3}>"+NL;
         private const string METHOD_CLOSE_TAG = "</method>"+NL;
 
         public override string Format(TraceResult traceResult)
         {
-            return CreateRootTag(traceResult);
+            string formattedTraceResult = CreateRootTag(traceResult);
+            string fileName = "TraceResultFormatted.xml";
+            using (StreamWriter writer = File.CreateText(fileName))
+            {
+                writer.WriteLine(formattedTraceResult);
+            }
+            return "Xml file path:\n"+Path.GetFullPath(fileName);
         }
 
         private string CreateRootTag(TraceResult traceResult)

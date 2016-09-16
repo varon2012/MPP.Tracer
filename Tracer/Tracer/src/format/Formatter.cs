@@ -7,8 +7,8 @@ namespace MPPTracer.Format
 
     public abstract class Formatter : IFormatter
     {
-        public const string TAB = "    ";
-        public const string NL = "\n";
+        public const string TAB = "\t";
+        public const string NL = "\r\n";
 
         abstract public string Format(TraceResult traceResult);
         public string CreateIndent(int nestingLevel)
