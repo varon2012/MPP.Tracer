@@ -11,7 +11,6 @@ namespace Tracer
         public string MethodName { get; private set; }
         public string ClassName { get; private set; }
         public int ParamCount { get; private set; }
-
         public DateTime StartTime { get; private set; }
         public DateTime StopTime { get; private set; }
         public TimeSpan TotalTime { get; private set; }
@@ -21,7 +20,7 @@ namespace Tracer
         public TraceResultMethodNode(string methodName,
             string className, int paramCount)
         {
-            this.InsertedNodes = null;
+            this.InsertedNodes = new List<TraceResultMethodNode>();
 
             this.MethodName = methodName;
             this.ClassName = className;
@@ -30,21 +29,18 @@ namespace Tracer
 
         public void StartNode()
         {   
-            this.StartTime = DateTime.Now;
+            this.StartTime = DateTime.UtcNow;
         }
 
         public void FinishNode()
         {
-            this.StopTime = DateTime.Now;
+            this.StopTime = DateTime.UtcNow;
 
             this.TotalTime = this.StopTime - this.StartTime;
         }
 
         public void AddInsertedNode(TraceResultMethodNode newNode)
         {
-            if (this.InsertedNodes == null)
-                this.InsertedNodes = new List<TraceResultMethodNode>();
-
             this.InsertedNodes.Add(newNode);
         }
     }
