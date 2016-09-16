@@ -72,7 +72,7 @@ namespace Test
         private static void SomeTestMethod4()
         {
             tracer.StartTrace();
-
+            
             Thread.Sleep(GetRandomTimeInMilliseconds());
 
             tracer.StopTrace();
@@ -87,6 +87,36 @@ namespace Test
             SomeTestMethod3();
             SomeTestMethod4();
 
+            SomeTestMethod6();
+
+            tracer.StopTrace();
+        }
+
+        private static void SomeTestMethod6()
+        {
+            const int threadCount = 4;
+
+            tracer.StartTrace();
+
+            for (int i = 0; i < 5; i++ )
+            {
+                SomeTestMethod4();
+            }
+
+            for (int i = 0; i < threadCount; i++)
+            {
+                Thread newThread = new Thread(SomeTestMethod7);
+                threads.Add(newThread);
+                newThread.Start();
+            }
+
+            tracer.StopTrace();
+        }
+
+        private static void SomeTestMethod7()
+        {
+            tracer.StartTrace();
+            Thread.Sleep(10);
             tracer.StopTrace();
         }
 
@@ -146,11 +176,12 @@ namespace Test
             InitializeMethods();
 
             tracer.StartTrace();
-
             StartThreads();
-            Thread.Sleep(GetRandomTimeInMilliseconds());
-            StopThreads();
 
+            SomeTestMethod5();
+            Thread.Sleep(GetRandomTimeInMilliseconds());
+
+            StopThreads();
             tracer.StopTrace();
 
             TraceResult traceResult = tracer.GetTraceResult();
