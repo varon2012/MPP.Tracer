@@ -34,7 +34,10 @@ namespace Tracer
             {
                 XElement thread = new XElement("thread");
                 XAttribute id = new XAttribute("id", threadId);
+                XAttribute time = new XAttribute("time",
+                    threadNodes[threadId].TotalTime.TotalMilliseconds);
                 thread.Add(id);
+                thread.Add(time);
 
                 foreach (var node in threadNodes[threadId].MethodNodesList)
                 {

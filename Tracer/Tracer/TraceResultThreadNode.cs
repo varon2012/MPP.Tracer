@@ -13,8 +13,12 @@ namespace Tracer
         private Stack<TraceResultMethodNode> methodNodesStack;
         public List<TraceResultMethodNode> MethodNodesList { get; private set; }
 
+        public TimeSpan TotalTime { get; private set; }
+
         public TraceResultThreadNode()
         {
+            this.TotalTime = new TimeSpan();
+
             this.methodNodesStack = new Stack<TraceResultMethodNode>();
             this.MethodNodesList = new List<TraceResultMethodNode>();
 
@@ -55,6 +59,8 @@ namespace Tracer
             else
             {
                 this.currentMethodNode = null;
+
+                this.TotalTime += finishNode.TotalTime;
             }
         }
     }

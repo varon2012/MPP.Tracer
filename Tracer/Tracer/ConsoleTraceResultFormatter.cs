@@ -12,6 +12,8 @@ namespace Tracer
             foreach (var threadId in threadNodes.Keys)
             {
                 Console.WriteLine("Thread ID: {0}", threadId);
+                Console.WriteLine("Time (ms): {0}",
+                    threadNodes[threadId].TotalTime.TotalMilliseconds);
 
                 foreach (var node in threadNodes[threadId].MethodNodesList)
                 {
