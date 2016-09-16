@@ -15,11 +15,10 @@ namespace TracerTest
         {
             TestClass test = new TestClass();
             test.method1();
-            test.method2();
-            test.method1();
+            test.method3();
             TraceResult result = tracer.GetTraceResult();
-            ConsoleFormatter formatter = new ConsoleFormatter();
-            String formatResult = formatter.Format(result);
+            IFormatter formatter = new XMLFormatter();
+            string formatResult = formatter.Format(result);
             Console.WriteLine(formatResult);
             Console.ReadLine();
 
@@ -34,7 +33,7 @@ namespace TracerTest
         {
             tracer.StartTrace();
                 longMethod();
-                method2();
+                method3();
             tracer.StopTrace();
         }
         private void method2()
@@ -49,6 +48,7 @@ namespace TracerTest
         {
             tracer.StartTrace();
             longMethod();
+            method4();
             tracer.StopTrace();
         }
         private void method4()

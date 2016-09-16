@@ -41,6 +41,12 @@ namespace MPPTracer.Format
             NestedMethodsVisited = false;
         }
 
+        public bool MoveNext()
+        {
+            currentDescriptor = getNextDescriptor();
+            return (currentDescriptor != null);
+        }
+
         private MethodDescriptor getNextDescriptor()
         {
             if (StackIsEmpty())
@@ -117,12 +123,6 @@ namespace MPPTracer.Format
         public void Dispose()
         {
             
-        }
-
-        public bool MoveNext()
-        {
-            currentDescriptor = getNextDescriptor();
-            return (currentDescriptor != null);
         }
 
         public void Reset()

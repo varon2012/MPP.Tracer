@@ -42,12 +42,16 @@ namespace MPPTracer.Tree
 
         public MethodNode GetFirstNestedMethod()
         {
+            if (NestedMethods.Count == 0)
+                return null;
             return NestedMethods[0];
         }
 
         public MethodNode GetNextAddedMethod()
         {
             int methodIndex = ParentNode.NestedMethods.IndexOf((MethodNode)this);
+            if (methodIndex == ParentNode.NestedMethods.Count - 1)
+                return null;
             return ParentNode.NestedMethods[methodIndex + 1];
         }
 
