@@ -8,7 +8,7 @@ namespace Tracer
 {
     public sealed class TraceResult
     {
-        public Dictionary<int, TraceResultThreadNode> ThreadNodes { get; private set; }
+        internal Dictionary<int, TraceResultThreadNode> ThreadNodes { get; private set; }
 
         public TraceResult()
         {

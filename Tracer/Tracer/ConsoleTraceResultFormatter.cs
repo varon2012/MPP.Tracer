@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tracer
 {
-    public class ConsoleTraceResultFormatter : ITraceResultFormatter
+    public sealed class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
         private string baseIndent = "\t";
         public void Format(TraceResult traceResult)

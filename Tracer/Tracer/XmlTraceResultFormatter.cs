@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class XmlTraceResultFormatter : ITraceResultFormatter
+    public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
         private string fileName;
 

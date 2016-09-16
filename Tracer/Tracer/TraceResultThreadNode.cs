@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public sealed class TraceResultThreadNode
+    internal sealed class TraceResultThreadNode
     {
         private TraceResultMethodNode currentMethodNode;
 
