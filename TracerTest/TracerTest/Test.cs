@@ -14,11 +14,28 @@ namespace TracerTest
         static Tracer tracer = Tracer.Instance;
         static void Main(string[] args)
         {
+            if(args.Length != 1)
+            {
+                Console.Error.WriteLine("Invalid number of arguments.\nPlease, enter formatter type\nconsole - console formatter\nxml - xml fomatter");
+                Console.ReadLine();
+                return;
+            }
+            IFormatter formatter;
+            switch (args[0])
+            {
+                case "console": formatter = new ConsoleFormatter(); break;
+                case "xml": formatter = new XMLFormatter(); break;
+                default:
+                    Console.Error.WriteLine("Unknown formatter type\nconsole - console formatter\nxml - xml fomatter");
+                    Console.ReadLine();
+                    return;
+            }
+
             Test test = new Test();
-            test.startTesting();
+            test.startTesting(formatter);
         }
 
-        public void startTesting()
+        public void startTesting(IFormatter formatter)
         {
             List<Thread> threadList = new List<Thread>();
             for(int i = 0; i < 10; i++)
@@ -35,7 +52,6 @@ namespace TracerTest
             }
 
             TraceResult result = tracer.GetTraceResult();
-            IFormatter formatter = new XMLFormatter();
             string formatResult = formatter.Format(result);
             Console.WriteLine(formatResult);
             Console.ReadLine();
@@ -43,7 +59,7 @@ namespace TracerTest
 
         private void longMethod()
         {
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
         }
 
         private void method1()
