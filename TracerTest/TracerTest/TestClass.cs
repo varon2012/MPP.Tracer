@@ -34,6 +34,7 @@ namespace TracerTest
             tracer.StartTrace();
                 longMethod();
                 method3();
+                method2();
             tracer.StopTrace();
         }
         private void method2()
@@ -48,6 +49,7 @@ namespace TracerTest
         {
             tracer.StartTrace();
             longMethod();
+            method4();
             method4();
             tracer.StopTrace();
         }

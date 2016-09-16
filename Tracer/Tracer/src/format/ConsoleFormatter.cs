@@ -7,7 +7,7 @@ namespace MPPTracer.Format
     public class ConsoleFormatter : IFormatter
     {
 
-        private const string TAB = "    ";
+        private const string TAB = "   ";
         private const string THREAD_TAG = "thread id={0}\n";
         private const string METHOD_TAG = "method name={0} time={1}ms class={2} params={3}\n";
 
@@ -20,33 +20,36 @@ namespace MPPTracer.Format
                 int threadID = enumerator.Current.Key;
                 ThreadNode thread = enumerator.Current.Value;
                 result += string.Format(THREAD_TAG, threadID);
-                result += CreateMethodTree(thread.GetFirstNestedMethod());
+                result += CreateMethodTree(thread.GetFirstNestedMethod(), 0);
             }
 
             return result;
 
         }
 
-        private string CreateMethodTree(MethodNode rootMethod)
+        private string CreateMethodTree(MethodNode rootMethod, int nestingLevel)
         {
-            string methodTree = "";
-            IEnumerator<KeyValuePair<int, MethodDescriptor>> enumerator = rootMethod.GetEnumerator();
-            while (enumerator.MoveNext())
+            string tagList = "";
+            while (rootMethod != null)
             {
-                int methodLevel = enumerator.Current.Key;
-                MethodDescriptor descriptor = enumerator.Current.Value; ;
-                string methodLine = string.Format(METHOD_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
-                methodTree += CreateIndent(methodLevel) + methodLine;
+                MethodDescriptor descriptor = rootMethod.Descriptor;
+                string indent = CreateIndent(nestingLevel);
+
+                string methodTag = indent + string.Format(METHOD_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
+                methodTag += CreateMethodTree(rootMethod.GetFirstNestedMethod(), nestingLevel + 1);
+                tagList += methodTag;
+                rootMethod = rootMethod.GetNextAddedMethod();
             }
-            return methodTree;
+
+            return tagList;
         }
 
         private string CreateIndent(int nestingLevel)
         {
-            string indent = TAB;
+            string indent = "";
             for(int i = 0; i < nestingLevel; i++)
             {
-                indent += TAB;
+                indent += '|'+TAB;
             }
             return indent;
         }
