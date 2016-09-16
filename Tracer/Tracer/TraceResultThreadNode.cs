@@ -28,9 +28,14 @@ namespace Tracer
                 TraceResultMethodNode(methodName, className, paramCount);
 
             if (this.currentMethodNode == null)
+            {
                 this.MethodNodesList.Add(newNode);
+            }
             else
+            {
                 this.currentMethodNode.AddInsertedNode(newNode);
+            }
+
             this.methodNodesStack.Push(newNode);
 
             newNode.StartNode();
@@ -44,9 +49,13 @@ namespace Tracer
             finishNode.FinishNode();
 
             if (this.methodNodesStack.Count > 0)
+            {
                 this.currentMethodNode = this.methodNodesStack.Peek();
+            }
             else
+            {
                 this.currentMethodNode = null;
+            }
         }
     }
 }
