@@ -18,13 +18,15 @@ namespace Tracer
         public void StartNode(int threadId, string methodName, 
             string className, int paramCount)
         {
-            if (!this.ThreadNodes.Keys.Contains(threadId))
+            TraceResultThreadNode threadNode;
+
+            if (!this.ThreadNodes.TryGetValue(threadId, out threadNode))
             {
-                TraceResultThreadNode threadNode = new TraceResultThreadNode();
+                threadNode = new TraceResultThreadNode();
                 this.ThreadNodes.Add(threadId, threadNode);
             }
 
-            this.ThreadNodes[threadId].StartNode(methodName, className, paramCount);
+            threadNode.StartNode(methodName, className, paramCount);
         }
 
         public void FinishNode(int threadId)
