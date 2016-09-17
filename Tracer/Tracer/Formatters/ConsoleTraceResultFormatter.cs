@@ -15,10 +15,10 @@ namespace Tracer.Formatters
         {
             TraceResult resultToModify = (TraceResult)traceResult.Clone();
             AddMethodNesting(resultToModify);
-            PrintThread(resultToModify, 0);           
+            Print(resultToModify, 0);           
         }
 
-        private void PrintThread(TraceResult traceResult, int depth)
+        private void Print(TraceResult traceResult, int depth)
         {
             depth++;
             foreach (TraceResultItem analyzedItem in traceResult)
@@ -27,7 +27,7 @@ namespace Tracer.Formatters
                     Console.WriteLine("\nПоток №{0}",analyzedItem.threadId);
                 Console.WriteLine("{0}|\n{0}{1}",Tabs(depth), analyzedItem.ToString());
                 if (analyzedItem.children != null)
-                    PrintThread(analyzedItem.children, depth);
+                    Print(analyzedItem.children, depth);
             }
             
         }

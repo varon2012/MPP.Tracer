@@ -45,9 +45,9 @@ namespace Tracer
         {
             analyzedItems.Remove(item);
         }
-        public TraceResultItem Find(string methodName, int threadId)
+        public TraceResultItem Find(string methodName, int threadId, int callDepth)
         {
-            return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId));
+            return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId)&&(TraceResultItem.callDepth == callDepth));
         }
 
         public void MarkThread(int id)

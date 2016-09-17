@@ -13,11 +13,6 @@ namespace Tracer
 
         public static Tracer Instance { get { return lazy.Value; } }
         private static readonly Lazy<Tracer> lazy = new Lazy<Tracer>(() => new Tracer());
-        private struct currentFrame
-        {
-            StackFrame Instance;
-            int depth;
-        } 
         private Tracer()
         {
         }
@@ -44,7 +39,8 @@ namespace Tracer
 
                 string currentMethodName = stackFrame.Value.GetMethod().Name;
                 int currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                TraceResultItem analyzedItem = result.Find(currentMethodName, currentThreadId);
+                int currentDepth = stackFrame.Key;
+                TraceResultItem analyzedItem = result.Find(currentMethodName, currentThreadId, stackFrame.Key+1);
 
                 analyzedItem.StopRuntimeMeasuring();
             }
