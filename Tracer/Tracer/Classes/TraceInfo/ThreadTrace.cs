@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Trace.Classes.Information
+namespace Trace.Classes.TraceInfo
 {
-    public class ThreadInfo
+    public class ThreadTrace
     {
-        private readonly Stack<MethodInfo> _stackOfMethods;
-        public List<MethodInfo> AllMethodsInfo { get; }
+        private readonly Stack<MethodTrace> _stackOfMethods;
+        public List<MethodTrace> AllMethodsInfo { get; }
 
-        public ThreadInfo()
+        public ThreadTrace()
         {
-            _stackOfMethods = new Stack<MethodInfo>();
-            AllMethodsInfo = new List<MethodInfo>();
+            _stackOfMethods = new Stack<MethodTrace>();
+            AllMethodsInfo = new List<MethodTrace>();
         }
 
-        public void StartListenMethod(MethodInfo methodInfo)
+        public void StartListenMethod(MethodTrace methodInfo)
         {
             if (_stackOfMethods.Count == 0)
             {

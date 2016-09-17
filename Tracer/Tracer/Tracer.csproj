@@ -42,8 +42,9 @@
   <ItemGroup>
     <Compile Include="Classes\Formatters\ConsoleTraceResultFormatter.cs" />
     <Compile Include="Classes\Formatters\XmlTraceResultFormatter.cs" />
-    <Compile Include="Classes\Information\MethodInfo.cs" />
-    <Compile Include="Classes\Information\ThreadInfo.cs" />
+    <Compile Include="Classes\TraceInfo\MethodMetadata.cs" />
+    <Compile Include="Classes\TraceInfo\MethodTrace.cs" />
+    <Compile Include="Classes\TraceInfo\ThreadTrace.cs" />
     <Compile Include="Interfaces\ITracer.cs" />
     <Compile Include="Classes\Tracer.cs" />
     <Compile Include="Classes\TraceResult.cs" />

@@ -2,26 +2,22 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Trace.Classes.Information
+namespace Trace.Classes.TraceInfo
 {
-    public class MethodInfo
+    public class MethodTrace
     {
-        public string Name { get; }
-        public string ClassName { get; }
-        public int CountParameters { get; }
-        public List<MethodInfo> NestedMethods { get; }
+        public List<MethodTrace> NestedMethods { get; }
+        public MethodMetadata Metadata;
         private Stopwatch _stopwatch;
 
-        public MethodInfo(MethodBase methodBase)
+        public MethodTrace(MethodBase methodBase)
         {
             CreateStopwatch();
-            Name = methodBase.Name;
-            ClassName = methodBase.DeclaringType?.ToString();
-            CountParameters = methodBase.GetParameters().Length;
-            NestedMethods = new List<MethodInfo>();
+            Metadata = new MethodMetadata(methodBase);
+            NestedMethods = new List<MethodTrace>();
         }
 
-        public void AddNestedMethod(MethodInfo nestedMethod)
+        public void AddNestedMethod(MethodTrace nestedMethod)
         {
             NestedMethods.Add(nestedMethod);
         }

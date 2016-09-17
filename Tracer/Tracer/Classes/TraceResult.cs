@@ -1,29 +1,28 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using Trace.Classes.Information;
-using MethodInfo = Trace.Classes.Information.MethodInfo;
+using Trace.Classes.TraceInfo;
 
 namespace Trace.Classes
 {
     public class TraceResult
     {
-        private readonly ConcurrentDictionary<int, ThreadInfo> _threadsInfo;
+        private readonly ConcurrentDictionary<int, ThreadTrace> _threadsInfo;
 
         public TraceResult()
         {
-            _threadsInfo = new ConcurrentDictionary<int, ThreadInfo>();
+            _threadsInfo = new ConcurrentDictionary<int, ThreadTrace>();
         }
 
         public void StartListenThread(int idThread, MethodBase methodBase)
         {
-            var threadInfo = _threadsInfo.GetOrAdd(idThread, new ThreadInfo());
-            threadInfo.StartListenMethod( new MethodInfo(methodBase));
+            var threadInfo = _threadsInfo.GetOrAdd(idThread, new ThreadTrace());
+            threadInfo.StartListenMethod( new MethodTrace(methodBase));
         }
 
         public void StopListenThread(int idThread)
         {
-            ThreadInfo threadInfo;
+            ThreadTrace threadInfo;
 
             if (_threadsInfo.TryGetValue(idThread, out threadInfo))
             {
@@ -31,6 +30,6 @@ namespace Trace.Classes
             }
         }
 
-        public IEnumerable<KeyValuePair<int, ThreadInfo>> ThreadsInfo => _threadsInfo;
+        public IEnumerable<KeyValuePair<int, ThreadTrace>> ThreadsInfo => _threadsInfo;
     }
 }
