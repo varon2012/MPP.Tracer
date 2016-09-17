@@ -53,6 +53,7 @@ namespace Tracer.Formatters
             int childThreadId = Int32.Parse(childElement.Attribute("tid").Value);
             if (childDepth > parentDepth && childThreadId == parentThreadId)
             {
+                childElement.Attribute("time").Value += 's';
                 parentElement.Add(childElement);
                 xmlTraceResult.Remove(childElement);
 
