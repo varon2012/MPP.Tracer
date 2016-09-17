@@ -8,15 +8,18 @@ namespace Tracer
 {
     public class TraceResultItem
     {
+        public TraceResult children;
+
         public double time { get; set; }
         private Stopwatch timer { get; set; }
         public string className { get; set; }
         public string methodName { get; set; }
+        public string parent { get; set; }
         public int parametersAmount { get; set; }
         public int threadId { get; set; }
         public int callDepth { get; set; }
 
-        public TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount, int threadId, int callDepth)
+        public TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount, int threadId, int callDepth, string parent)
         {
             this.methodName = methodName;
             this.parametersAmount = parametersAmount;
@@ -24,6 +27,7 @@ namespace Tracer
             this.timer = timer;
             this.threadId = threadId;
             this.callDepth = callDepth;
+            this.parent = parent;
             try
             {
                 timer.Start();
@@ -34,16 +38,22 @@ namespace Tracer
             }
         }
 
-
         public void StopRuntimeMeasuring()
         {
             timer.Stop();
             time = Math.Round(timer.Elapsed.TotalSeconds, 3);
         }
-        
+
+        public void AddChild(TraceResultItem child)
+        {
+            if (children == null)
+                children = new TraceResult();
+            children.Add(child);
+        }        
         public override string ToString()
         {
-            return string.Format("Поток {0}: {1}->{2}(параметры: {3}): {4} сек.", threadId, className, methodName, parametersAmount, time );
+            return string.Format("{0}->{1}(параметры: {2}): {3} сек.",  className, methodName, parametersAmount, time );
         }
+
     }
 }

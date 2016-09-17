@@ -10,22 +10,63 @@ namespace Tracer.Formatters
 {
     public class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
+
         public void Format(TraceResult traceResult)
         {
-            ITraceResultFormatter formatter = new XmlTraceResultFormatter();
-            formatter.Format(traceResult);
-
-            PrintThread(traceResult);           
+            TraceResult resultToModify = (TraceResult)traceResult.Clone();
+            AddMethodNesting(resultToModify);
+            PrintThread(resultToModify, 0);           
         }
 
-        private void PrintThread(TraceResult traceResult)
+        private void PrintThread(TraceResult traceResult, int depth)
         {
-            traceResult.Sort();
+            depth++;
             foreach (TraceResultItem analyzedItem in traceResult)
             {
-                Console.WriteLine(analyzedItem.ToString());
+                if (depth == 1)
+                    Console.WriteLine("\nПоток №{0}",analyzedItem.threadId);
+                Console.WriteLine("{0}|\n{0}{1}",Tabs(depth), analyzedItem.ToString());
+                if (analyzedItem.children != null)
+                    PrintThread(analyzedItem.children, depth);
+            }
+            
+        }
+        static string Tabs(int n)
+        {
+            return new String('\t', n);
+        }
+
+        private void AddMethodNesting(TraceResult traceResult)
+        {
+            traceResult.SortByThread();
+
+            for (int callDepth = traceResult.callDepth - 1; callDepth >= 0; callDepth--)
+            {
+                foreach (TraceResultItem parentElement in traceResult.ToArray())
+                {
+                    NestChildren(parentElement, callDepth, traceResult);
+                }
             }
         }
 
+        private void NestChildren(TraceResultItem parentElement, int callDepth, TraceResult traceResult)
+        {
+            if (callDepth == parentElement.callDepth)
+            {
+                foreach (TraceResultItem childElement in traceResult.ToArray())
+                {
+                    ProcessPossibleChild(childElement, parentElement, traceResult);
+                }
+            }
+        }
+
+        private void ProcessPossibleChild(TraceResultItem childElement, TraceResultItem parentElement, TraceResult traceResult)
+        {
+            if (childElement.callDepth > parentElement.callDepth && childElement.threadId == parentElement.threadId && parentElement.methodName == childElement.parent)
+            {
+                parentElement.AddChild(childElement);
+                traceResult.Remove(childElement);
+            }
+        }
     }
 }

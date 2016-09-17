@@ -66,10 +66,15 @@ namespace Tracer
             var parametersAmount = method.GetParameters().Length;
             var className = method.ReflectedType.Name;
             var threadId = Thread.CurrentThread.ManagedThreadId;
-
-            var newAnalyzedItem = new TraceResultItem(new Stopwatch(), className, method.Name, parametersAmount, threadId, stackFrame.Key);
+            var parentMethod = GetParentMethodName();
+            var newAnalyzedItem = new TraceResultItem(new Stopwatch(), className, method.Name, parametersAmount, threadId, stackFrame.Key, parentMethod);
             UpdateTraceResult(newAnalyzedItem, threadId);
             UpdateCallDepth(stackFrame.Key);
+        }
+
+        string GetParentMethodName()
+        {
+            return stackTrace.GetFrame(4).GetMethod().Name;
         }
 
         private KeyValuePair<int, StackFrame> ResetStackFrame(int depth)

@@ -27,7 +27,7 @@ namespace Tester
             fourthThread.Start();
 
             RunCycle(150);
-            RunAnotherCycle(400, 2);
+            RunOuterCycle(400, 2);
 
             tracer.StopTrace();
 
@@ -46,10 +46,10 @@ namespace Tester
 
             tracer.StopTrace();
         }
-        private void RunAnotherCycle(int sleepTime, int multiplier)
+        private void RunOuterCycle(int sleepTime, int multiplier)
         {
             tracer.StartTrace();
-            Thread.Sleep(sleepTime*multiplier);
+            RunCycle(sleepTime * multiplier);
             tracer.StopTrace();
         }
         private void RunThread()
@@ -58,7 +58,7 @@ namespace Tester
         }
         private void RunLongThread()
         {
-            RunAnotherCycle(500,2);
+            RunOuterCycle(500,2);
         }
 
         public void PrintTestResults()

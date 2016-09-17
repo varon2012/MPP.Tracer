@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class TraceResult : IEnumerable
+    public class TraceResult : IEnumerable, ICloneable
     {
         private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
         public List<int> threadIds { get; } = new List<int>();
@@ -41,6 +41,10 @@ namespace Tracer
         {
             analyzedItems.Add(item);
         }
+        public void Remove(TraceResultItem item)
+        {
+            analyzedItems.Remove(item);
+        }
         public TraceResultItem Find(string methodName, int threadId)
         {
             return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId));
@@ -52,10 +56,20 @@ namespace Tracer
                 threadIds.Add(id);
         }
 
-        public void Sort()
+        public void SortByThread()
         {
             analyzedItems.Sort((x, y) => x.threadId.CompareTo(y.threadId));
         }
 
+        public TraceResultItem[] ToArray()
+        {
+            return analyzedItems.ToArray();
+        }
+
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
