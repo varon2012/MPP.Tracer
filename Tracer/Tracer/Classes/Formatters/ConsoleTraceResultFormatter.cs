@@ -25,19 +25,24 @@ namespace Trace.Classes.Formatters
 
         private void WriteMethodInfo(MethodTrace methodInfo, int nestingLevel = 0)
         {
-            var nesting = "";
+            var nesting = GetTabs(nestingLevel);
 
-            for (var i = 0; i < nestingLevel; i++)
-                nesting += "\t";
-
-            Console.WriteLine($"{nesting}Method name: {methodInfo.metadata.Name}; time: {methodInfo.GetExecutionTime()}; " +
-                               $" class: {methodInfo.metadata.ClassName}; params: {methodInfo.metadata.CountParameters}");
+            Console.WriteLine($"{nesting}Method name: {methodInfo.Metadata.Name}; time: {methodInfo.GetExecutionTime()}; " +
+                               $" class: {methodInfo.Metadata.ClassName}; params: {methodInfo.Metadata.CountParameters}");
 
             foreach (var nestedMethod in methodInfo.NestedMethods)
             {
                 WriteMethodInfo(nestedMethod, nestingLevel + 1);
             }
+        }
 
+        private string GetTabs(int countOfTabs)
+        {
+            var tabs = "";
+            for (int i = 0; i < countOfTabs; i++)
+                tabs += "\t";
+
+            return tabs;
         }
     }
 }

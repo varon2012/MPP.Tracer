@@ -10,6 +10,7 @@ namespace Trace.Classes.TraceInfo
 
         public MethodMetadata(MethodBase methodBase)
         {
+            Name = methodBase.Name;
             ClassName = methodBase.DeclaringType?.ToString();
             CountParameters = methodBase.GetParameters().Length;
         }
