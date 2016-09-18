@@ -1,17 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Tracer
 {
     public class ThreadTraceInfo
     {
-        private List<MethodTraceInfo> methodsTraceInfo;
+        private readonly Stack<MethodTraceInfo> callStack;
 
         public ThreadTraceInfo()
         {
-            methodsTraceInfo = new List<MethodTraceInfo>();
+            callStack = new Stack<MethodTraceInfo>();
+            MethodsTraceInfo = new List<MethodTraceInfo>();
         }
 
-        public long Duration { get; set; }
-        public List<MethodTraceInfo> MethodsTraceInfo => methodsTraceInfo;
+        public long Duration => MethodsTraceInfo.Sum(methodTraceInfo => methodTraceInfo.Duration);
+        public List<MethodTraceInfo> MethodsTraceInfo { get; }
+
+        public void StartMethodTrace(MethodTraceInfo methodTraceInfo)
+        {
+            if (callStack.Count == 0)
+                MethodsTraceInfo.Add(methodTraceInfo);
+            else
+                callStack.Peek().AddNestedMethod(methodTraceInfo);
+            callStack.Push(methodTraceInfo);
+        }
+
+        public void StopMethodTrace()
+        {
+            if (callStack.Count <= 0) return;
+            callStack.Peek().StopTrace();
+            callStack.Pop();
+        }
     }
 }
