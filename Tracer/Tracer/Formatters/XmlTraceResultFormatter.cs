@@ -11,12 +11,7 @@ namespace Tracer.Formatters
     {
         private string resultFilePath;
 
-        public XmlTraceResultFormatter()
-        {
-            resultFilePath = "TraceResult.xml";
-        }
-
-        public XmlTraceResultFormatter(string resultFilePath)
+        public XmlTraceResultFormatter(string resultFilePath = "TraceResult.xml")
         {
             this.resultFilePath = resultFilePath;
         }

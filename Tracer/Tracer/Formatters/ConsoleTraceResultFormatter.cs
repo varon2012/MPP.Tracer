@@ -24,14 +24,14 @@ namespace Tracer.Formatters
             {
                 if (depth == 1)
                     Console.WriteLine("\nПоток №{0}",analyzedItem.threadId);
-                Console.WriteLine("{0}|\n{0}{1}",addTabs(depth), analyzedItem.ToString());
+                Console.WriteLine("{0}|\n{0}{1}", AddTabs(depth), analyzedItem.ToString());
                 if (analyzedItem.children != null)
                     Print(analyzedItem.children, depth);
             }
             
         }
 
-        private string addTabs(int n)
+        private string AddTabs(int n)
         {
             return new String('\t', n);
         }
