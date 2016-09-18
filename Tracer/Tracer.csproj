@@ -42,9 +42,14 @@
   <ItemGroup>
     <Compile Include="ITraceResultFormatter.cs" />
     <Compile Include="ITracer.cs" />
+    <Compile Include="MethodInfo.cs" />
+    <Compile Include="PlainTextTraceResultFormatter.cs" />
+    <Compile Include="ThreadInfo.cs" />
+    <Compile Include="ThreadInfoList.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceResult.cs" />
+    <Compile Include="XmlTraceResultFormatter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tracer;
-namespace TracerTest
+
+namespace Tracer
 {
-    public class Program
+    public class XmlTraceResultFormatter : ITraceResultFormatter
     {
-        internal static void Main(string[] args)
+        public void Format(TraceResult traceResult)
         {
-            
         }
     }
 }
