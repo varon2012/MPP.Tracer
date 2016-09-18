@@ -61,7 +61,7 @@ namespace Tester
             RunOuterCycle(500,2);
         }
 
-        public void PrintTestResults()
+        internal void PrintTestResults()
         {
             var traceResult = tracer.GetTraceResult();
 

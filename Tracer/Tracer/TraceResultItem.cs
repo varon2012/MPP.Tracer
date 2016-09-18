@@ -8,18 +8,20 @@ namespace Tracer
 {
     public class TraceResultItem
     {
-        public TraceResult children;
+        internal TraceResult children;
 
-        public double time { get; set; }
         private Stopwatch timer { get; set; }
-        public string className { get; set; }
-        public string methodName { get; set; }
-        public string parent { get; set; }
-        public int parametersAmount { get; set; }
-        public int threadId { get; set; }
-        public int callDepth { get; set; }
 
-        public TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount, int threadId, int callDepth, string parent)
+        internal double time { get; set; }
+        internal string className { get; set; }
+        internal string methodName { get; set; }
+        internal string parent { get; set; }
+        internal int parametersAmount { get; set; }
+
+        internal int threadId { get; set; }
+        internal int callDepth { get; set; }        
+
+        internal TraceResultItem(Stopwatch timer, string className, string methodName, int parametersAmount, int threadId, int callDepth, string parent)
         {
             this.methodName = methodName;
             this.parametersAmount = parametersAmount;
@@ -38,13 +40,13 @@ namespace Tracer
             }
         }
 
-        public void StopRuntimeMeasuring()
+        internal void StopRuntimeMeasuring()
         {
             timer.Stop();
             time = Math.Round(timer.Elapsed.TotalSeconds, 3);
         }
 
-        public void AddChild(TraceResultItem child)
+        internal void AddChild(TraceResultItem child)
         {
             if (children == null)
                 children = new TraceResult();

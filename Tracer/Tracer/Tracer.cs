@@ -68,7 +68,7 @@ namespace Tracer
             UpdateCallDepth(stackFrame.Key);
         }
 
-        string GetParentMethodName()
+        private string GetParentMethodName()
         {
             return stackTrace.GetFrame(4).GetMethod().Name;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tester
 {
-    interface ITest
+    internal interface ITest
     {
         void Run();
         void PrintTestResults();

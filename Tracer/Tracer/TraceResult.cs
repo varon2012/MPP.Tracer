@@ -10,9 +10,9 @@ namespace Tracer
     public class TraceResult : IEnumerable, ICloneable
     {
         private List<TraceResultItem> analyzedItems { get; set; } = new List<TraceResultItem>();
-        public List<int> threadIds { get; } = new List<int>();
-        public int callDepth { get; set; }
-        public int Count
+        internal List<int> threadIds { get; } = new List<int>();
+        internal int callDepth { get; set; }
+        internal int Count
         {
             get
             {
@@ -25,7 +25,7 @@ namespace Tracer
             return analyzedItems.GetEnumerator();
         }
 
-        public TraceResultItem this[int index]
+        internal TraceResultItem this[int index]
         {
             get
             {
@@ -37,31 +37,31 @@ namespace Tracer
             }   
 
         }
-        public void Add(TraceResultItem item)
+        internal void Add(TraceResultItem item)
         {
             analyzedItems.Add(item);
         }
-        public void Remove(TraceResultItem item)
+        internal void Remove(TraceResultItem item)
         {
             analyzedItems.Remove(item);
         }
-        public TraceResultItem Find(string methodName, int threadId, int callDepth)
+        internal TraceResultItem Find(string methodName, int threadId, int callDepth)
         {
             return analyzedItems.Find(TraceResultItem => (TraceResultItem.methodName == methodName)&&(TraceResultItem.threadId == threadId)&&(TraceResultItem.callDepth == callDepth));
         }
 
-        public void MarkThread(int id)
+        internal void MarkThread(int id)
         {
             if (!threadIds.Contains(id))
                 threadIds.Add(id);
         }
 
-        public void SortByThread()
+        internal void SortByThread()
         {
             analyzedItems.Sort((x, y) => x.threadId.CompareTo(y.threadId));
         }
 
-        public TraceResultItem[] ToArray()
+        internal TraceResultItem[] ToArray()
         {
             return analyzedItems.ToArray();
         }
