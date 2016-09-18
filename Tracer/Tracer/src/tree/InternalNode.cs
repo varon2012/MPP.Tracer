@@ -1,19 +1,16 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-
 
 namespace MPPTracer.Tree
 {
-    public abstract class InternalNode : INode
+    public abstract class InternalNode : INode, IEnumerable<MethodNode>
     {
         public abstract void StopLastTrace(long endTime);
         private List<MethodNode> NestedMethods { get;}
-        private InternalNode ParentNode { get; }
 
-        public InternalNode(InternalNode parent)
+        public InternalNode()
         {
             NestedMethods = new List<MethodNode>();
-            ParentNode = parent;
         }
 
         public void AddNestedTrace(long startTime, MethodDescriptor descriptor)
@@ -29,35 +26,9 @@ namespace MPPTracer.Tree
             }
         }
 
-        private bool IsLastAddedMethod(InternalNode method)
-        {
-            int methodIndex = NestedMethods.IndexOf((MethodNode)method);
-            return (methodIndex == NestedMethods.Count - 1);
-        }
-
-        public bool IsLastAtLevel()
-        {
-            return ParentNode.IsLastAddedMethod(this);
-        }
-
-        public MethodNode GetFirstNestedMethod()
-        {
-            if (NestedMethods.Count == 0)
-                return null;
-            return NestedMethods[0];
-        }
-
-        public MethodNode GetNextAddedMethod()
-        {
-            int methodIndex = ParentNode.NestedMethods.IndexOf((MethodNode)this);
-            if (methodIndex == ParentNode.NestedMethods.Count - 1)
-                return null;
-            return ParentNode.NestedMethods[methodIndex + 1];
-        }
-
         private void AddNestedMethod(long startTime, MethodDescriptor descriptor)
         {
-            MethodNode method = new MethodNode(startTime, descriptor, this);
+            MethodNode method = new MethodNode(startTime, descriptor);
             NestedMethods.Add(method);
         }
 
@@ -74,6 +45,16 @@ namespace MPPTracer.Tree
         protected bool NestedTracingsFinished()
         {
             return GetLastAddedMethod().TracingFinished;
+        }
+
+        public IEnumerator<MethodNode> GetEnumerator()
+        {
+            return NestedMethods.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

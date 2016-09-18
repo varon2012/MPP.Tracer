@@ -1,12 +1,9 @@
-﻿using System;
-
-
-namespace MPPTracer
+﻿namespace MPPTracer
 {
     public class MethodDescriptor
     {
-        public String Name { get; }
-        public String ClassName { get; }
+        public string Name { get; }
+        public string ClassName { get; }
         public int ParamsNumber { get; }
         private long traceTime;
         public long TraceTime
@@ -17,11 +14,11 @@ namespace MPPTracer
             }
             set
             {
-                traceTime = (traceTime == -1) ? value : this.traceTime;
+                traceTime = (traceTime == -1) ? value : traceTime;
             }
         }
 
-        public MethodDescriptor(String name, String className, int paramsNumber)
+        public MethodDescriptor(string name, string className, int paramsNumber)
         {
             Name = name;
             ClassName = className;

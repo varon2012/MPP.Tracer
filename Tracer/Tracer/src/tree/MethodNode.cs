@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace MPPTracer.Tree
+﻿namespace MPPTracer.Tree
 {
     public class MethodNode : InternalNode
     {
         public readonly long startTime;
         public MethodDescriptor Descriptor { get;}
 
-        public Boolean TracingFinished
+        public bool TracingFinished
         {
             get
             {
@@ -15,7 +13,7 @@ namespace MPPTracer.Tree
             }
         }
 
-        public MethodNode(long startTime, MethodDescriptor descriptor, InternalNode parent) : base(parent)
+        public MethodNode(long startTime, MethodDescriptor descriptor)
         {
             Descriptor = descriptor;
             this.startTime = startTime;

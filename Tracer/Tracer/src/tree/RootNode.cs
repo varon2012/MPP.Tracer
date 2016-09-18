@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
-
 
 namespace MPPTracer.Tree
 {
-    public class RootNode : INode
+    public class RootNode : INode, IEnumerable<ThreadNode>
     {
         private Dictionary<int, ThreadNode> ThreadTable { get; }
-        private static object syncRoot = new object();
+        private readonly static object syncRoot = new object();
 
         internal RootNode()
         {
@@ -27,12 +27,6 @@ namespace MPPTracer.Tree
             thread.StopLastTrace(endTime);
         }
 
-        public IEnumerator<KeyValuePair<int,ThreadNode>> GetThreadEnumerator()
-        {
-            return ThreadTable.GetEnumerator();
-        }
-
-
         private ThreadNode CurrentThreadNode()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -41,15 +35,30 @@ namespace MPPTracer.Tree
                 return ThreadTable[threadId];
             }
             
-            ThreadNode thread = new ThreadNode();
+            ThreadNode thread = new ThreadNode(threadId);
             lock (syncRoot)
             {
                 ThreadTable.Add(threadId, thread);
             }
-            
            
             return thread;
         }
 
+        public IEnumerator<ThreadNode> GetEnumerator()
+        {
+            IEnumerator<ThreadNode> enumerator;
+            lock (syncRoot)
+            {
+                List<ThreadNode> oldList = new List<ThreadNode>(ThreadTable.Values);
+                List<ThreadNode> newList = oldList.GetRange(0, oldList.Count);
+                enumerator = newList.GetEnumerator();
+            }
+            return enumerator;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -1,12 +1,10 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MPPTracer.Tree;
 using System.Collections;
-using System;
 
 namespace MPPTracer
 {
-    public class TraceResult : IEnumerable<KeyValuePair<int, ThreadNode>>
+    public class TraceResult : IEnumerable<ThreadNode>
     {
         private RootNode Root { get; }
 
@@ -15,15 +13,15 @@ namespace MPPTracer
             Root = root;
         }
 
-        public IEnumerator<KeyValuePair<int, ThreadNode>> GetEnumerator()
+        public IEnumerator<ThreadNode> GetEnumerator()
         {
-            return Root.GetThreadEnumerator();
+            return Root.GetEnumerator();
             
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

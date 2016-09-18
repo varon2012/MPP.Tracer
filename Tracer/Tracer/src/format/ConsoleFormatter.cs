@@ -1,45 +1,48 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MPPTracer.Tree;
+using System;
 
 namespace MPPTracer.Format
 {
-    public class ConsoleFormatter : Formatter
+    public class ConsoleFormatter : IFormatter
     {
+        private const char Tab = '\t';
+        private string NL = Environment.NewLine;
+        private const string ThreadTag = "thread id={0}";
+        private const string MethodTag = "method name={0} time={1}ms class={2} params={3}";
 
-        private const string THREAD_TAG = "thread id={0}"+NL;
-        private const string METHOD_TAG = "method name={0} time={1}ms class={2} params={3}"+NL;
-
-        public override string Format(TraceResult traceResult)
+        public string Format(TraceResult traceResult)
         {
-            string result = "";
-            IEnumerator<KeyValuePair<int, ThreadNode>> enumerator = traceResult.GetEnumerator();
+            if (traceResult == null)
+            {
+                throw new ArgumentNullException(nameof(traceResult));
+            }
+
+            string result = string.Empty;
+            IEnumerator<ThreadNode> enumerator = traceResult.GetEnumerator();
             while(enumerator.MoveNext())
             {
-                int threadID = enumerator.Current.Key;
-                ThreadNode thread = enumerator.Current.Value;
-                result += string.Format(THREAD_TAG, threadID);
-                result += CreateMethodTree(thread.GetFirstNestedMethod(), 0);
+                ThreadNode thread = enumerator.Current;
+                result += string.Format(ThreadTag, thread.ID) + NL;
+                result += CreateMethodTree(thread.GetEnumerator(), 0)+ NL;
             }
 
             return result;
-
         }
 
-        private string CreateMethodTree(MethodNode rootMethod, int nestingLevel)
+        private string CreateMethodTree(IEnumerator<MethodNode> enumerator, int nestingLevel)
         {
-            string tagList = "";
-            while (rootMethod != null)
+            string indent = new string(Tab, nestingLevel);
+            string tagList = string.Empty;
+            while (enumerator.MoveNext())
             {
-                MethodDescriptor descriptor = rootMethod.Descriptor;
-                string indent = CreateIndent(nestingLevel);
+                MethodNode method = enumerator.Current;
+                MethodDescriptor descriptor = method.Descriptor;
 
-                string methodTag = indent + string.Format(METHOD_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
-                methodTag += CreateMethodTree(rootMethod.GetFirstNestedMethod(), nestingLevel + 1);
+                string methodTag = indent + string.Format(MethodTag, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber) + NL;
+                methodTag += CreateMethodTree(method.GetEnumerator(), nestingLevel + 1);
                 tagList += methodTag;
-                rootMethod = rootMethod.GetNextAddedMethod();
             }
-
             return tagList;
         }
 

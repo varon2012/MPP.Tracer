@@ -8,27 +8,22 @@ namespace MPPTracer
     public class Tracer : ITracer
     {
         private RootNode rootNode;
-        private static volatile Tracer instance;
-        private static object syncRoot = new object();
+        private static readonly Tracer instance;
+
+        static Tracer()
+        {
+            instance = new Tracer();
+        }
 
         private Tracer()
         {
             rootNode = new RootNode();
         }
+
         public static Tracer Instance
         {
             get
             {
-                if(instance == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if(instance == null)
-                        {
-                            instance = new Tracer();
-                        }
-                    }
-                }
                 return instance;
             }
         }
@@ -54,7 +49,7 @@ namespace MPPTracer
 
         private long GetCurrentTime()
         {
-            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            return DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
         }
 
         private MethodDescriptor GetMethodDescriptor()
@@ -62,8 +57,8 @@ namespace MPPTracer
             StackTrace stackTrace = new StackTrace();
             MethodBase methodBase = stackTrace.GetFrame(2).GetMethod();
 
-            String callerName = methodBase.Name;
-            String callerClass = methodBase.DeclaringType.ToString();
+            string callerName = methodBase.Name;
+            string callerClass = methodBase.DeclaringType.ToString();
             int parametersNumber = methodBase.GetParameters().Length;
 
             return new MethodDescriptor(callerName, callerClass, parametersNumber);

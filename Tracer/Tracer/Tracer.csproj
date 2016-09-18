@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\format\ConsoleFormatter.cs" />
-    <Compile Include="src\format\Formatter.cs" />
     <Compile Include="src\format\IFormatter.cs" />
     <Compile Include="src\format\XMLFormatter.cs" />
     <Compile Include="src\Tracer.cs" />

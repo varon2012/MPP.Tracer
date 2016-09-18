@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MPPTracer
+﻿namespace MPPTracer
 {
-    public interface ITracer
+    internal interface ITracer
     {
         void StartTrace();
         void StopTrace();

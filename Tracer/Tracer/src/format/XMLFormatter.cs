@@ -1,72 +1,99 @@
 ﻿using MPPTracer.Tree;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 
 namespace MPPTracer.Format
 {
-    public class XMLFormatter : Formatter
+    public class XMLFormatter : IFormatter
     {
-        private const string ROOT_OPEN_TAG = "<root>"+NL;
-        private const string ROOT_CLOSE_TAG = "</root>"+NL;
-        private const string THREAD_OPEN_TAG = "<thread id={0}>"+NL;
-        private const string THREAD_CLOSE_TAG = "</thread>"+NL;
-        private const string METHOD_OPEN_TAG = "<method name={0} time={1}ms class={2} params={3}>"+NL;
-        private const string METHOD_CLOSE_TAG = "</method>"+NL;
+        private const string Version = "1.0";
+        private const string Encoding = "utf-8";
+        private const string StandAlone = "yes";
 
-        public override string Format(TraceResult traceResult)
+        private const string RootTag = "root";
+        private const string ThreadTag = "thread";
+        private const string MethodTag = "method";
+
+        private const string IdAttribute = "id";
+        private const string NameAttribute = "name";
+        private const string TimeAttribute = "time";
+        private const string ClassAttribute = "class";
+        private const string ParamsAttribute = "params";
+
+        private string fileName;
+
+        public XMLFormatter(string fileName)
         {
-            string formattedTraceResult = CreateRootTag(traceResult);
-            string fileName = "TraceResultFormatted.xml";
+            this.fileName = fileName;
+        }
+
+        public string Format(TraceResult traceResult)
+        {
+            XDocument xmlDocument = CreateXMLDocument(traceResult);
+
             using (StreamWriter writer = File.CreateText(fileName))
             {
-                writer.WriteLine(formattedTraceResult);
+                xmlDocument.Save(writer);
             }
             return "Xml file path:\n"+Path.GetFullPath(fileName);
         }
 
-        private string CreateRootTag(TraceResult traceResult)
+        private XDocument CreateXMLDocument(TraceResult traceResult)
         {
-            return ROOT_OPEN_TAG + CreateThreadTagList(traceResult) + ROOT_CLOSE_TAG;
+            XDocument document = new XDocument();
+            document.Declaration = new XDeclaration(Version, Encoding, StandAlone);
+            XElement root = new XElement(RootTag);
+            document.Add(root);
+
+            List<XElement> threadElements = CreateThreadTree(traceResult.GetEnumerator());
+            root.Add(threadElements);
+
+            return document;
         }
 
-        private string CreateThreadTagList(TraceResult traceResult)
+        private List<XElement> CreateThreadTree(IEnumerator<ThreadNode> enumerator)
         {
-            string tagList = "";
-            IEnumerator<KeyValuePair<int, ThreadNode>> enumerator = traceResult.GetEnumerator();
+            List<XElement> elements = new List<XElement>();
             while (enumerator.MoveNext())
             {
-                ThreadNode thread = enumerator.Current.Value;
-                int threadId = enumerator.Current.Key;
-                string threadTag = TAB + string.Format(THREAD_OPEN_TAG, threadId);
+                ThreadNode thread = enumerator.Current;
 
-                threadTag += CreateMethodTagList(thread.GetFirstNestedMethod(), 2);
+                object[] attributes = {
+                    new XAttribute(IdAttribute, thread.ID)
+                };
+                XElement threadElement = new XElement(ThreadTag, attributes);
+                List<XElement> methodElements = CreateMethodElements(thread.GetEnumerator());
+                threadElement.Add(methodElements);
 
-                threadTag += TAB + THREAD_CLOSE_TAG;
-                tagList += threadTag;
+                elements.Add(threadElement);
             }
 
-            return tagList;
+            return elements;
         }
 
-        private string CreateMethodTagList(MethodNode rootMethod, int nestingLevel)
+        private List<XElement> CreateMethodElements(IEnumerator<MethodNode> enumerator)
         {
-            string tagList = "";
-            while(rootMethod != null)
+            List<XElement> elements = new List<XElement>();
+            while (enumerator.MoveNext())
             {
-                MethodDescriptor descriptor = rootMethod.Descriptor;
-                string indent = CreateIndent(nestingLevel);
+                MethodNode method = enumerator.Current;
+                MethodDescriptor descriptor = method.Descriptor;
+                object[] attributes = {
+                    new XAttribute(NameAttribute, descriptor.Name),
+                    new XAttribute(TimeAttribute, descriptor.TraceTime),
+                    new XAttribute(ClassAttribute, descriptor.ClassName),
+                    new XAttribute(ParamsAttribute, descriptor.ParamsNumber)
+                };
 
-                string methodTag = indent + string.Format(METHOD_OPEN_TAG, descriptor.Name, descriptor.TraceTime, descriptor.ClassName, descriptor.ParamsNumber);
-                
-methodTag += CreateMethodTagList(rootMethod.GetFirstNestedMethod(), nestingLevel + 1);
+                XElement methodElement = new XElement(MethodTag, attributes);
+                List<XElement> methodElements = CreateMethodElements(method.GetEnumerator());
+                methodElement.Add(methodElements);
 
-                methodTag += indent + METHOD_CLOSE_TAG;
-                tagList += methodTag;
-                rootMethod = rootMethod.GetNextAddedMethod();
+                elements.Add(methodElement);
             }
-            
-            return tagList;
+
+            return elements;
         }
 
     }
