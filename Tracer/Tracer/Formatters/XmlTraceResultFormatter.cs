@@ -8,7 +8,18 @@ using System.Xml;
 namespace Tracer.Formatters
 {
     public  class XmlTraceResultFormatter : ITraceResultFormatter
-    {        
+    {
+        private string resultFilePath;
+
+        public XmlTraceResultFormatter()
+        {
+            resultFilePath = "TraceResult.xml";
+        }
+
+        public XmlTraceResultFormatter(string resultFilePath)
+        {
+            this.resultFilePath = resultFilePath;
+        }
 
         public void Format(TraceResult traceResult)
         {
@@ -20,7 +31,7 @@ namespace Tracer.Formatters
             XElement rootElement = GenerateThreadMarkup(traceResult.threadIds, xmlTraceResult);
 
             resultFile.Add(rootElement);
-            SaveToFile(resultFile,"TraceResult.xml");
+            SaveToFile(resultFile, resultFilePath);
         }
 
         private void AddMethodNesting(int maximumDepth, List<XElement> xmlTraceResult)

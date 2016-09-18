@@ -10,7 +10,6 @@ namespace Tracer.Formatters
 {
     public class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
-
         public void Format(TraceResult traceResult)
         {
             TraceResult resultToModify = (TraceResult)traceResult.Clone();

@@ -61,11 +61,11 @@ namespace Tester
             RunOuterCycle(500,2);
         }
 
-        internal void PrintTestResults()
+        public void PrintTestResults()
         {
             var traceResult = tracer.GetTraceResult();
 
-            ITraceResultFormatter formatter = new XmlTraceResultFormatter();
+            ITraceResultFormatter formatter = new XmlTraceResultFormatter("TraceResult.xml");
             formatter.Format(traceResult);
 
             formatter = new ConsoleTraceResultFormatter();
