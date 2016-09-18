@@ -1,28 +1,37 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Tracer
 {
     public class Tracer : ITracer
     {
         private static readonly Tracer instance = new Tracer();
+        private readonly TraceResult traceResult;
 
-        private Tracer(){}
+        private Tracer()
+        {
+           traceResult = new TraceResult();
+        }
 
         public static Tracer Instance => instance;
 
         public void StartTrace()
         {
-            throw new NotImplementedException();
+            var currentThreadId = Thread.CurrentThread.ManagedThreadId;
+            var currentMethod = new StackTrace().GetFrame(1).GetMethod();
+            traceResult.StartMethodTrace(currentThreadId, currentMethod);
         }
 
         public void StopTrace()
         {
-            throw new NotImplementedException();
+            var currentThreadId = Thread.CurrentThread.ManagedThreadId;
+            traceResult.StopMethodTrace(currentThreadId);
         }
 
         public TraceResult GetTraceResult()
         {
-            throw new NotImplementedException();
+            return traceResult;
         }
     }
 }

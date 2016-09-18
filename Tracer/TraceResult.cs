@@ -1,16 +1,25 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Tracer
 {
     public class TraceResult
     {
-        private ConcurrentDictionary<int, ThreadTraceInfo> threadsTraceInfo;
-
         public TraceResult()
         {
-            threadsTraceInfo = new ConcurrentDictionary<int, ThreadTraceInfo>();
+            ThreadsTraceInfo = new ConcurrentDictionary<int, ThreadTraceInfo>();
         }
 
-        public ConcurrentDictionary<int, ThreadTraceInfo> ThreadsTraceInfo => threadsTraceInfo;
+        public ConcurrentDictionary<int, ThreadTraceInfo> ThreadsTraceInfo { get; }
+
+        public void StartMethodTrace(int threadId, MethodBase method)
+        {
+
+        }
+
+        public void StopMethodTrace(int threadId)
+        {
+
+        }
     }
 }
