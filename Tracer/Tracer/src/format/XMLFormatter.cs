@@ -59,7 +59,7 @@ namespace MPPTracer.Format
             {
                 ThreadNode thread = enumerator.Current;
 
-                object[] attributes = {
+                XAttribute[] attributes = {
                     new XAttribute(IdAttribute, thread.ID),
                     new XAttribute(TimeAttribute, thread.GetTraceTime())
                 };
@@ -80,7 +80,7 @@ namespace MPPTracer.Format
             {
                 MethodNode method = enumerator.Current;
                 MethodDescriptor descriptor = method.Descriptor;
-                object[] attributes = {
+                XAttribute[] attributes = {
                     new XAttribute(NameAttribute, descriptor.Name),
                     new XAttribute(TimeAttribute, descriptor.TraceTime),
                     new XAttribute(ClassAttribute, descriptor.ClassName),

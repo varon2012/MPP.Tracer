@@ -30,15 +30,25 @@ namespace MPPTracer.Tree
         private ThreadNode CurrentThreadNode()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
-            if (ThreadTable.ContainsKey(threadId))
-            {
-                return ThreadTable[threadId];
-            }
-            
-            ThreadNode thread = new ThreadNode(threadId);
+            ThreadNode thread;
+            bool threadExists;
+
             lock (syncRoot)
             {
-                ThreadTable.Add(threadId, thread);
+                threadExists = ThreadTable.ContainsKey(threadId);
+            }
+
+            if (threadExists)
+            {
+                thread = ThreadTable[threadId];
+            }
+            else
+            {
+                thread = new ThreadNode(threadId);
+                lock (syncRoot)
+                {
+                    ThreadTable.Add(threadId, thread);
+                }
             }
            
             return thread;
