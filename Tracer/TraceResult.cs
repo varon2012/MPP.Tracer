@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Data.Odbc;
 using System.Reflection;
 
 namespace Tracer
@@ -14,12 +15,14 @@ namespace Tracer
 
         public void StartMethodTrace(int threadId, MethodBase method)
         {
-
+            ThreadsTraceInfo.GetOrAdd(threadId, new ThreadTraceInfo()).StartMethodTrace(new MethodTraceInfo(method));
         }
 
         public void StopMethodTrace(int threadId)
         {
-
+            ThreadTraceInfo threadTraceInfo;
+            ThreadsTraceInfo.TryGetValue(threadId, out threadTraceInfo);
+            threadTraceInfo?.StopMethodTrace();
         }
     }
 }
