@@ -1,4 +1,6 @@
-﻿namespace MPPTracer.Tree
+﻿using System.Collections.Generic;
+
+namespace MPPTracer.Tree
 {
     public class ThreadNode : InternalNode
     {
@@ -11,6 +13,19 @@
         {
             MethodNode method = GetLastAddedMethod();
             method.StopLastTrace(endTime);
+        }
+        public long GetTraceTime()
+        {
+            IEnumerator<MethodNode> enumerator = GetEnumerator();
+            long traceTime = 0;
+            while (enumerator.MoveNext())
+            {
+                MethodDescriptor descriptor = enumerator.Current.Descriptor;
+                traceTime += descriptor.TraceTime; 
+            }
+
+            return traceTime;
+
         }
 
     }

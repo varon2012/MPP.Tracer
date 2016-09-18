@@ -60,7 +60,8 @@ namespace MPPTracer.Format
                 ThreadNode thread = enumerator.Current;
 
                 object[] attributes = {
-                    new XAttribute(IdAttribute, thread.ID)
+                    new XAttribute(IdAttribute, thread.ID),
+                    new XAttribute(TimeAttribute, thread.GetTraceTime())
                 };
                 XElement threadElement = new XElement(ThreadTag, attributes);
                 List<XElement> methodElements = CreateMethodElements(thread.GetEnumerator());

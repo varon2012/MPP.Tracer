@@ -42,11 +42,11 @@ namespace TracerTest
                 thread.Start();
             }
             Method3();
+            Method5();
             foreach(Thread thread in threadList)
             {
                 thread.Join();
             }
-
 
             TraceResult result = tracer.GetTraceResult();
             string formatResult = formatter.Format(result);

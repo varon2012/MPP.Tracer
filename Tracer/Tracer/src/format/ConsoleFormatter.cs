@@ -8,7 +8,7 @@ namespace MPPTracer.Format
     {
         private const char Tab = '\t';
         private string NL = Environment.NewLine;
-        private const string ThreadTag = "thread id={0}";
+        private const string ThreadTag = "thread id={0} time={1}ms";
         private const string MethodTag = "method name={0} time={1}ms class={2} params={3}";
 
         public string Format(TraceResult traceResult)
@@ -23,7 +23,7 @@ namespace MPPTracer.Format
             while(enumerator.MoveNext())
             {
                 ThreadNode thread = enumerator.Current;
-                result += string.Format(ThreadTag, thread.ID) + NL;
+                result += string.Format(ThreadTag, thread.ID, thread.GetTraceTime()) + NL;
                 result += CreateMethodTree(thread.GetEnumerator(), 0)+ NL;
             }
 
