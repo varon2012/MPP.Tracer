@@ -6,6 +6,6 @@
 
         void StopTrace();
 
-        TraceResult GetTraceResult();
+        TraceResult TraceResult { get; }
     }
 }

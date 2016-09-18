@@ -2,20 +2,35 @@
 {
     public class Tracer : ITracer
     {
-        public static Tracer Instance;
+        public TraceResult TraceResult { get; }
 
-        public static Tracer GetInstance()
+        private static Tracer _instance;
+
+        private static readonly object LockObject = new object();
+
+        private TraceResult _traceResult;
+
+        public static Tracer Instance
         {
-            if (Instance == null)
+            get
             {
-                
+                if (_instance == null)
+                {
+                    lock (LockObject)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new Tracer();
+                        }
+                    }
+                }
+                return _instance;
             }
-            return Instance;
         }
 
         protected Tracer()
         {
-            
+            _traceResult = new TraceResult();
         }
 
         public void StartTrace()
@@ -24,11 +39,6 @@
         }
 
         public void StopTrace()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public TraceResult GetTraceResult()
         {
             throw new System.NotImplementedException();
         }
