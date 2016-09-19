@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using TracerLib.Interfaces;
 using TracerLib.Utils;
 
@@ -8,7 +9,7 @@ namespace TracerLib.Formatters
     {
         public void Format(TraceResult result)
         {
-            var headNodes = result.Threads;
+            var headNodes = result.results;
 
             foreach (var Id in headNodes.Keys)
             {
@@ -39,12 +40,17 @@ namespace TracerLib.Formatters
             }
         }
 
+        public void Format(ImmutableDictionary<int, ThreadDescriptor> results)
+        {
+            throw new NotImplementedException();
+        }
+
         private static string GetTab(int nesting)
         {
-            var tabs = ""; 
+            var tabs = string.Empty; 
             for (int i = 0; i < nesting; i++)
-            {
-                tabs += "    ";
+            {   
+                tabs = new string(' ', nesting);
             }
 
             return tabs;

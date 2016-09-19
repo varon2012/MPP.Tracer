@@ -2,19 +2,19 @@
 
 namespace TracerLib.Utils
 {
-	public class TracedMethodInfo
+	internal class TracedMethodInfo
 	{
-		public string MethodName { get; set; }
+        internal string MethodName { get; set; }
 
-		public string ClassName { get; set; }
-		
-		public Stopwatch Watcher { get; set; }
-		
-		public int ArgumentsNumber { get; set; }
-		
-		public int ThreadId { get; set; }
+        internal string ClassName { get; set; }
 
-		public TracedMethodInfo(string methodName, string className, Stopwatch watcher, int argumentsNumber, int threadId)
+        internal Stopwatch Watcher { get; set; }
+
+        internal int ArgumentsNumber { get; set; }
+
+        internal int ThreadId { get; set; }
+
+        internal TracedMethodInfo(string methodName, string className, Stopwatch watcher, int argumentsNumber, int threadId)
 		{
 			MethodName = methodName;
 			ClassName = className;

@@ -6,12 +6,13 @@ namespace TracerLib.Formatters
 {
     public class XmlResultFormatter : ITraceResultFormatter
     {
+        private readonly string fileName = "E:\\info.xml";
         public void Format(TraceResult traceResult)
         {
             var document = new XDocument();
             var root = new XElement("root");
 
-            var threads = traceResult.Threads;
+            var threads = traceResult.results;
 
             foreach (var Id in threads.Keys)
             {
@@ -21,7 +22,7 @@ namespace TracerLib.Formatters
             }
 
             document.Add(root);
-            document.Save("E:\\info.xml");
+            document.Save(fileName);
         }
 
         private static void PrintMethodResults(XElement thread, Node<TracedMethodInfo> node)

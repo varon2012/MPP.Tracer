@@ -9,7 +9,7 @@ namespace TracerTest
     {
         static void Main(string[] args)
         {
-            var tracer = Tracer.GetInstance();
+            var tracer = Tracer.Instance;
             tracer.StartTrace();
             TestClass obj = new TestClass();
             var testThread = new Thread(obj.FirstMethod);
@@ -26,6 +26,7 @@ namespace TracerTest
             tracer.StopTrace();
 
             var res = tracer.GetTraceResult();
+            
             var consoleFormatter = new ConsoleResultFormatter();
             consoleFormatter.Format(res);
 
@@ -37,7 +38,7 @@ namespace TracerTest
 
         static void SomeMethod()
         {
-            var tracer = Tracer.GetInstance();
+            var tracer = Tracer.Instance;
             tracer.StartTrace();
 
             Thread.Sleep(100);
@@ -46,7 +47,7 @@ namespace TracerTest
         }
         static void WOWOWOWMethod()
         {
-            var tracer = Tracer.GetInstance();
+            var tracer = Tracer.Instance;
             tracer.StartTrace();
             var x = 1;
             Thread.Sleep(100);
@@ -57,7 +58,7 @@ namespace TracerTest
         static void AnotherMethod(int a)
         {
             var x = a;
-            var tracer = Tracer.GetInstance();
+            var tracer = Tracer.Instance;
             tracer.StartTrace();
             TestInnerMethod();
             tracer.StopTrace();
@@ -65,7 +66,7 @@ namespace TracerTest
 
         static void TestInnerMethod()
         {
-            var tracer = Tracer.GetInstance();
+            var tracer = Tracer.Instance;
             tracer.StartTrace();
             tracer.StopTrace();
         }

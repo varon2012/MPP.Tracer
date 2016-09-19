@@ -4,19 +4,19 @@ namespace TracerLib.Utils
 {
     public class ThreadDescriptor
     {
-        public Node<TracedMethodInfo> HeadNode { get; set; }
+        internal Node<TracedMethodInfo> HeadNode { get; set; }
 
-        public Stack<Node<TracedMethodInfo>> MethodStack { get; set; }
+        internal Stack<Node<TracedMethodInfo>> MethodStack { get; set; }
 
-        public Node<TracedMethodInfo> CurrentNode { get; set; }
+        internal Node<TracedMethodInfo> CurrentNode { get; set; }
 
-        public ThreadDescriptor(Node<TracedMethodInfo> node)
+        internal ThreadDescriptor(Node<TracedMethodInfo> node)
         {
             HeadNode = node;
             MethodStack = new Stack<Node<TracedMethodInfo>>();
         }
 
-        public ThreadDescriptor()
+        internal ThreadDescriptor()
         {
 
         }

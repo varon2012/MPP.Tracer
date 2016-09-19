@@ -2,7 +2,7 @@
 
 namespace TracerLib.Utils
 {
-	public class Node<T>
+	internal class Node<T>
 	{
 		public List<Node<T>> Children;
 

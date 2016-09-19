@@ -5,7 +5,7 @@ namespace TracerTest
 {
     public class TestClass
     {
-        private Tracer tracer = Tracer.GetInstance();
+        private Tracer tracer = Tracer.Instance;
 
         public void FirstMethod()
         {
