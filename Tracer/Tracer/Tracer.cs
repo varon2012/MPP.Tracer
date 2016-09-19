@@ -11,8 +11,8 @@ namespace Tracer
     {
         private static volatile Tracer instance;
         private static readonly object SyncRoot = new object();
-        public TraceResult TraceResult { get; private set; }
-        private TraceResultBuilder ResultBuilder { get; set; }
+        public TraceResult TraceResult { get;} = new TraceResult();
+        private TraceResultBuilder resultBuilder = new TraceResultBuilder();
 
         public static Tracer Instance
         {
@@ -25,7 +25,7 @@ namespace Tracer
                         if (instance == null)
                         {
                             instance = new Tracer();
-                            instance.ResultBuilder.TraceResult = instance.TraceResult;
+                            instance.resultBuilder.TraceResult = instance.TraceResult;
                         }
                     }
                 }
@@ -36,14 +36,21 @@ namespace Tracer
         
         public void StartTrace()
         {
-            var threadItem = TraceResult.FirstOrCreate(Thread.CurrentThread.ManagedThreadId);
-            instance.ResultBuilder.StartTrace(threadItem);
+            var threadItem = TraceResult.GetOrAdd(Thread.CurrentThread.ManagedThreadId,
+                new TraceResultItem(Thread.CurrentThread.ManagedThreadId));
+            lock (SyncRoot)
+            {
+                instance.resultBuilder.StartTrace(threadItem);
+            }
         }
 
         public void StopTrace()
         {
             var threadItem = TraceResult[Thread.CurrentThread.ManagedThreadId];
-            instance.ResultBuilder.StopTrace(threadItem);
+            lock (SyncRoot)
+            {
+                instance.resultBuilder.StopTrace(threadItem);
+            }
         }
 
     }

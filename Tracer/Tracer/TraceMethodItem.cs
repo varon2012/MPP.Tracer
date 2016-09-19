@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,21 +14,23 @@ namespace Tracer
         public int Time { get; private set;} 
         public int ParamsCount { get; private set; }
 
-        public DateTime StartTime { get; private set; }
+        private Stopwatch stopwatch;
 
         public List<TraceMethodItem> NestedMethods = new List<TraceMethodItem>();
 
-        public TraceMethodItem(string name, string className, int paramsCount, DateTime startTime)
+        public TraceMethodItem(string name, string className, int paramsCount)
         {
             Name = name;
             ClassName = className;
             ParamsCount = paramsCount;
-            StartTime = startTime;
+            stopwatch = new Stopwatch();
+            stopwatch.Start();
         }
 
         public void Measure()
         {
-            TimeSpan t = DateTime.Now - StartTime;
+            stopwatch.Stop();
+            TimeSpan t = stopwatch.Elapsed;
             Time = t.Milliseconds;
         }
     }

@@ -8,7 +8,7 @@ namespace Tracer
 {
     public class ConsoleFormatter
     {
-        private int currentNesting = 0;
+        private int currentNesting;
         public void Format(TraceResult traceResult)
         {
             Console.WriteLine("root:");
@@ -33,7 +33,7 @@ namespace Tracer
         private void PrintMethods(TraceMethodItem method)
         {
             currentNesting++;
-            Console.WriteLine(Indent() + "method: " + PrintAttributes(new Dictionary<string, string>() {
+            Console.WriteLine(Indent() + "method: " + PrintAttributes(new Dictionary<string, string>{
                {"name", method.Name },
                {"class", method.ClassName },
                {"params", $"{method.ParamsCount}" },
