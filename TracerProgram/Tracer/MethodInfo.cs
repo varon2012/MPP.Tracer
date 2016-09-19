@@ -11,26 +11,14 @@ namespace Tracer
         public string Name { get; }
         public string ClassName { get; }
         public int ParamsNumber { get; }
-        private long Time;
+        public long Time { get; set; }
 
-        public long TraceTime
-        {
-            get
-            {
-                return Time;
-            }
-            set
-            {
-                Time = (Time == -1) ? value : Time;
-            }
-        }
-
-        public MethodInfo(string name, string className, int paramsNumber,long Time)
+        public MethodInfo(string name, string className, int paramsNumber,long time)
         {
             Name = name;
             ClassName = className;
             ParamsNumber = paramsNumber;
-            Time = -1;
+            Time = time;
         }
     }
 }
