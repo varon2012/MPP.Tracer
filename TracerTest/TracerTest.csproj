@@ -48,6 +48,10 @@
       <Project>{DC536F9D-67BE-4541-8F12-052E8CF56A83}</Project>
       <Name>Tracer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tracer\Tracer.csproj">
+      <Project>{DC536F9D-67BE-4541-8F12-052E8CF56A83}</Project>
+      <Name>Tracer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

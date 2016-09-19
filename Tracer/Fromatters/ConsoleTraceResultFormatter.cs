@@ -36,7 +36,7 @@ namespace Tracer.Fromatters
             Console.Write($"Method [name={methodTraceInfo.Name} ");
             Console.Write($"class={methodTraceInfo.ClassName} ");
             Console.Write($"time={methodTraceInfo.Duration} ");
-            Console.Write($"params={methodTraceInfo.ArgumentsCount}]");
+            Console.WriteLine($"params={methodTraceInfo.ArgumentsCount}]");
             PrintMethodsTraceInfo(methodTraceInfo.NestedMethodsTraceInfo, nestingLevel + 1);
         }
     }
