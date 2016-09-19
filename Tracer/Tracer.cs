@@ -7,7 +7,7 @@
         private static Tracer _instance;
 
         private static readonly object LockObject = new object();
-
+        
         private TraceResult _traceResult;
 
         public static Tracer Instance
