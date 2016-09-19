@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Tracer
 {
@@ -12,9 +8,18 @@ namespace Tracer
 
         public MethodsTreeNode Father { get; set; }
 
-        public MethodsTreeNode()
+        public MethodInfo Method { get; set; }
+
+        public MethodsTreeNode(MethodsTreeNode father, MethodInfo method)
         {
+            Father = father;
             Children = new List<MethodsTreeNode>();
+            Method = method;
+        }
+
+        public void AddChild(MethodsTreeNode child)
+        {
+            Children.Add(child);
         }
     }
 }
