@@ -8,13 +8,15 @@ namespace Tracer
 {
     public class MethodNode
     {
-        private MethodInfo Info;
-        private int Heignt;
+        public MethodInfo Info;
+        public bool isWorking ;
+        public int Heignt;
 
         public MethodNode(MethodInfo info, int height)
         {
             Info = info;
             Heignt = height;
+            isWorking = true;
         }
 
     }
