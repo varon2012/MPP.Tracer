@@ -26,15 +26,14 @@ namespace Tracer
 
         public void StartTrace()
         {
-            long time = GetCurrentTime();
             MethodInfo curentMethod = GetMethodInfo();
-
+            resultsOfTrace.StartTrace(curentMethod);
             
         }
 
         public void StopTrace()
         {
-           
+            resultsOfTrace.StopTrace(GetCurrentTime());  
         }
 
         private long GetCurrentTime()
@@ -44,13 +43,14 @@ namespace Tracer
 
         private MethodInfo GetMethodInfo()
         {
+            long time = GetCurrentTime();
             StackTrace stackTrace = new StackTrace();
             MethodBase methodBase = stackTrace.GetFrame(2).GetMethod();
             string Name = methodBase.Name;
             string Class = methodBase.DeclaringType.ToString();
             int parametersNumber = methodBase.GetParameters().Length;
 
-            return new MethodInfo(Name,Class, parametersNumber);
+            return new MethodInfo(Name,Class, parametersNumber,time);
         }
     }
 }
