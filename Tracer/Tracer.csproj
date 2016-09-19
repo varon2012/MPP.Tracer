@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fromatters\ConsoleTraceResultFormatter.cs" />
     <Compile Include="Interfaces\ITracer.cs" />
     <Compile Include="Interfaces\ITraceResultFormatter.cs" />
     <Compile Include="Models\MethodTraceInfo.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="TraceResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Fromatters" />
     <Folder Include="Interfaces" />
     <Folder Include="Models" />
   </ItemGroup>
