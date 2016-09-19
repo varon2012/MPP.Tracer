@@ -43,6 +43,11 @@ namespace Tracer
                 throw new Exception("There are no MethodsInfo in stack. Maybe you have called StopTrace twice");
             }
 
+            if (!methodsCallStack.Peek().isEquals(methodInfo))
+            {
+                throw new Exception("StartTrace and StopTrace have been called from different methods");
+            }
+
             MethodInfo lastAddedMethod = methodsCallStack.Pop();
             lastAddedMethod.StopMethodTrace();
         }
