@@ -7,6 +7,14 @@ namespace Trace.Classes.Formatters
 {
     public class XmlTraceResultFormatter : ITraceResultFormatter
     {
+
+        private readonly string _filePathToSave;
+
+        public XmlTraceResultFormatter(string filePathToSave)
+        {
+            _filePathToSave = filePathToSave;
+        }
+
         public void Format(TraceResult traceResult)
         {
             var xDoc = new XDocument();
@@ -25,7 +33,7 @@ namespace Trace.Classes.Formatters
             }
             
             xDoc.Add(rootElement);
-            xDoc.Save("TraceResult.xml");
+            xDoc.Save(_filePathToSave);
         }
 
         private XElement GetInfoThread(KeyValuePair<int, ThreadTrace> threadInfo)
@@ -48,8 +56,6 @@ namespace Trace.Classes.Formatters
 
             return result;
         }
-
-
 
         private XElement GetInfoMethod(MethodTrace methodTrace)
         {

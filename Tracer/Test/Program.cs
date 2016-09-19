@@ -57,9 +57,11 @@ namespace Test
 
         private static void OutputInfo()
         {
-            var formatter = new XmlTraceResultFormatter();
+            var xmlFormatter = new XmlTraceResultFormatter("TraceResult.xml");
+            var consoleFormatter = new ConsoleTraceResultFormatter();
 
-            formatter.Format(Tracer.GetTraceResult());
+            consoleFormatter.Format(Tracer.GetTraceResult());
+            xmlFormatter.Format(Tracer.GetTraceResult());
         }
     }
 }
