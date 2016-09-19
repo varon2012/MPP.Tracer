@@ -11,7 +11,7 @@ namespace Tracer
         private readonly Stack<MethodInfo> methodsCallStack;
         private readonly List<MethodInfo> firstNestingLevelTracedMethods;
 
-        public ThreadInfo()
+        internal ThreadInfo()
         {
             firstNestingLevelTracedMethods = new List<MethodInfo>();
             methodsCallStack = new Stack<MethodInfo>();

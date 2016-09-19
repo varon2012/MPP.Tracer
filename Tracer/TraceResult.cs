@@ -7,7 +7,7 @@ namespace Tracer
     {
         private readonly ThreadInfoList threadInfoList;
 
-        public TraceResult()
+        internal TraceResult()
         {
             threadInfoList = new ThreadInfoList();
         }

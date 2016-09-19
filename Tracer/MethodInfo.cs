@@ -12,7 +12,7 @@ namespace Tracer
         private readonly Stopwatch stopWatch;
         private readonly MethodBase methodBase;
 
-        public MethodInfo(MethodBase methodBaseInfo)
+        internal MethodInfo(MethodBase methodBaseInfo)
         {
             firstLevelChildren = new List<MethodInfo>();
             methodBase = methodBaseInfo;

@@ -32,7 +32,6 @@ namespace Tracer
 
             threadInfo.StopMethodTrace(new MethodInfo(methodBaseInfo));
         }
-
-
+        
     }
 }
