@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
-using System.Data.Odbc;
 using System.Reflection;
+using Tracer.Models;
 
 namespace Tracer
 {

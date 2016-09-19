@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Tracer
+namespace Tracer.Models
 {
     public class ThreadTraceInfo
     {

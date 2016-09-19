@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Tracer
+namespace Tracer.Models
 {
     public class MethodTraceInfo
     {
