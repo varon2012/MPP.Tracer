@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.Design;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
-using Tracer.Interfaces;
 using Tracer.Models;
 
 namespace Tracer.Tracers
 {
-    public class MethodTracer : ITracer
+    public class MethodTracer
     {
-
         private readonly MethodTraceResult _methodTraceResult;
         private Stopwatch _timer;
 
@@ -30,14 +27,14 @@ namespace Tracer.Tracers
             _methodTraceResult.Duration = _timer.ElapsedMilliseconds;
         }
 
-        public TraceResult GetTraceResult()
+        public MethodTraceResult GetTraceResult()
         {
             return _methodTraceResult;
         }
 
-        public void AddNestedMethodResult(MethodTraceResult methodTraceResult)
+        public void AddNestedMethodTracer(MethodTracer methodTracer)
         {
-            _methodTraceResult.AddNestedMethodResult(methodTraceResult);
+            _methodTraceResult.AddNestedMethodResult(methodTracer.GetTraceResult());
         }
     }
 }

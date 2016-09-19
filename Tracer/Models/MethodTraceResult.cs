@@ -3,26 +3,30 @@ using System.Reflection;
 
 namespace Tracer.Models
 {
-    public class MethodTraceResult : TraceResult
+    public class MethodTraceResult
     {
         public MethodTraceResult(MethodBase methodBase)
         {
             Name = methodBase.Name;
             ClassName = methodBase.DeclaringType?.Name;
             ArgumentsCount = methodBase.GetParameters().Length;
-            NestedMethodsTraceInfo = new List<MethodTraceResult>();
+            NestedMethodsTraceResult = new List<MethodTraceResult>();
         }
 
         public string Name { get; }
         public string ClassName { get; }
         public long Duration { get; set; }
         public int ArgumentsCount { get; }
-        public List<MethodTraceResult> NestedMethodsTraceInfo { get; }
+        public List<MethodTraceResult> NestedMethodsTraceResult { get; }
 
         public void AddNestedMethodResult(MethodTraceResult methodTraceResult)
         {
-            NestedMethodsTraceInfo.Add(methodTraceResult);
+            NestedMethodsTraceResult.Add(methodTraceResult);
         }
 
+        public override string ToString()
+        {
+            return $"Method [name={Name} class={ClassName} time={Duration} params={ArgumentsCount}]";
+        }
     }
 }
