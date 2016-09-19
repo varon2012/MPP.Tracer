@@ -17,10 +17,17 @@ namespace Tracer
             threadList = new Dictionary<int,ThreadNode>();
         }
 
-        public void StartTrace(long time, MethodInfo info)
+        public void StartTrace(MethodInfo info)
         {
             ThreadNode thread = GetTreeElement();
-            
+            thread.AddMethod(info);
+        }
+
+        public void StopTrace(long time)
+        {
+            ThreadNode thread = GetTreeElement();
+            thread.StopMethod(time);
+        }
 
         public ThreadNode GetTreeElement()
         {
