@@ -12,9 +12,9 @@ namespace Tracer
         public XElement Format(TraceResult traceResult)
         {
             XElement root = new XElement("root");
-            foreach (TraceResultItem threadItem in traceResult)
+            foreach (var threadItem in traceResult)
             {
-                root.Add(CreateThreadNode(threadItem));
+                root.Add(CreateThreadNode(threadItem.Value));
             }
             return root;
         }
