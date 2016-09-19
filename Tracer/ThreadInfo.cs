@@ -40,12 +40,12 @@ namespace Tracer
         {
             if (methodsCallStack.Count == 0)
             {
-                throw new ArgumentException("There are no MethodsInfo in stack. Maybe you have called StopTrace twice");
+                throw new Exception("There are no MethodsInfo in stack. Maybe you have called StopTrace twice");
             }
 
             if (!methodsCallStack.Peek().IsEquals(methodInfo))
             {
-                throw new Exception("StartTrace and StopTrace have been called from different methods");
+                throw new ArgumentException("StartTrace and StopTrace can't be called from different methods");
             }
 
             MethodInfo lastAddedMethod = methodsCallStack.Pop();
