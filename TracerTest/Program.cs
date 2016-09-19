@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using Tracer;
 using Tracer.Fromatters;
 using Tracer.Interfaces;
 
@@ -35,8 +39,16 @@ namespace TracerTest
             new Thread(TestA).Start();
             TestB();
             TestC(0, 1);
-            ITraceResultFormatter formatter = new ConsoleTraceResultFormatter();
-            formatter.Format(_tracer.GetTraceResult());
+            PrintResult(_tracer.GetTraceResult());
+        }
+
+        private static void PrintResult(TraceResult result)
+        {
+            new ConsoleTraceResultFormatter().Format(result);
+            using (Stream fileStream = File.Create("result.xml"))
+            {
+                new XmlTraceResultFormatter(fileStream).Format(result);
+            }
         }
     }
 }

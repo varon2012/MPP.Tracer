@@ -36,9 +36,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\..\..\..\usr\local\Cellar\mono\4.4.1.0\lib\mono\4.5-api\System.Xml.Linq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fromatters\ConsoleTraceResultFormatter.cs" />
+    <Compile Include="Fromatters\XmlTraceResultFormatter.cs" />
     <Compile Include="Interfaces\ITracer.cs" />
     <Compile Include="Interfaces\ITraceResultFormatter.cs" />
     <Compile Include="Models\MethodTraceInfo.cs" />
