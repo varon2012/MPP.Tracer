@@ -6,36 +6,36 @@ namespace Tracer.Models
 {
     public class MethodTraceInfo
     {
-        private List<MethodTraceInfo> nestedMethodsTraceInfo;
-        private Stopwatch timer;
-        private MethodBase method;
+        private Stopwatch _timer;
+        private readonly MethodBase _method;
 
         public MethodTraceInfo(MethodBase method)
         {
-            this.method = method;
-            nestedMethodsTraceInfo = new List<MethodTraceInfo>();
+            _method = method;
+            NestedMethodsTraceInfo = new List<MethodTraceInfo>();
             StartTrace();
         }
 
-        public string Name => method.Name;
-        public string ClassName => method.DeclaringType.Name;
-        public long Duration => timer.ElapsedMilliseconds;
-        public int ArgumentsCount => method.GetParameters().Length;
+        public string Name => _method.Name;
+        public string ClassName => _method.DeclaringType.Name;
+        public long Duration => _timer.ElapsedMilliseconds;
+        public int ArgumentsCount => _method.GetParameters().Length;
+        public List<MethodTraceInfo> NestedMethodsTraceInfo { get; }
 
         public void StopTrace()
         {
-            timer.Stop();
+            _timer.Stop();
         }
 
         public void AddNestedMethod(MethodTraceInfo methodTraceInfo)
         {
-            nestedMethodsTraceInfo.Add(methodTraceInfo);
+            NestedMethodsTraceInfo.Add(methodTraceInfo);
         }
 
         private void StartTrace()
         {
-            timer = new Stopwatch();
-            timer.Start();
+            _timer = new Stopwatch();
+            _timer.Start();
         }
     }
 }
