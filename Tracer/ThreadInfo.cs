@@ -2,16 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
     public class ThreadInfo
     {
         
-        private Stack<MethodInfo> methodsCallStack;
-        private List<MethodInfo> firstNestingLevelTracedMethods;
+        private readonly Stack<MethodInfo> methodsCallStack;
+        private readonly List<MethodInfo> firstNestingLevelTracedMethods;
 
         public ThreadInfo()
         {
@@ -23,7 +21,7 @@ namespace Tracer
 
         public IEnumerable MethodsInfo => firstNestingLevelTracedMethods;
 
-        public void StartMethodTrace(MethodInfo methodInfo)
+        internal void StartMethodTrace(MethodInfo methodInfo)
         {
             if (methodsCallStack.Count == 0)
             {
@@ -38,7 +36,7 @@ namespace Tracer
             methodsCallStack.Push(methodInfo);
         }
 
-        public void StopMethodTrace(MethodInfo methodInfo)
+        internal void StopMethodTrace(MethodInfo methodInfo)
         {
             if (methodsCallStack.Count == 0)
             {

@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
     public class ThreadInfoList
     {
-        private ConcurrentDictionary<long, ThreadInfo> threadsInfo;
+        private readonly ConcurrentDictionary<long, ThreadInfo> threadsInfo;
 
-        public ThreadInfoList()
+        internal ThreadInfoList()
         {
             threadsInfo = new ConcurrentDictionary<long, ThreadInfo>();
         }
 
         public IEnumerable ThreadsInfo => threadsInfo;
 
-        public void StartMethodTraceByThread(long threadId, MethodBase methodBaseInfo)
+        internal void StartMethodTraceByThread(long threadId, MethodBase methodBaseInfo)
         {
             ThreadInfo threadInfo = threadsInfo.GetOrAdd( threadId, new ThreadInfo());
             threadInfo.StartMethodTrace(new MethodInfo(methodBaseInfo));
         }
 
-        public void StopMethodTraceByThread(long threadId, MethodBase methodBaseInfo)
+        internal void StopMethodTraceByThread(long threadId, MethodBase methodBaseInfo)
         {
             ThreadInfo threadInfo;
             if (!threadsInfo.TryGetValue(threadId, out threadInfo))

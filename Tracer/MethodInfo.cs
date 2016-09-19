@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
     public class MethodInfo
     {
-        private List<MethodInfo> firstLevelChildren;
-        private Stopwatch stopWatch;
+        private readonly List<MethodInfo> firstLevelChildren;
+        private readonly Stopwatch stopWatch;
 
         public MethodInfo(MethodBase methodBaseInfo)
         {
@@ -31,12 +27,12 @@ namespace Tracer
 
         public IEnumerable MethodsInfo => firstLevelChildren;
 
-        public void AddChild(MethodInfo methodInfo)
+        internal void AddChild(MethodInfo methodInfo)
         {
             firstLevelChildren.Add(methodInfo);
         }
 
-        public void StopMethodTrace()
+        internal void StopMethodTrace()
         {
             stopWatch.Stop();
         }

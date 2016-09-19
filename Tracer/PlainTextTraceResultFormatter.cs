@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class PlainTextTraceResultFormatter : ITraceResultFormatter
+    public sealed class PlainTextTraceResultFormatter : ITraceResultFormatter
     {
-        private Stream stream;
+        private readonly Stream stream;
         public PlainTextTraceResultFormatter(Stream stream)
         {
             this.stream = stream;

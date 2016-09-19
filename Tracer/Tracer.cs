@@ -1,40 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Tracer
 {
     public class Tracer : ITracer
     {
-        private static volatile Tracer instance;
-        private static object syncRoot = new object();
+        private static readonly Lazy<Tracer> lazy = new Lazy<Tracer>(() => new Tracer());
+        public static Tracer Instance => lazy.Value;
 
-        private TraceResult traceResult;
+        private readonly TraceResult traceResult;
         private Tracer()
         {
             traceResult = new TraceResult();
-        }
-
-        public static Tracer Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if (instance == null)
-                            instance = new Tracer();
-                    }
-                }
-
-                return instance;
-            }
         }
 
         public void StartTrace()
@@ -55,11 +34,6 @@ namespace Tracer
             traceResult.StopMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
         }
 
-        public TraceResult GetTraceResult()
-        {
-            return traceResult;
-        }
-
-
+        public TraceResult GetTraceResult() => traceResult;
     }
 }

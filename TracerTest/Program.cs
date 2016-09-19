@@ -7,7 +7,7 @@ using Tracer;
 
 namespace TracerTest
 {
-    public class Program
+    internal class Program
     {
         private static readonly ITracer tracer = Tracer.Tracer.Instance;
 

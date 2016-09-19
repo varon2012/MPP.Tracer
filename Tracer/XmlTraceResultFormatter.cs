@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Tracer
 {
-    public class XmlTraceResultFormatter : ITraceResultFormatter
+    public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
-        private Stream stream;
+        private readonly Stream stream;
         public XmlTraceResultFormatter(Stream stream)
         {
             this.stream = stream;
