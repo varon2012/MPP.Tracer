@@ -10,7 +10,7 @@ namespace Trace.Classes.TraceInfo
         public MethodMetadata Metadata;
         private Stopwatch _stopwatch;
 
-        public MethodTrace(MethodBase methodBase)
+        internal MethodTrace(MethodBase methodBase)
         {
             CreateStopwatch();
             Metadata = new MethodMetadata(methodBase);

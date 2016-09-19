@@ -9,10 +9,12 @@ namespace Trace.Classes
     {
         private readonly ConcurrentDictionary<int, ThreadTrace> _threadsInfo;
 
-        public TraceResult()
+        internal TraceResult()
         {
             _threadsInfo = new ConcurrentDictionary<int, ThreadTrace>();
         }
+
+        public IEnumerable<KeyValuePair<int, ThreadTrace>> ThreadsInfo => _threadsInfo;
 
         public void StartListenThread(int idThread, MethodBase methodBase)
         {
@@ -29,7 +31,5 @@ namespace Trace.Classes
                 threadInfo.StopListenMethod();
             }
         }
-
-        public IEnumerable<KeyValuePair<int, ThreadTrace>> ThreadsInfo => _threadsInfo;
     }
 }

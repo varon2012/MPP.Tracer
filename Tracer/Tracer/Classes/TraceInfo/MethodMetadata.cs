@@ -8,7 +8,7 @@ namespace Trace.Classes.TraceInfo
         public string ClassName { get; }
         public int CountParameters { get; }
 
-        public MethodMetadata(MethodBase methodBase)
+        internal MethodMetadata(MethodBase methodBase)
         {
             Name = methodBase.Name;
             ClassName = methodBase.DeclaringType?.ToString();

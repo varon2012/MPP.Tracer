@@ -57,7 +57,7 @@ namespace Test
 
         private static void OutputInfo()
         {
-            var formatter = new ConsoleTraceResultFormatter();
+            var formatter = new XmlTraceResultFormatter();
 
             formatter.Format(Tracer.GetTraceResult());
         }

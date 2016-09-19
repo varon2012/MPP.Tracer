@@ -8,11 +8,13 @@ namespace Trace.Classes.TraceInfo
         private readonly Stack<MethodTrace> _stackOfMethods;
         public List<MethodTrace> AllMethodsInfo { get; }
 
-        public ThreadTrace()
+        internal ThreadTrace()
         {
             _stackOfMethods = new Stack<MethodTrace>();
             AllMethodsInfo = new List<MethodTrace>();
         }
+
+        public long ExecutionTime => AllMethodsInfo.Select(x => x.GetExecutionTime()).Sum();
 
         public void StartListenMethod(MethodTrace methodInfo)
         {
@@ -31,7 +33,5 @@ namespace Trace.Classes.TraceInfo
         {
             _stackOfMethods.Pop().StopMeteringTime();
         }
-
-        public long ExecutionTime => AllMethodsInfo.Select(x => x.GetExecutionTime()).Sum();
     }
 }
