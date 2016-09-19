@@ -57,7 +57,7 @@ namespace Tracer
 
         public TraceResult GetTraceResult()
         {
-            throw new NotImplementedException();
+            return traceResult;
         }
 
 

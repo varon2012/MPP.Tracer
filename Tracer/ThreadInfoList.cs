@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Tracer
             threadsInfo = new ConcurrentDictionary<long, ThreadInfo>();
         }
 
+        public IEnumerable ThreadsInfo => threadsInfo;
+
         public void StartMethodTraceByThread(long threadId, MethodBase methodBaseInfo)
         {
             ThreadInfo threadInfo = threadsInfo.GetOrAdd( threadId, new ThreadInfo());
@@ -33,5 +36,7 @@ namespace Tracer
 
             threadInfo.StopMethodTrace(new MethodInfo(methodBaseInfo));
         }
+
+
     }
 }

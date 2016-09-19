@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,7 @@ namespace Tracer
         {
             threadInfoList.StopMethodTraceByThread(threadId, methodBaseInfo);
         }
+
+        public IEnumerable ThreadInfoDictionary => threadInfoList.ThreadsInfo;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,8 @@ namespace Tracer
         }
 
         public long ExecutionTime => firstNestingLevelTracedMethods.Sum((method) => method.ExecutionTime);
+
+        public IEnumerable MethodsInfo => firstNestingLevelTracedMethods;
 
         public void StartMethodTrace(MethodInfo methodInfo)
         {
