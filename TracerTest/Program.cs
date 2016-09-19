@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.IO;
 using System.Threading;
 using Tracer;
 using Tracer.Fromatters;
@@ -10,28 +8,28 @@ namespace TracerTest
 {
     internal class Program
     {
-        private static readonly ITracer _tracer = Tracer.Tracer.Instance;
+        private static readonly ITracer Tracer = global::Tracer.Tracer.Instance;
 
         private static void TestA()
         {
-            _tracer.StartTrace();
+            Tracer.StartTrace();
             Thread.Sleep(100);
             TestB();
-            _tracer.StopTrace();
+            Tracer.StopTrace();
         }
 
         private static void TestB()
         {
-            _tracer.StartTrace();
+            Tracer.StartTrace();
             Thread.Sleep(100);
-            _tracer.StopTrace();
+            Tracer.StopTrace();
         }
 
         private static void TestC(int a, int b)
         {
-            _tracer.StartTrace();
+            Tracer.StartTrace();
             Thread.Sleep(100);
-            _tracer.StopTrace();
+            Tracer.StopTrace();
         }
 
         private static void Main(string[] args)
@@ -39,7 +37,7 @@ namespace TracerTest
             new Thread(TestA).Start();
             TestB();
             TestC(0, 1);
-            PrintResult(_tracer.GetTraceResult());
+            PrintResult(Tracer.GetTraceResult());
         }
 
         private static void PrintResult(TraceResult result)

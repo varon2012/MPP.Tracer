@@ -28,30 +28,30 @@ namespace Tracer.Fromatters
         private static XElement GetRootElement(TraceResult traceResult)
         {
             var rootElement = new XElement("root");
-            foreach (KeyValuePair<int, ThreadTraceInfo> threadTraceInfo in traceResult.ThreadsTraceInfo)
+            foreach (KeyValuePair<int, ThreadTraceResult> threadTraceInfo in traceResult.ThreadsTraceResult)
             {
                 rootElement.Add(GetThreadElement(threadTraceInfo.Key, threadTraceInfo.Value));
             }
             return rootElement;
         }
 
-        private static XElement GetThreadElement(int threadId, ThreadTraceInfo threadTraceInfo)
+        private static XElement GetThreadElement(int threadId, ThreadTraceResult threadTraceResult)
         {
             var threadElement = new XElement("thread");
             threadElement.Add(new XAttribute("id", threadId));
-            threadElement.Add(new XAttribute("time", threadTraceInfo.Duration));
-            threadTraceInfo.MethodsTraceInfo.ForEach((method) => threadElement.Add(GetMethodElement(method)));
+            threadElement.Add(new XAttribute("time", threadTraceResult.Duration));
+            threadTraceResult.MethodsTraceResult.ForEach((method) => threadElement.Add(GetMethodElement(method)));
             return threadElement;
         }
 
-        private static XElement GetMethodElement(MethodTraceInfo methodTraceInfo)
+        private static XElement GetMethodElement(MethodTraceResult methodTraceResult)
         {
             var methodElement = new XElement("method");
-            methodElement.Add(new XAttribute("name", methodTraceInfo.Name));
-            methodElement.Add(new XAttribute("time", methodTraceInfo.Duration));
-            methodElement.Add(new XAttribute("class", methodTraceInfo.ClassName));
-            methodElement.Add(new XAttribute("params", methodTraceInfo.ArgumentsCount));
-            methodTraceInfo.NestedMethodsTraceInfo.ForEach((nested) => methodElement.Add(GetMethodElement(nested)));
+            methodElement.Add(new XAttribute("name", methodTraceResult.Name));
+            methodElement.Add(new XAttribute("time", methodTraceResult.Duration));
+            methodElement.Add(new XAttribute("class", methodTraceResult.ClassName));
+            methodElement.Add(new XAttribute("params", methodTraceResult.ArgumentsCount));
+            methodTraceResult.NestedMethodsTraceResult.ForEach((nested) => methodElement.Add(GetMethodElement(nested)));
             return methodElement;
         }
     }

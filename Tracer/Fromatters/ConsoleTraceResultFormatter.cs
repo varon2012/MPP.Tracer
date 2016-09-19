@@ -10,34 +10,28 @@ namespace Tracer.Fromatters
     {
         public void Format(TraceResult traceResult)
         {
-            foreach (KeyValuePair<int, ThreadTraceInfo> threadTraceInfo in traceResult.ThreadsTraceInfo)
+            foreach (KeyValuePair<int, ThreadTraceResult> threadTraceInfo in traceResult.ThreadsTraceResult)
             {
                 Console.WriteLine($"Thread [id={threadTraceInfo.Key} time={threadTraceInfo.Value.Duration}]");
-                PrintMethodsTraceInfo(threadTraceInfo.Value.MethodsTraceInfo, 1);
+                PrintMethodsTraceResult(threadTraceInfo.Value.MethodsTraceResult, 0);
             }
         }
 
-        private static void PrintMethodsTraceInfo(List<MethodTraceInfo> methodsTraceInfo, int nestingLevel)
+        private static void PrintMethodsTraceResult(List<MethodTraceResult> methodsTraceResult, int nestingLevel)
         {
-            foreach (MethodTraceInfo methodTraceInfo in methodsTraceInfo)
-            {
-                Console.Write(GetIndent(nestingLevel));
-                PrintMethodTraceInfo(methodTraceInfo, nestingLevel + 1);
-            }
+            methodsTraceResult.ForEach((traceResult) => PrintMethodTraceResult(traceResult, nestingLevel + 1));
+        }
+
+        private static void PrintMethodTraceResult(MethodTraceResult methodTraceResult, int nestingLevel)
+        {
+            Console.Write(GetIndent(nestingLevel));
+            Console.WriteLine(methodTraceResult);
+            PrintMethodsTraceResult(methodTraceResult.NestedMethodsTraceResult, nestingLevel);
         }
 
         private static string GetIndent(int nestingLevel)
         {
             return string.Concat(Enumerable.Repeat(" ", nestingLevel * 4));
-        }
-
-        private static void PrintMethodTraceInfo(MethodTraceInfo methodTraceInfo, int nestingLevel)
-        {
-            Console.Write($"Method [name={methodTraceInfo.Name} ");
-            Console.Write($"class={methodTraceInfo.ClassName} ");
-            Console.Write($"time={methodTraceInfo.Duration} ");
-            Console.WriteLine($"params={methodTraceInfo.ArgumentsCount}]");
-            PrintMethodsTraceInfo(methodTraceInfo.NestedMethodsTraceInfo, nestingLevel + 1);
         }
     }
 }
