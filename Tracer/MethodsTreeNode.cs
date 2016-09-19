@@ -10,6 +10,8 @@ namespace Tracer
     {
         public List<MethodsTreeNode> Children { get; set; }
 
+        public MethodsTreeNode Father { get; set; }
+
         public MethodsTreeNode()
         {
             Children = new List<MethodsTreeNode>();

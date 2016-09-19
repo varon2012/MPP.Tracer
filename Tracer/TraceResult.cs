@@ -11,5 +11,13 @@ namespace Tracer
         public Dictionary<int, List<MethodsTreeNode>> TraceTree { get; set; }
 
         public TraceResult() { }
+
+        public void AddMethodToTree()
+        {
+            lock(LockMethodAdd)
+            {
+
+            }
+        }
     }
 }
