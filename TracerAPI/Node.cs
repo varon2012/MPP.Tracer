@@ -6,14 +6,21 @@ using System.Threading.Tasks;
 
 namespace TracerAPI
 {
-    class Node
+    public class Node
     {
-        public string MethodName { set; public get; }
-        public DateTime MethodStartTime { set; public get; }
-        public DateTime MethodStopTime { set; public get; }
-        public long MethodWholeTime { set; public get; }
-        public string MethodClassName { set; public get; }
-        public int NumberOfParameters { set; public get; }
+        public string MethodName;
+        public string MethodClassName;
+        public DateTime StartTime;
+        public DateTime StopTime;
+        public long WholeTime;        
+        public int NumberOfParameters;
+
+        public Node(string methodName, string methodClassName, DateTime startTime)
+        {
+            MethodName = methodName;
+            MethodClassName = methodClassName;
+            StartTime = startTime;
+        }
 
         public List<Node> Children = new List<Node>();             
     }

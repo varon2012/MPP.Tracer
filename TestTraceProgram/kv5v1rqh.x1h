@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using TracerAPI;
+using System.Diagnostics;
+
+namespace TestTraceProgram
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            Thread thread = Thread.CurrentThread;           
+
+            StackTrace stackTrace = new StackTrace();
+            StackFrame stackFrame = stackTrace.GetFrame(0);
+
+            string threadMethod = stackFrame.GetMethod().ToString();
+            Console.WriteLine("Thread Id: {0}\nMethod name: {1}\n",
+                                thread.ManagedThreadId.ToString(),stackFrame.GetMethod());
+
+            Tracer.        
+            for (int i = 0, y = 0; i < 2; i++)
+            {
+                y++;
+            }
+                Console.ReadLine();
+        }
+
+
+    }
+}
