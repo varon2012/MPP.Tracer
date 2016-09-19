@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,12 +10,19 @@ namespace Tracer
         private readonly Stream stream;
         public PlainTextTraceResultFormatter(Stream stream)
         {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
             this.stream = stream;
         }
 
         public void Format(TraceResult traceResult)
         {
-            if (traceResult == null) return;
+            if (traceResult == null)
+            {
+                throw new ArgumentNullException(nameof(traceResult));
+            }
 
             IEnumerable threadsInfo = traceResult.ThreadInfoDictionary;
             using (StreamWriter writer = new StreamWriter(stream))

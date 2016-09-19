@@ -27,7 +27,7 @@ namespace Tracer
             ThreadInfo threadInfo;
             if (!threadsInfo.TryGetValue(threadId, out threadInfo))
             {
-                throw new Exception("There is no thread with id = " + threadId);
+                throw new ArgumentException("There is no thread with id = " + threadId);
             }
 
             threadInfo.StopMethodTrace(new MethodInfo(methodBaseInfo));

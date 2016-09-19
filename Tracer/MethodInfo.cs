@@ -35,7 +35,7 @@ namespace Tracer
             stopWatch.Stop();
         }
 
-        internal bool isEquals(MethodInfo methodInfo)
+        internal bool IsEquals(MethodInfo methodInfo)
         {
             return (methodBase == methodInfo.methodBase);
         }

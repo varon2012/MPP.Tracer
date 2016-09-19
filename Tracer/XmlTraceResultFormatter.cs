@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -10,12 +11,20 @@ namespace Tracer
         private readonly Stream stream;
         public XmlTraceResultFormatter(Stream stream)
         {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
             this.stream = stream;
         }
 
         public void Format(TraceResult traceResult)
         {
-            if (traceResult == null) return;
+            if (traceResult == null)
+            {
+                throw new ArgumentNullException(nameof(traceResult));
+            }
+            
             XDocument xmlDoc = new XDocument();
             XElement rootElement = new XElement("root");
 
