@@ -6,45 +6,45 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public static class ConsoleFormatter
+    public class ConsoleFormatter
     {
-        private static int currentNesting = 0;
-        public static void Format(TraceResult traceResult)
+        private int currentNesting = 0;
+        public void Format(TraceResult traceResult)
         {
             Console.WriteLine("root:");
-            printThreads(traceResult);
+            PrintThreads(traceResult);
         }
 
-        private static void printThreads(TraceResult traceResult)
+        private void PrintThreads(TraceResult traceResult)
         {
             foreach (var thread in traceResult)
             {
                 currentNesting++;
-                Console.WriteLine(indent() + "thread: " + printAttributes(new Dictionary<string, string>(){
+                Console.WriteLine(Indent() + "thread: " + PrintAttributes(new Dictionary<string, string>(){
                     { "id" , $"{thread.ThreadId}"},
                     { "time" , $"{thread.Time}ms"}}));
-                if (thread.Methods != null)
+                if (thread.Methods.Any())
                     foreach (TraceMethodItem method in thread.Methods)
-                        printMethods(method);
+                        PrintMethods(method);
                 currentNesting--;
             }
         }
 
-        private static void printMethods(TraceMethodItem method)
+        private void PrintMethods(TraceMethodItem method)
         {
             currentNesting++;
-            Console.WriteLine(indent() + "method: " + printAttributes(new Dictionary<string, string>() {
+            Console.WriteLine(Indent() + "method: " + PrintAttributes(new Dictionary<string, string>() {
                {"name", method.Name },
                {"class", method.ClassName },
                {"params", $"{method.ParamsCount}" },
                {"time", $"{method.Time} ms"}}));
-            if (method.NestedMethods != null)
+            if (method.NestedMethods.Any())
                 foreach (TraceMethodItem nestedMethod in method.NestedMethods)
-                    printMethods(nestedMethod);
+                    PrintMethods(nestedMethod);
             currentNesting--;
         }
 
-        private static string printAttributes(Dictionary<string, string> attributes)
+        private string PrintAttributes(Dictionary<string, string> attributes)
         {
             string result = "{ ";
             foreach (KeyValuePair<string, string> attr in attributes)
@@ -55,7 +55,7 @@ namespace Tracer
             return result;
         }
 
-        private static string indent()
+        private string Indent()
         {
             return new string(' ', currentNesting * 2);
         }

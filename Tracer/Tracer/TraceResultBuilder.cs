@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public static class TraceResultBuilder
+    public class TraceResultBuilder
     {
-        private const int PREVIOUS_METHODS = 3;
-        private const int BASE_STACK_CAPACITY = 1;
-        public static TraceResult TraceResult;
-        private static Dictionary<int, Stack<TraceMethodItem>> threadsStacks = new Dictionary<int, Stack<TraceMethodItem>>();
+        private const int PreviousMethods = 3;
+        private const int BaseStackCapacity = 1;
+        public TraceResult TraceResult;
+        private Dictionary<int, Stack<TraceMethodItem>> threadsStacks = new Dictionary<int, Stack<TraceMethodItem>>();
 
-        public static void StartTrace(TraceResultItem threadItem)
+        public void StartTrace(TraceResultItem threadItem)
         {
             Stack<TraceMethodItem> currentStack = requiredStack(threadItem);
             currentStack.Push(createMethod(currentStack));
-            if (currentStack.Count == 1)
+            if (currentStack.Count == BaseStackCapacity)
                 threadItem.Methods.Add(currentStack.Peek());
         }
 
-        public static void StopTrace(TraceResultItem threadItem)
+        public void StopTrace(TraceResultItem threadItem)
         {
             Stack<TraceMethodItem> currentStack = threadsStacks[threadItem.ThreadId];
             TraceMethodItem methodItem = currentStack.Pop();
@@ -31,15 +31,12 @@ namespace Tracer
             threadItem.Time += threadTime(currentStack, methodItem);
         }
 
-        private static int threadTime(Stack<TraceMethodItem> currentStack, TraceMethodItem methodItem)
+        private int threadTime(Stack<TraceMethodItem> currentStack, TraceMethodItem methodItem)
         {
-            if (currentStack.Count == 0)
-                return methodItem.Time;
-            else
-                return 0;
+            return currentStack.Count == 0 ? methodItem.Time : 0;
         }
 
-        private static Stack<TraceMethodItem> requiredStack(TraceResultItem threadItem)
+        private Stack<TraceMethodItem> requiredStack(TraceResultItem threadItem)
         {
             if (threadsStacks.ContainsKey(threadItem.ThreadId))
                 return threadsStacks[threadItem.ThreadId];
@@ -52,13 +49,13 @@ namespace Tracer
 
         }
 
-        private static TraceMethodItem createMethod(Stack<TraceMethodItem> currentStack)
+        private TraceMethodItem createMethod(Stack<TraceMethodItem> currentStack)
         {
             StackTrace stackTrace = new StackTrace(true);
-            StackFrame stackFrame = stackTrace.GetFrame(PREVIOUS_METHODS);
+            StackFrame stackFrame = stackTrace.GetFrame(PreviousMethods);
             MethodInfo methodInfo = (MethodInfo)stackFrame.GetMethod();
             TraceMethodItem newMethodItem = new TraceMethodItem(methodInfo.Name, methodInfo.DeclaringType.Name, methodInfo.GetParameters().Count(), DateTime.Now);
-            if (currentStack.Count > BASE_STACK_CAPACITY)
+            if (currentStack.Count > BaseStackCapacity)
                 currentStack.Peek().NestedMethods.Add(newMethodItem);
             return newMethodItem;
         }

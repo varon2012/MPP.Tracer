@@ -7,37 +7,37 @@ using System.Xml.Linq;
 
 namespace Tracer
 {
-    public static class XmlFormatter
+    public class XmlFormatter
     {
-        public static XElement Format(TraceResult traceResult)
+        public XElement Format(TraceResult traceResult)
         {
             XElement root = new XElement("root");
             foreach (TraceResultItem threadItem in traceResult)
             {
-                root.Add(createThreadNode(threadItem));
+                root.Add(CreateThreadNode(threadItem));
             }
             return root;
         }
 
-        private static XElement createThreadNode(TraceResultItem threadItem)
+        private XElement CreateThreadNode(TraceResultItem threadItem)
         {
             XElement result =  new XElement("thread", new XAttribute("id", threadItem.ThreadId),
                                                       new XAttribute("time", $"{threadItem.Time} ms"));
-            if (threadItem.Methods != null)
+            if (threadItem.Methods.Any())
                 foreach (TraceMethodItem methodItem in threadItem.Methods)
-                    result.Add(createMethodNode(methodItem));
+                    result.Add(CreateMethodNode(methodItem));
             return result;
         }
 
-        private static XElement createMethodNode(TraceMethodItem methodItem)
+        private XElement CreateMethodNode(TraceMethodItem methodItem)
         {
             XElement result = new XElement("method", new XAttribute("name", methodItem.Name),
                                                      new XAttribute("class", methodItem.ClassName),
                                                      new XAttribute("params", methodItem.ParamsCount),
                                                      new XAttribute("time", $"{methodItem.Time} ms"));
-            if (methodItem.NestedMethods != null)
+            if (methodItem.NestedMethods.Any())
                 foreach (TraceMethodItem nestedMethod in methodItem.NestedMethods)
-                    result.Add(createMethodNode(nestedMethod));
+                    result.Add(CreateMethodNode(nestedMethod));
             return result;
         }
     }
