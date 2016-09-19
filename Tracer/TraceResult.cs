@@ -51,6 +51,7 @@ namespace Tracer
             {
                 if (CurrentNode != null)
                 {
+                    CurrentNode.Method.Watcher.Stop();
                     CurrentNode = CurrentNode.Father;
                 }
             }
