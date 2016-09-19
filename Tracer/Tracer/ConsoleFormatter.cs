@@ -21,10 +21,10 @@ namespace Tracer
             {
                 currentNesting++;
                 Console.WriteLine(Indent() + "thread: " + PrintAttributes(new Dictionary<string, string>(){
-                    { "id" , $"{thread.ThreadId}"},
-                    { "time" , $"{thread.Time}ms"}}));
-                if (thread.Methods.Any())
-                    foreach (TraceMethodItem method in thread.Methods)
+                    { "id" , $"{thread.Value.ThreadId}"},
+                    { "time" , $"{thread.Value.Time}ms"}}));
+                if (thread.Value.Methods.Any())
+                    foreach (TraceMethodItem method in thread.Value.Methods)
                         PrintMethods(method);
                 currentNesting--;
             }

@@ -10,8 +10,7 @@ namespace Tracer
     {
         public int ThreadId { get; private set; }
         public int Time { get; set; }
-
-
+        
         public List<TraceMethodItem> Methods = new List<TraceMethodItem>();
 
         public TraceResultItem(int threadId)

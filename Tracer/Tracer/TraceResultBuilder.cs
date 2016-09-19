@@ -39,13 +39,12 @@ namespace Tracer
         private Stack<TraceMethodItem> requiredStack(TraceResultItem threadItem)
         {
             if (threadsStacks.ContainsKey(threadItem.ThreadId))
-                return threadsStacks[threadItem.ThreadId];
-            else
             {
-                var tempStack = new Stack<TraceMethodItem>();
-                threadsStacks.Add(threadItem.ThreadId, tempStack);
-                return tempStack;
+                return threadsStacks[threadItem.ThreadId];
             }
+            var tempStack = new Stack<TraceMethodItem>();
+            threadsStacks.Add(threadItem.ThreadId, tempStack);
+            return tempStack;
 
         }
 

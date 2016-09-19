@@ -42,7 +42,7 @@ namespace Tracer
 
         public void StopTrace()
         {
-            var threadItem = TraceResult.Find(x => x.ThreadId == Thread.CurrentThread.ManagedThreadId);
+            var threadItem = TraceResult[Thread.CurrentThread.ManagedThreadId];
             instance.ResultBuilder.StopTrace(threadItem);
         }
 

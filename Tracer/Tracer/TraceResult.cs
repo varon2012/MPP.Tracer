@@ -6,23 +6,15 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class TraceResult : List<TraceResultItem>
+    public class TraceResult : Dictionary<int, TraceResultItem>
     {
         public TraceResultItem FirstOrCreate(int threadId)
         {
-            var result = from t in this
-                        where t.ThreadId.Equals(threadId)
-                        select t;
-            if (!result.Any())
-            {
-                var newItem = new TraceResultItem(threadId);
-                this.Add(newItem);
-                return newItem;
-            }
-            else
-            {
-                return result.ElementAt(0);
-            }
+            if (ContainsKey(threadId))
+                return this[threadId];
+            var traceResult = new TraceResultItem(threadId);
+            Add(threadId, new TraceResultItem(threadId));
+            return traceResult;
         }
     }
 }
