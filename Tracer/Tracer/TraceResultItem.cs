@@ -36,7 +36,7 @@ namespace Tracer
             }
             catch (NullReferenceException)
             {
-                throw new NullReferenceException("Timer is missing! Check arguments passed to TraceResultItem.");
+                throw new TraceResultException("Timer is missing! Check arguments passed to TraceResultItem.");
             }
         }
 
