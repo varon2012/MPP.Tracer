@@ -10,18 +10,11 @@ namespace TracerAPI
 {
     public static class Tracer
     {
-        public TraceResult TraceInfo;
+        public static TraceResult TraceInfo = new TraceResult();
 
-        private Tracer()
-        {
-            TraceInfo = new TraceResult();
-        }
-
-        public void StartTrace()
+        public static void StartTrace()
         {
             DateTime startTime = DateTime.Now;
-
-            Node node = new Node();
             StackTrace stackTrace = new StackTrace();
             StackFrame methodFrame = stackTrace.GetFrame(1);
             StackFrame parentFrame = stackTrace.GetFrame(2);
@@ -34,7 +27,7 @@ namespace TracerAPI
             Tracer.AddStartInfo(threadId, parentName, methodName, methodClassName, startTime);
   
         }
-        public void StopTrace()
+        public static void StopTrace()
         {
             DateTime stopTime = DateTime.Now;
 
@@ -47,25 +40,26 @@ namespace TracerAPI
             Thread thread = Thread.CurrentThread;
             int threadId = thread.ManagedThreadId;
             string methodName = methodStackFrame.GetMethod().ToString();
-            string parentName = parentStackFrame.GetMethod().ToString();
-            string methodClassName = "System Main";
 
-            Tracer.AddStopInfo(threadId, parentName, methodName, methodClassName, stopTime);
+            Tracer.AddStopInfo(threadId, methodName, stopTime);
 
         }
 
-        public TraceResult GetTraceResult() { return TraceInfo; }
+        public static TraceResult GetTraceResult() { return TraceInfo; }
 
         public static void AddStartInfo(int threadId, string parentName,
                                         string methodName, string methodClassName, DateTime startTime)
         {
-    
+            Tree tree;           
+            tree = TraceInfo.GetTreeByThreadId(threadId);           
+            tree.AddNode(parentName, methodName, methodClassName, startTime);
         }
 
-        public static void AddStopInfo(int threadId, string parentName, 
-                                       string methodName, string methodClassname, DateTime stopTime)
+        public static void AddStopInfo(int threadId, string methodName, DateTime stopTime)
         {
-
+            Tree tree;
+            tree = TraceInfo.GetTreeByThreadId(threadId);
+            tree.CompleteNode(methodName, stopTime);
         }
     }
 }

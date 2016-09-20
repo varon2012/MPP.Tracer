@@ -18,7 +18,7 @@ namespace TracerAPI
         public void AddNode(string parentName, string methodName, string methodClassName, DateTime startTime)
         {
             Node newNode = new Node(methodName, methodClassName, startTime);
-            Node parent = GetParentNode(parentName, Root);
+            Node parent = GetParentNodeByName(parentName, Root);
             if (parent == null)
             {
                 Root = newNode;
@@ -29,30 +29,59 @@ namespace TracerAPI
             }
         }
 
-        public void CompleteNode()
+        public void CompleteNode(string methodName, DateTime stopTime)
+        {
+            Node node = GetNodeByName(methodName, Root);
+            node.StopTime = stopTime;
+            node.WholeTime = node.StopTime.Millisecond + node.StopTime.Second * 1000 -
+                            node.StartTime.Millisecond - node.StartTime.Second * 1000;
+        }
         
 
-        public Node GetParentNode(string parentMethodName, Node tempNode)
+        public Node GetParentNodeByName(string parentMethodName, Node tempNode)
         {
             Node parentNode = null;
-            if(parentMethodName == Root.MethodName)
-                parentNode =  Root;
-            else 
+            if(Root != null)
             { 
-                foreach (Node node in tempNode.Children)
-                {
-                    if (node.MethodName == parentMethodName)
-                        parentNode =  node;
-                    else
+                if(parentMethodName == Root.MethodName)
+                    parentNode =  Root;
+                else 
+                { 
+                    foreach (Node node in tempNode.Children)
                     {
-                        if (node.Children.Count > 0)
+                        if (node.MethodName == parentMethodName)
+                            parentNode =  node;
+                        else
                         {
-                            GetParentNode(parentMethodName, node);
+                            if (parentNode == null && node.Children.Count > 0)
+                            {
+                                GetParentNodeByName(parentMethodName, node);
+                            }
                         }
                     }
                 }
             }
             return parentNode;
+        }
+
+        public Node GetNodeByName(string methodName, Node tempNode)
+        {
+            Node node = null;
+            if(tempNode.MethodName == methodName)
+                node = tempNode;
+            else{
+                foreach(Node child in tempNode.Children)
+                {
+                    if(child.MethodName == methodName)
+                    {
+                        node = child;
+                        break;
+                    }
+                    if(node == null)
+                        GetNodeByName(methodName, child);
+                }
+            }
+            return node;
         }
     }
 }

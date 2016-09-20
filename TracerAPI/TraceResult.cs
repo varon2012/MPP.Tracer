@@ -9,7 +9,7 @@ namespace TracerAPI
 {
     public class TraceResult
     {
-        ConcurrentDictionary<int, Tree> Result = new ConcurrentDictionary<int, Tree>();
+        public ConcurrentDictionary<int, Tree> Result = new ConcurrentDictionary<int, Tree>();
 
         public Tree this[int id]
         {
