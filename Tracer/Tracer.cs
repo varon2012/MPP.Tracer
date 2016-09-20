@@ -10,10 +10,6 @@ namespace Tracer
 
         private static readonly object LockObject = new object();
 
-        private static readonly object StartTraceObject = new object();
-
-        private static readonly object StopTraceObject = new object();
-
         public static Tracer Instance
         {
             get
@@ -39,7 +35,7 @@ namespace Tracer
 
         public void StartTrace()
         {
-            lock (StartTraceObject) 
+            lock (LockObject) 
             {
                 TraceResult.AddMethodToTree(new StackTrace().GetFrame(1).GetMethod());
             }
@@ -47,7 +43,7 @@ namespace Tracer
 
         public void StopTrace()
         {
-            lock (StopTraceObject)
+            lock (LockObject)
             {
                 TraceResult.OutOfMethodOnTree();
             }

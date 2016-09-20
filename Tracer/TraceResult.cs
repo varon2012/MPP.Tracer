@@ -7,9 +7,7 @@ namespace Tracer
 {
     public class TraceResult
     {
-        private static readonly object LockMethodAdd = new object();
-
-        private static readonly object LockmethodDelete = new object();
+        private static readonly object LockObject = new object();
 
         public Dictionary<int, List<MethodsTreeNode>> TraceTree { get; set; }
 
@@ -23,7 +21,7 @@ namespace Tracer
 
         public void AddMethodToTree(MethodBase methodBase)
         {
-            lock (LockMethodAdd)
+            lock (LockObject)
             {
                 var methodNode = new MethodsTreeNode(
                     null,
@@ -56,7 +54,7 @@ namespace Tracer
 
         public void OutOfMethodOnTree()
         {
-            lock (LockmethodDelete)
+            lock (LockObject)
             {
                 if (_currentNodes[Thread.CurrentThread.ManagedThreadId] != null)
                 {
