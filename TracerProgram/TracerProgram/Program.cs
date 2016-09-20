@@ -51,7 +51,9 @@ namespace TracerProgram
             ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
             formatter.Format(a.GetTraceResult());
 
-            XMLTraceResultFormatter xmlFormatter = new XMLTraceResultFormatter();
+            Console.WriteLine("Please, enter path to xml file");
+            String path = Console.ReadLine();
+            XMLTraceResultFormatter xmlFormatter = new XMLTraceResultFormatter(path);
             xmlFormatter.Format(a.GetTraceResult());
 
             Console.WriteLine("Xml file \"info.xml\" sucessfully added ");
