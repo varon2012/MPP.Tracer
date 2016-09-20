@@ -16,49 +16,47 @@ namespace Tester
         {
             tracer.StartTrace();
 
-            Thread firstThread = new Thread(RunThread);
-            Thread secondThread = new Thread(RunLongThread);
-            Thread thirdThread = new Thread(RunThread);
-            Thread fourthThread = new Thread(RunLongThread);
-
-            firstThread.Start();
-            secondThread.Start();
-            thirdThread.Start();
-            fourthThread.Start();
-
-            RunCycle(150);
-            RunOuterCycle(400, 2);
-
+            RunOuterCycle(3);
+            LaunchThreadsInCycle(4);
             tracer.StopTrace();
-
-            firstThread.Join();
-            secondThread.Join();           
-            thirdThread.Join();
-            fourthThread.Join();
-            
         }
 
-        private void RunCycle(int sleepTime)
+        private void RunOuterCycle(int amountOfIterations)
         {
             tracer.StartTrace();
-
-            Thread.Sleep(sleepTime);
-
+            for (int i = 0; i < amountOfIterations; i++)
+            {
+                RunInnerCycle();
+            }
             tracer.StopTrace();
         }
-        private void RunOuterCycle(int sleepTime, int multiplier)
+        private void RunInnerCycle()
         {
             tracer.StartTrace();
-            RunCycle(sleepTime * multiplier);
+            Thread.Sleep(100);
             tracer.StopTrace();
         }
-        private void RunThread()
+        private void LaunchThreadsInCycle(int amountOfThreads)
         {
-            RunCycle(500);
+            tracer.StartTrace();
+            var threads = new List<Thread>();
+            for (int i = 0; i < amountOfThreads; i++)
+            {
+                threads.Add(new Thread(ThreadHandler));
+                threads.Last().Start();
+            }
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+            tracer.StopTrace();
         }
-        private void RunLongThread()
+
+        private void ThreadHandler()
         {
-            RunOuterCycle(500,2);
+            tracer.StartTrace();
+            Thread.Sleep(100);
+            tracer.StopTrace();
         }
 
         public void PrintTestResults()
