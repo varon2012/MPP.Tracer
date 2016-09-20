@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Tracer;
+using Tracer.Formatters;
 
 namespace TracerProgram
 {
@@ -29,14 +30,12 @@ namespace TracerProgram
 
             OtherMethod();
 
-            Mine();
-
             a.StopTrace();
             a.StopTrace();
             a.StopTrace();
 
             bgThread.Join();
-
+           
             
             a.StartTrace();
             Thread.Sleep(500);
@@ -49,18 +48,15 @@ namespace TracerProgram
             a.StopTrace();
             a.StopTrace();
 
+            ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
+            formatter.Format(a.GetTraceResult());
             Console.Read();
-        }
-
-        static void Mine()
-        {
-            Console.WriteLine("test");
         }
 
         static void ThreadStart()
         {
             OtherMethod();
-            OneMoreMethod();
+            OneMoreMethod(1,1);
         }
 
         static void OtherMethod()
@@ -70,13 +66,13 @@ namespace TracerProgram
 
             Thread.Sleep(1050);
 
-            OneMoreMethod();
+            OneMoreMethod(1,1);
 
             a.StopTrace();
             a.StopTrace();
         }
 
-        static void OneMoreMethod()
+        static void OneMoreMethod(int c, int b)
         {
             a.StartTrace();
             Thread.Sleep(50);
