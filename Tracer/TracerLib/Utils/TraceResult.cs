@@ -5,12 +5,11 @@ namespace TracerLib.Utils
 {
     public class TraceResult
     {
-        public Dictionary<int, ThreadDescriptor> results { get; }
+        public ImmutableDictionary<int, ThreadDescriptor> Results { get; }
 
         internal TraceResult(Dictionary<int, ThreadDescriptor> res)
         {
-            results = new Dictionary<int, ThreadDescriptor>(res);
-            results.ToImmutableDictionary();
+            Results = res.ToImmutableDictionary();
         }
     }
 }

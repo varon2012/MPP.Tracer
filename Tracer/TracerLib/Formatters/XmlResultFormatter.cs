@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.IO;
+using System.Xml.Linq;
 using TracerLib.Interfaces;
 using TracerLib.Utils;
 
@@ -6,13 +7,19 @@ namespace TracerLib.Formatters
 {
     public class XmlResultFormatter : ITraceResultFormatter
     {
-        private readonly string fileName = "E:\\info.xml";
+        private readonly string fileName;
+
+        public XmlResultFormatter(string file)
+        {
+            fileName = file;
+        }
+
         public void Format(TraceResult traceResult)
         {
             var document = new XDocument();
             var root = new XElement("root");
 
-            var threads = traceResult.results;
+            var threads = traceResult.Results;
 
             foreach (var Id in threads.Keys)
             {

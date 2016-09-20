@@ -9,7 +9,7 @@ namespace TracerLib.Formatters
     {
         public void Format(TraceResult result)
         {
-            var headNodes = result.results;
+            var headNodes = result.Results;
 
             foreach (var Id in headNodes.Keys)
             {
@@ -38,11 +38,6 @@ namespace TracerLib.Formatters
                     Console.WriteLine($"{tab}{tab}*****************************");
                 }
             }
-        }
-
-        public void Format(ImmutableDictionary<int, ThreadDescriptor> results)
-        {
-            throw new NotImplementedException();
         }
 
         private static string GetTab(int nesting)

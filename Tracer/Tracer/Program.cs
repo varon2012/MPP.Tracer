@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using TracerLib;
 using TracerLib.Formatters;
@@ -17,11 +18,10 @@ namespace TracerTest
             testThread.Join();
 
 
-            var thread = new Thread(WOWOWOWMethod);
-            thread.Start();
-            thread.Join();
 
-            SomeMethod();
+            LoopMethod();
+
+            ThreadLoopMethod();
             AnotherMethod(5);
             tracer.StopTrace();
 
@@ -30,7 +30,7 @@ namespace TracerTest
             var consoleFormatter = new ConsoleResultFormatter();
             consoleFormatter.Format(res);
 
-            var xml = new XmlResultFormatter();
+            var xml = new XmlResultFormatter("E:\\info.xml");
             xml.Format(res);
 
             Console.ReadLine();
@@ -45,13 +45,40 @@ namespace TracerTest
 
             tracer.StopTrace();
         }
-        static void WOWOWOWMethod()
+        static void LoopMethod()
         {
             var tracer = Tracer.Instance;
             tracer.StartTrace();
-            var x = 1;
+
+            for (int i = 0; i < 5; i++)
+            {
+                AnotherMethod(i);
+            }
+
             Thread.Sleep(100);
-            x++;
+
+            tracer.StopTrace();
+        }
+
+        static void ThreadLoopMethod()
+        {
+            var tracer = Tracer.Instance;
+            tracer.StartTrace();
+
+            var threads = new List<Thread>();
+            for (int i = 0; i < 4; i++)
+            {
+                var thread = new Thread(SomeMethod);
+                threads.Add(thread);
+                thread.Start();
+                thread.Join();
+            }
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
             tracer.StopTrace();
         }
 
@@ -60,15 +87,8 @@ namespace TracerTest
             var x = a;
             var tracer = Tracer.Instance;
             tracer.StartTrace();
-            TestInnerMethod();
             tracer.StopTrace();
         }
 
-        static void TestInnerMethod()
-        {
-            var tracer = Tracer.Instance;
-            tracer.StartTrace();
-            tracer.StopTrace();
-        }
     }
 }
