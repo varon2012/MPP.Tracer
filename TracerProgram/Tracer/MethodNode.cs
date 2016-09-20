@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class MethodNode
+    internal class MethodNode
     {
         public MethodInfo Info;
         public bool isWorking ;

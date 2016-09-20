@@ -9,7 +9,7 @@ namespace Tracer
 {
     public class TraceResult
     {
-        public Dictionary<int,ThreadNode> threadList;
+        internal Dictionary<int,ThreadNode> threadList;
         private readonly static object locker = new object();
 
         public TraceResult()

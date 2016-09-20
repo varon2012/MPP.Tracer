@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    public class ThreadNode
+    internal class ThreadNode
     {
         public int ID { get; }
         public List<MethodNode> MethodsTree;
