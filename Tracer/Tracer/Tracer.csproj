@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="TraceResult.cs" />
+    <Compile Include="TraceResultException.cs" />
     <Compile Include="TraceResultItem.cs" />
   </ItemGroup>
   <ItemGroup>

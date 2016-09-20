@@ -25,17 +25,12 @@ namespace Tracer
             return analyzedItems.GetEnumerator();
         }
 
-        internal TraceResultItem this[int index]
+        public TraceResultItem this[int index]
         {
             get
             {
                 return analyzedItems[index];
             }
-            set
-            {
-                analyzedItems[index] = value;
-            }   
-
         }
         internal void Add(TraceResultItem item)
         {
