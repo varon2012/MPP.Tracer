@@ -29,7 +29,7 @@ namespace Tracer
             thread.StopMethod(time);
         }
 
-        public ThreadNode GetTreeElement()
+        private ThreadNode GetTreeElement()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
             ThreadNode threadNode;
