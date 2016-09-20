@@ -18,7 +18,10 @@ namespace SPP_Tracer
             Inner1Method1();
             Inner2Method1();
             tracer.StopTrace();
-            new XmlFormatter().Format(tracer.TraceResult);
+            new XmlFormatter("D:\\batka.xml").Format(tracer.TraceResult);
+            new ConsoleFormatter().Format(tracer.TraceResult);
+
+            Console.ReadLine();
         }
 
         static void Inner1Method1()
