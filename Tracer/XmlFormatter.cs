@@ -4,6 +4,13 @@ namespace Tracer
 {
     public class XmlFormatter : ITraceResultFormatter
     {
+        private string _destinationPath;
+
+        public XmlFormatter(string path)
+        {
+            this._destinationPath = path;
+        }
+
         public void Format(TraceResult traceResult)
         {
             var document = new XDocument();
@@ -20,7 +27,7 @@ namespace Tracer
             }
 
             document.Add(root);
-            document.Save("D:\\batka.xml");
+            document.Save(_destinationPath);
         }
 
         private void AddMethodToXmlTree(XElement parentElement, MethodsTreeNode methodNode)
