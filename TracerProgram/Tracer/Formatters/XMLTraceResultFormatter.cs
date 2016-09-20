@@ -9,8 +9,13 @@ namespace Tracer.Formatters
 {
     public class XMLTraceResultFormatter : ITraceResultFormatter
     {
-        private readonly string fileName = "info.xml";
+        private string fileName;
         private readonly static object locker = new object();
+
+        public XMLTraceResultFormatter(String path)
+        {
+            fileName = path;
+        }
 
         public void Format(TraceResult traceResult)
         {
