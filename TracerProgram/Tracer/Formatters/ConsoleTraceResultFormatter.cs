@@ -35,7 +35,7 @@ namespace Tracer.Formatters
                     MethodNode tempMethod = tempTreadNode.MethodsTree.ElementAt(j);
                     builder.Append(GetSpaces(tempMethod.Heignt));
                     builder.Append("method name=" + tempMethod.Info.Name + " time=" + tempMethod.Info.Time.ToString()
-                        + " class=" + tempMethod.Info.ClassName + " params="
+                        + "ms class=" + tempMethod.Info.ClassName + " params="
                         + tempMethod.Info.ParamsNumber.ToString()+"\n");
 
                 }
