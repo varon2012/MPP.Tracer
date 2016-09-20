@@ -47,7 +47,10 @@ namespace Tracer
 
         public void StopTrace()
         {
-            throw new System.NotImplementedException();
+            lock (StopTraceObject)
+            {
+                TraceResult.OutOfMethodOnTree();
+            }
         }
     }
 }
