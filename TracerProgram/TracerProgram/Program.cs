@@ -50,6 +50,11 @@ namespace TracerProgram
 
             ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
             formatter.Format(a.GetTraceResult());
+
+            XMLTraceResultFormatter xmlFormatter = new XMLTraceResultFormatter();
+            xmlFormatter.Format(a.GetTraceResult());
+
+            Console.WriteLine("Xml file \"info.xml\" sucessfully added ");
             Console.Read();
         }
 
