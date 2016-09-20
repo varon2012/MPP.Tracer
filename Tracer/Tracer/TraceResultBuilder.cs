@@ -28,10 +28,10 @@ namespace Tracer
             Stack<TraceMethodItem> currentStack = threadsStacks[threadItem.ThreadId];
             TraceMethodItem methodItem = currentStack.Pop();
             methodItem.Measure();
-            threadItem.Time += threadTime(currentStack, methodItem);
+            threadItem.Time += ThreadTime(currentStack, methodItem);
         }
 
-        private int threadTime(Stack<TraceMethodItem> currentStack, TraceMethodItem methodItem)
+        private int ThreadTime(Stack<TraceMethodItem> currentStack, TraceMethodItem methodItem)
         {
             return currentStack.Count == 0 ? methodItem.Time : 0;
         }

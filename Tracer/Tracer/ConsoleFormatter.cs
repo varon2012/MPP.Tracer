@@ -46,13 +46,13 @@ namespace Tracer
 
         private string PrintAttributes(Dictionary<string, string> attributes)
         {
-            string result = "{ ";
+            StringBuilder result = new StringBuilder("{");
             foreach (KeyValuePair<string, string> attr in attributes)
             {
-                result += attr.Key + " => " + attr.Value + " ";
+                result.Append(attr.Key + " => " + attr.Value + " ");
             }
-            result += "}";
-            return result;
+            result.Append("}");
+            return result.ToString();
         }
 
         private string Indent()

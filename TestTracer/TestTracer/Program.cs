@@ -20,7 +20,7 @@ namespace TestTracer
             t.Join();
             XmlFormatter x = new XmlFormatter();
             ConsoleFormatter y = new ConsoleFormatter();
-            Console.WriteLine(x.Format(tracer.TraceResult));
+            x.Format(tracer.TraceResult).Save("tree.xml");
             y.Format(tracer.TraceResult);
             Console.ReadLine();
         }
@@ -37,13 +37,41 @@ namespace TestTracer
             tracer.StartTrace();
             Thread.Sleep(200);
             test3();
+            List<Thread> threads = new List<Thread>();
+            for (int i = 0; i < 4; i++)
+            {
+                Thread tempThread = new Thread(test5);
+                threads.Add(tempThread);
+                tempThread.Start();
+            }
             tracer.StopTrace();
+            for (int i = 0; i < 4; i++)
+            {
+                threads[i].Join();
+            }
+
         }
 
         private static void test3()
         {
             tracer.StartTrace();
             Thread.Sleep(300);
+            for (int i = 0; i <= 4; i++)
+                test4();
+            tracer.StopTrace();
+        }
+
+        private static void test4()
+        {
+            tracer.StartTrace();
+            Thread.Sleep(100);
+            tracer.StopTrace();
+        }
+
+        private static void test5()
+        {
+            tracer.StartTrace();
+            Thread.Sleep(10);
             tracer.StopTrace();
         }
     }
