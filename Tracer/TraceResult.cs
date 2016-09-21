@@ -7,8 +7,6 @@ namespace Tracer
 {
     public class TraceResult
     {
-        private static readonly object LockObject = new object();
-
         public Dictionary<int, List<MethodsTreeNode>> TraceTree { get; set; }
 
         private Dictionary<int, MethodsTreeNode> _currentNodes;
