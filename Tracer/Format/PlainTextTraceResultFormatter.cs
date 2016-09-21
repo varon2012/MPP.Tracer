@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Tracer.TraceResultData;
 
-namespace Tracer
+namespace Tracer.Format
 {
     public sealed class PlainTextTraceResultFormatter : ITraceResultFormatter
     {
@@ -24,29 +24,29 @@ namespace Tracer
                 throw new ArgumentNullException(nameof(traceResult));
             }
 
-            IEnumerable threadsInfo = traceResult.ThreadInfoDictionary;
+            Dictionary<long, ThreadInfoResult> threadsInfo = traceResult.Value;
             using (StreamWriter writer = new StreamWriter(stream))
             {
-                foreach (KeyValuePair<long, ThreadInfo> threadInfo in threadsInfo)
+                foreach (KeyValuePair<long, ThreadInfoResult> threadInfo in threadsInfo)
                 {
                     writer.WriteLine("Thread id {0} time {1} ms", threadInfo.Key, threadInfo.Value.ExecutionTime);
-                    FormatMethodsInfo(writer, threadInfo.Value.MethodsInfo, 1);
+                    FormatMethodsInfo(writer, threadInfo.Value.ChildMethods, 1);
                 }
                 writer.WriteLine("_______________________________________________");
             }
         }
 
-        private void FormatMethodsInfo(StreamWriter writer, IEnumerable methodsInfo, int level)
+        private void FormatMethodsInfo(StreamWriter writer, IEnumerable<MethodInfoResult> methodsInfo, int level)
         {
             string indent = new string('\t', level);
-            foreach (MethodInfo methodInfo in (List<MethodInfo>)methodsInfo)
+            foreach (MethodInfoResult methodInfo in methodsInfo)
             {
                 writer.WriteLine("{0} method = {1}", indent, methodInfo.Name);
                 writer.WriteLine("{0} class = {1}", indent, methodInfo.ClassName);
                 writer.WriteLine("{0} time = {1}", indent, methodInfo.ExecutionTime);
                 writer.WriteLine("{0} params = {1}", indent, methodInfo.ParamsCount);
                 writer.WriteLine("{0}---", indent);
-                FormatMethodsInfo(writer, methodInfo.MethodsInfo, level+1);
+                FormatMethodsInfo(writer, methodInfo.ChildMethods, level+1);
             }
         }
     }

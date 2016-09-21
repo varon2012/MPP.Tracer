@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using Tracer.TraceResultBuild;
+using Tracer.TraceResultData;
 
 namespace Tracer
 {
@@ -10,10 +12,10 @@ namespace Tracer
         private static readonly Lazy<Tracer> lazy = new Lazy<Tracer>(() => new Tracer());
         public static Tracer Instance => lazy.Value;
 
-        private readonly TraceResult traceResult;
+        private readonly ThreadInfoCollection traceResultController;
         private Tracer()
         {
-            traceResult = new TraceResult();
+            traceResultController = new ThreadInfoCollection();
         }
 
         public void StartTrace()
@@ -22,7 +24,7 @@ namespace Tracer
             StackFrame frame = new StackFrame(1);
             MethodBase currentMethod = frame.GetMethod();
 
-            traceResult.StartMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
+            traceResultController.StartMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
         }
 
         public void StopTrace()
@@ -31,9 +33,12 @@ namespace Tracer
             StackFrame frame = new StackFrame(1);
             MethodBase currentMethod = frame.GetMethod();
 
-            traceResult.StopMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
+            traceResultController.StopMethodTrace(Thread.CurrentThread.ManagedThreadId, currentMethod);
         }
 
-        public TraceResult GetTraceResult() => traceResult;
+        public TraceResult GetTraceResult()
+        {
+            return new TraceResultBuilder(traceResultController.ThreadsInfo).GetResult();
+        }
     }
 }

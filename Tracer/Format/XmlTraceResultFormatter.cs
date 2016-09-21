@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Tracer.TraceResultData;
 
-namespace Tracer
+namespace Tracer.Format
 {
     public sealed class XmlTraceResultFormatter : ITraceResultFormatter
     {
@@ -15,6 +15,7 @@ namespace Tracer
             {
                 throw new ArgumentNullException(nameof(stream));
             }
+
             this.stream = stream;
         }
 
@@ -28,22 +29,22 @@ namespace Tracer
             XDocument xmlDoc = new XDocument();
             XElement rootElement = new XElement("root");
 
-            IEnumerable threadsInfo = traceResult.ThreadInfoDictionary;
-            foreach (KeyValuePair<long, ThreadInfo> threadInfo in threadsInfo)
+            Dictionary<long,ThreadInfoResult> threadsInfo = traceResult.Value;
+            foreach (KeyValuePair<long, ThreadInfoResult> threadInfo in threadsInfo)
             {
                 XElement threadElement = new XElement("thread");
                 threadElement.Add(new XAttribute("id", threadInfo.Key),
                     new XAttribute("time", threadInfo.Value.ExecutionTime));
-                FormatMethodsInfo(threadElement, threadInfo.Value.MethodsInfo);
+                FormatMethodsInfo(threadElement, threadInfo.Value.ChildMethods);
                 rootElement.Add(threadElement);
             }
             xmlDoc.Add(rootElement);
             xmlDoc.Save(stream);
         }
 
-        private void FormatMethodsInfo(XElement parentElement, IEnumerable methodsInfo)
+        private void FormatMethodsInfo(XElement parentElement, IEnumerable<MethodInfoResult> methodsInfo)
         {
-            foreach (MethodInfo methodInfo in (List<MethodInfo>)methodsInfo)
+            foreach (MethodInfoResult methodInfo in methodsInfo)
             {
                 XElement element = new XElement("method");
 
@@ -52,7 +53,7 @@ namespace Tracer
                 element.Add(new XAttribute("time", methodInfo.ExecutionTime));
                 element.Add(new XAttribute("params", methodInfo.ParamsCount));
                 parentElement.Add(element);
-                FormatMethodsInfo(element, methodInfo.MethodsInfo);
+                FormatMethodsInfo(element, methodInfo.ChildMethods);
             }
         }
     }

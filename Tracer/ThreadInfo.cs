@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Tracer
 {
-    public class ThreadInfo
+    internal class ThreadInfo
     {
         
         private readonly Stack<MethodInfo> methodsCallStack;
@@ -17,9 +16,9 @@ namespace Tracer
             methodsCallStack = new Stack<MethodInfo>();
         }
 
-        public long ExecutionTime => firstNestingLevelTracedMethods.Sum((method) => method.ExecutionTime);
+        internal long ExecutionTime => firstNestingLevelTracedMethods.Sum((method) => method.ExecutionTime);
 
-        public IEnumerable MethodsInfo => firstNestingLevelTracedMethods;
+        internal IEnumerable<MethodInfo> MethodsInfo => firstNestingLevelTracedMethods;
 
         internal void StartMethodTrace(MethodInfo methodInfo)
         {

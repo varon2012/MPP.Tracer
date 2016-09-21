@@ -40,16 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITraceResultFormatter.cs" />
+    <Compile Include="Format\ITraceResultFormatter.cs" />
     <Compile Include="ITracer.cs" />
     <Compile Include="MethodInfo.cs" />
-    <Compile Include="PlainTextTraceResultFormatter.cs" />
+    <Compile Include="Format\PlainTextTraceResultFormatter.cs" />
     <Compile Include="ThreadInfo.cs" />
-    <Compile Include="ThreadInfoList.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TraceResult.cs" />
-    <Compile Include="XmlTraceResultFormatter.cs" />
+    <Compile Include="ThreadInfoCollection.cs" />
+    <Compile Include="Format\XmlTraceResultFormatter.cs" />
+    <Compile Include="TraceResultBuild\MethodInfoResultBuilder.cs" />
+    <Compile Include="TraceResultBuild\ThreadInfoResultBuilder.cs" />
+    <Compile Include="TraceResultBuild\TraceResultBuilder.cs" />
+    <Compile Include="TraceResultData\MethodInfoResult.cs" />
+    <Compile Include="TraceResultData\ThreadInfoResult.cs" />
+    <Compile Include="TraceResultData\TraceResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

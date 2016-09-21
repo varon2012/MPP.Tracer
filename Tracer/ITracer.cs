@@ -1,4 +1,6 @@
-﻿namespace Tracer
+﻿using Tracer.TraceResultData;
+
+namespace Tracer
 {
     public interface ITracer
     {

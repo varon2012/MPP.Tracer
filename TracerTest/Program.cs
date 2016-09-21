@@ -1,8 +1,10 @@
-﻿
-using System;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Tracer;
+using Tracer.Format;
+using Tracer.TraceResultData;
 
 
 namespace TracerTest
@@ -21,7 +23,14 @@ namespace TracerTest
                 ThirdCalc();
                 TraceResult result = tracer.GetTraceResult();
 
-                new XmlTraceResultFormatter(Console.OpenStandardOutput()).Format(result);
+
+                using (var fileStream = new FileStream(@"../../../out.xml", FileMode.Create, FileAccess.ReadWrite))
+                {
+                    new XmlTraceResultFormatter(fileStream).Format(result);
+                }
+
+
+                //new XmlTraceResultFormatter(Console.OpenStandardOutput()).Format(result);
 
                 new PlainTextTraceResultFormatter(Console.OpenStandardOutput()).Format(result);
 
