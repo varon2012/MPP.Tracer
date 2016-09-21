@@ -20,9 +20,13 @@ namespace Tracer.Tracers
         public void StartMethodTrace(MethodTracer methodTracer)
         {
             if (_callStack.Count == 0)
+            {
                 MethodTracers.Add(methodTracer);
+            }
             else
+            {
                 _callStack.Peek().AddNestedMethodTracer(methodTracer);
+            }
             _callStack.Push(methodTracer);
         }
 

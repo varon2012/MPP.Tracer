@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using Tracer.Interfaces;
-using Tracer.Tracers;
+using Tracer.Models;
 
-namespace Tracer
+namespace Tracer.Tracers
 {
     public class Tracer : ITracer
     {

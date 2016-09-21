@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Tracer;
 using Tracer.Fromatters;
 using Tracer.Interfaces;
+using Tracer.Models;
 
 namespace TracerTest
 {
     internal class Program
     {
-        private static readonly ITracer Tracer = global::Tracer.Tracer.Instance;
+        private static readonly ITracer Tracer = global::Tracer.Tracers.Tracer.Instance;
         private static readonly List<Thread> Threads = new List<Thread>();
 
         private static void Main(string[] args)

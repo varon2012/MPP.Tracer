@@ -1,9 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Tracer.Models;
 using Tracer.Tracers;
 
-namespace Tracer
+namespace Tracer.Models
 {
     public class TraceResult
     {
