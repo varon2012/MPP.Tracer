@@ -25,7 +25,7 @@ namespace Tracer.Formatters
                 for(int j = 0; j < tempTreadNode.MethodsTree.Count; j++)
                 {
                     MethodNode tempMethod = tempTreadNode.MethodsTree.ElementAt(j);
-                    builder.Append(GetSpaces(tempMethod.Heignt));
+                    builder.Append(new String('-', (tempMethod.Heignt - 1)* 2 ));
                     builder.Append("method name=" + tempMethod.Info.Name + " time=" + tempMethod.Info.Time.ToString()
                         + "ms class=" + tempMethod.Info.ClassName + " params="
                         + tempMethod.Info.ParamsNumber.ToString()+"\n");
@@ -33,17 +33,6 @@ namespace Tracer.Formatters
                 }
             }
             Console.WriteLine(builder.ToString());
-        }
-
-        private string GetSpaces(int count)
-        {
-            String builder = String.Empty;
-            for (int i = 0; i < count - 1; i++)
-            {
-                builder = builder.Insert(0, "--");
-            }
-            
-            return builder.ToString();
         }
     }  
 }
