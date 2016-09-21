@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Tracer.Formatters
@@ -10,7 +8,6 @@ namespace Tracer.Formatters
     public class XMLTraceResultFormatter : ITraceResultFormatter
     {
         private string fileName;
-        private readonly static object locker = new object();
 
         public XMLTraceResultFormatter(String path)
         {
@@ -21,12 +18,7 @@ namespace Tracer.Formatters
         {
             var document = new XDocument();
             var root = new XElement("root");
-            List<ThreadNode> treadNodeList;
-
-            lock (locker)
-            {
-                treadNodeList = traceResult.threadList.Values.ToList();
-            }
+            List<ThreadNode> treadNodeList = traceResult.threadList.Values.ToList();
 
             foreach (var element in treadNodeList)
             {
