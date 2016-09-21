@@ -21,46 +21,40 @@ namespace Tracer
 
         public void AddMethodToTree(MethodBase methodBase)
         {
-            lock (LockObject)
+            var methodNode = new MethodsTreeNode(
+                null,
+                new MethodInfo(
+                    methodBase.Name, 
+                    methodBase.DeclaringType.ToString(), 
+                    methodBase.GetParameters().Length,
+                    Stopwatch.StartNew()));
+
+            if (!TraceTree.ContainsKey(Thread.CurrentThread.ManagedThreadId))
             {
-                var methodNode = new MethodsTreeNode(
-                    null,
-                    new MethodInfo(
-                        methodBase.Name, 
-                        methodBase.DeclaringType.ToString(), 
-                        methodBase.GetParameters().Length,
-                        Stopwatch.StartNew()));
-
-                if (!TraceTree.ContainsKey(Thread.CurrentThread.ManagedThreadId))
-                {
-                    TraceTree.Add(Thread.CurrentThread.ManagedThreadId, new List<MethodsTreeNode>());
-                    methodNode.Father = null;
-                    _currentNodes.Add(Thread.CurrentThread.ManagedThreadId, null);
-                }
-
-                if (_currentNodes[Thread.CurrentThread.ManagedThreadId] == null)
-                {
-                    TraceTree[Thread.CurrentThread.ManagedThreadId].Add(methodNode);
-                }
-                else
-                {
-                    _currentNodes[Thread.CurrentThread.ManagedThreadId].Children.Add(methodNode);
-                    methodNode.Father = _currentNodes[Thread.CurrentThread.ManagedThreadId];
-                }
-
-                _currentNodes[Thread.CurrentThread.ManagedThreadId] = methodNode;
+                TraceTree.Add(Thread.CurrentThread.ManagedThreadId, new List<MethodsTreeNode>());
+                methodNode.Father = null;
+                _currentNodes.Add(Thread.CurrentThread.ManagedThreadId, null);
             }
+
+            if (_currentNodes[Thread.CurrentThread.ManagedThreadId] == null)
+            {
+                TraceTree[Thread.CurrentThread.ManagedThreadId].Add(methodNode);
+            }
+            else
+            {
+                _currentNodes[Thread.CurrentThread.ManagedThreadId].Children.Add(methodNode);
+                methodNode.Father = _currentNodes[Thread.CurrentThread.ManagedThreadId];
+            }
+
+            _currentNodes[Thread.CurrentThread.ManagedThreadId] = methodNode;
         }
 
         public void OutOfMethodOnTree()
         {
-            lock (LockObject)
+            if (_currentNodes[Thread.CurrentThread.ManagedThreadId] != null)
             {
-                if (_currentNodes[Thread.CurrentThread.ManagedThreadId] != null)
-                {
-                    _currentNodes[Thread.CurrentThread.ManagedThreadId].Method.Watcher.Stop();
-                    _currentNodes[Thread.CurrentThread.ManagedThreadId] = _currentNodes[Thread.CurrentThread.ManagedThreadId].Father;
-                }
+                _currentNodes[Thread.CurrentThread.ManagedThreadId].Method.Watcher.Stop();
+                _currentNodes[Thread.CurrentThread.ManagedThreadId] = _currentNodes[Thread.CurrentThread.ManagedThreadId].Father;
             }
         }
     }
