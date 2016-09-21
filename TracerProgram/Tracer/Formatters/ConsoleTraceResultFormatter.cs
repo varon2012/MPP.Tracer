@@ -1,34 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Tracer.Formatters
 {
     public class ConsoleTraceResultFormatter : ITraceResultFormatter
     {
-        private readonly static object locker = new object();
-
         public void Format(TraceResult traceResult)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("root\n");
             int countOfThreads;
 
-            lock(locker)
-            {
-                countOfThreads = traceResult.threadList.Values.Count();
-            }
+            countOfThreads = traceResult.threadList.Values.Count();
 
             ThreadNode tempTreadNode;
             
             for(int i = 0; i < countOfThreads; i++)
             {
-                lock(locker)
-                {
-                    tempTreadNode = traceResult.threadList.Values.ElementAt(i);
-                }
+                
+                tempTreadNode = traceResult.threadList.Values.ElementAt(i);
+                
                 builder.Append("\nthread = " + tempTreadNode.ID.ToString() +"\n");
                 for(int j = 0; j < tempTreadNode.MethodsTree.Count; j++)
                 {
@@ -45,10 +37,10 @@ namespace Tracer.Formatters
 
         private string GetSpaces(int count)
         {
-            StringBuilder builder = new StringBuilder();
+            String builder = String.Empty;
             for (int i = 0; i < count - 1; i++)
             {
-                builder.Append("--");
+                builder = builder.Insert(0, "--");
             }
             
             return builder.ToString();
