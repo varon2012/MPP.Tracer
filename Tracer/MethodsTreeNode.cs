@@ -16,10 +16,5 @@ namespace Tracer
             Children = new List<MethodsTreeNode>();
             Method = method;
         }
-
-        public void AddChild(MethodsTreeNode child)
-        {
-            Children.Add(child);
-        }
     }
 }
