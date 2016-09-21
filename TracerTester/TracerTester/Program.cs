@@ -9,11 +9,29 @@ namespace TracerTester
 {
     class Program
     {
-        public void TestMethod1(int param)
+
+
+        public static void TestMethod5()
         {
             Tracer.Tracer.Instance.StartTrace();
-            Thread.Sleep(100);
+            Thread.Sleep(10);
             Tracer.Tracer.Instance.StopTrace();
+        }
+
+        public void TestMethod1(int param)
+        {
+            List<Thread> list = new List<Thread>();
+            Tracer.Tracer.Instance.StartTrace();
+            for (int i = 0; i < 6; i++)
+            {
+                list.Add(new Thread(new ThreadStart(Program.TestMethod5)));
+                list[i].Start();
+            }
+            Tracer.Tracer.Instance.StopTrace();
+            for (int i = 0; i < 6; i++)
+            {
+                list[i].Join();
+            }
         }
 
         public void TestMethod2(int param1, int param2)
