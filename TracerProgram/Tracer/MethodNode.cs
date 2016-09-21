@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tracer
+﻿namespace Tracer
 {
     internal class MethodNode
     {
-        public MethodInfo Info;
-        public bool isWorking ;
-        public int Heignt;
+        public MethodInfo Info { get; }
+        public bool isWorking { get; set; }
+        public int Heignt { get; }
 
         public MethodNode(MethodInfo info, int height)
         {
