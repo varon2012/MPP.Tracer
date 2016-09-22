@@ -11,7 +11,7 @@ namespace Tracer
 
         private Dictionary<int, MethodsTreeNode> _currentNodes;
 
-        public Dictionary<int, long> ThreadTime;
+        public Dictionary<int, long> ThreadTime { get; set; }
 
         public TraceResult()
         {
