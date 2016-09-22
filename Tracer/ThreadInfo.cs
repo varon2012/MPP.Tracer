@@ -39,7 +39,7 @@ namespace Tracer
         {
             if (methodsCallStack.Count == 0)
             {
-                throw new Exception("There are no MethodsInfo in stack. Maybe you have called StopTrace twice");
+                throw new InvalidOperationException("There are no MethodsInfo in stack. Maybe you have called StopTrace twice");
             }
 
             if (!methodsCallStack.Peek().IsEquals(methodInfo))

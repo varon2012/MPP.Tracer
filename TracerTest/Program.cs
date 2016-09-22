@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Tracer;
@@ -21,10 +23,10 @@ namespace TracerTest
                 FirstCalc();
                 SecondCalc();
                 ThirdCalc();
+
+                
                 TraceResult result = tracer.GetTraceResult();
-
-
-                using (var fileStream = new FileStream(@"../../../out.xml", FileMode.Create, FileAccess.ReadWrite))
+                using (var fileStream = new FileStream(@"out.xml", FileMode.Create, FileAccess.ReadWrite))
                 {
                     new XmlTraceResultFormatter(fileStream).Format(result);
                 }
@@ -52,14 +54,16 @@ namespace TracerTest
         private static void SecondCalc()
         {
             tracer.StartTrace();
-
-            for (int i = 0; i < 5; i++)
+            List<Thread> threds = new List<Thread>();
+            for (int i = 0; i < 6; i++)
             {
-                new Thread(() =>
-                {
-                    ThreadMethod();
+                threds.Add(new Thread(ThreadMethod7));
+                threds.Last().Start();
+            }
 
-                }).Start();
+            foreach (var thread in threds)
+            {
+                thread.Join();
             }
             tracer.StopTrace();
         }
@@ -72,6 +76,7 @@ namespace TracerTest
             }
             tracer.StopTrace();
         }
+
         private static void FourthCalc(int i)
         {
             tracer.StartTrace();
@@ -79,7 +84,7 @@ namespace TracerTest
             tracer.StopTrace();
         }
 
-        public static void ThreadMethod()
+        public static void ThreadMethod7()
         {
             tracer.StartTrace();
             Thread.Sleep(5);
