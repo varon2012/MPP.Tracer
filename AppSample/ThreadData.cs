@@ -1,6 +1,6 @@
 ﻿public class ThreadData
 {
-	public BasicTreeNode<TraceComponent> RootComponent = null;
-	public BasicTreeNode<TraceComponent> CurrentNode = null;
-	public long ExecutionTime;
+	public BasicTreeNode<TraceComponent> RootComponent { get; set; }
+	public BasicTreeNode<TraceComponent> CurrentNode { get; set; }
+	public long ExecutionTime { get; set; }
 }

@@ -5,7 +5,7 @@ internal class Program
 {
 	private static void Main(string[] args)
 	{
-		const int threadCount = 5;
+		const int threadCount = 10;
 		Thread[] threadPool = new Thread[threadCount];
 
 		Tracer tracer = new Tracer();
@@ -13,10 +13,19 @@ internal class Program
 
 		ThreadJob Job = new ThreadJob();
 
-		for (int i = 0; i < threadCount; i++)
+		int globalIndex;
+		for (globalIndex = 0; globalIndex < threadCount / 2; globalIndex++)
 		{
-			threadPool[i] = new Thread(Job.Run);
-			threadPool[i].Start();
+			threadPool[globalIndex] = new Thread(Job.Run);
+			threadPool[globalIndex].Start();
+		}
+
+		Thread.Sleep(1500);
+
+		for (; globalIndex < threadCount; globalIndex++)
+		{
+			threadPool[globalIndex] = new Thread(Job.Run);
+			threadPool[globalIndex].Start();
 		}
 
 		foreach (var thread in threadPool)

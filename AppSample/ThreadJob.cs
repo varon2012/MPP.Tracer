@@ -26,9 +26,6 @@ public class ThreadJob
 	{
 		UsedTracer.StartTrace();
 
-		Random rand = new Random();
-		Thread.Sleep(350 + rand.Next() % 800);
-
 		Bar();
 		Lol();
 
@@ -39,14 +36,12 @@ public class ThreadJob
 
 	void Bar()
 	{
-		UsedTracer.StartTrace();
-
-		Random rand = new Random();
-		Thread.Sleep(350 + rand.Next() % 800);
-
-		Lol();
-
-		UsedTracer.StopTrace();
+		for (int i = 0; i < 5; i++)
+		{
+			UsedTracer.StartTrace();
+			Thread.Sleep(10);
+			UsedTracer.StopTrace();
+		}	
 	}
 
 	void Lol()
