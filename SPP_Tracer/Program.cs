@@ -15,9 +15,22 @@ namespace SPP_Tracer
         {
             var tracer = Tracer.Tracer.Instance;
             tracer.StartTrace();
+
+            var thread = new Thread(Inner1Method1);
+            thread.Start();
+            thread.Join();
             Inner1Method1();
-            Inner2Method1();
+
+            var thread2 = new Thread(Inner2Method1);
+            thread2.Start();
+            thread2.Join();
+
+            LoopMethod();
+            AnotherMethod(4);
+            ThreadLoopMethod();
+
             tracer.StopTrace();
+
             new XmlFormatter("D:\\batka.xml").Format(tracer.TraceResult);
             new ConsoleFormatter().Format(tracer.TraceResult);
 
@@ -59,6 +72,60 @@ namespace SPP_Tracer
 
             Thread.Sleep(100);
 
+            tracer.StopTrace();
+        }
+
+        static void SomeMethod()
+        {
+            var tracer = Tracer.Tracer.Instance;
+            tracer.StartTrace();
+
+            Thread.Sleep(100);
+
+            tracer.StopTrace();
+        }
+        static void LoopMethod()
+        {
+            var tracer = Tracer.Tracer.Instance;
+            tracer.StartTrace();
+
+            for (int i = 0; i < 5; i++)
+            {
+                AnotherMethod(i);
+            }
+
+            Thread.Sleep(100);
+
+            tracer.StopTrace();
+        }
+
+        static void ThreadLoopMethod()
+        {
+            var tracer = Tracer.Tracer.Instance;
+            tracer.StartTrace();
+
+            var threads = new List<Thread>();
+            for (int i = 0; i < 4; i++)
+            {
+                var thread = new Thread(SomeMethod);
+                threads.Add(thread);
+                thread.Start();
+                thread.Join();
+            }
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
+            tracer.StopTrace();
+        }
+
+        static void AnotherMethod(int a)
+        {
+            var x = a;
+            var tracer = Tracer.Tracer.Instance;
+            tracer.StartTrace();
             tracer.StopTrace();
         }
     }
