@@ -11,10 +11,13 @@ namespace Tracer
 
         private Dictionary<int, MethodsTreeNode> _currentNodes;
 
+        public Dictionary<int, long> ThreadTime;
+
         public TraceResult()
         {
             TraceTree = new Dictionary<int, List<MethodsTreeNode>>();
             _currentNodes = new Dictionary<int, MethodsTreeNode>();
+            ThreadTime = new Dictionary<int, long>();
         }
 
         public void AddMethodToTree(MethodBase methodBase)
@@ -32,6 +35,7 @@ namespace Tracer
                 TraceTree.Add(Thread.CurrentThread.ManagedThreadId, new List<MethodsTreeNode>());
                 methodNode.Father = null;
                 _currentNodes.Add(Thread.CurrentThread.ManagedThreadId, null);
+                ThreadTime.Add(Thread.CurrentThread.ManagedThreadId, 0);
             }
 
             if (_currentNodes[Thread.CurrentThread.ManagedThreadId] == null)
@@ -52,6 +56,8 @@ namespace Tracer
             if (_currentNodes[Thread.CurrentThread.ManagedThreadId] != null)
             {
                 _currentNodes[Thread.CurrentThread.ManagedThreadId].Method.Watcher.Stop();
+                ThreadTime[Thread.CurrentThread.ManagedThreadId] += 
+                    _currentNodes[Thread.CurrentThread.ManagedThreadId].Method.Watcher.ElapsedMilliseconds;
                 _currentNodes[Thread.CurrentThread.ManagedThreadId] = _currentNodes[Thread.CurrentThread.ManagedThreadId].Father;
             }
         }

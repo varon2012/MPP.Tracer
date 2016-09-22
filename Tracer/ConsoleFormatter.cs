@@ -13,13 +13,12 @@ namespace Tracer
 
             foreach (var element in traceResult.TraceTree)
             {
-                Console.WriteLine(indent + "thread id=" + element.Key);
+                Console.WriteLine(indent + "thread id=" + element.Key + " time=" + traceResult.ThreadTime[element.Key] + "ms");
                 foreach (var node in element.Value)
                 {
                     AddMethodToConsoleTree(indent + "  ", node);
                 }
             }
-
         }
 
         private void AddMethodToConsoleTree(string indent, MethodsTreeNode methodNode)

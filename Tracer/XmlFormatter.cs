@@ -18,7 +18,9 @@ namespace Tracer
 
             foreach (var element in traceResult.TraceTree)
             {
-                var thread = new XElement("thread", new XAttribute("id", element.Key));
+                var thread = new XElement("thread", 
+                    new XAttribute("id", element.Key),
+                    new XAttribute("time", traceResult.ThreadTime[element.Key] + "ms"));
                 foreach (var node in element.Value)
                 {
                     AddMethodToXmlTree(thread, node);
