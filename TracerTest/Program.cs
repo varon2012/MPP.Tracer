@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Tracer.Fromatters;
+using Tracer.Formatters;
 using Tracer.Interfaces;
 using Tracer.Models;
 
@@ -77,9 +77,13 @@ namespace TracerTest
         private static void PrintResult(TraceResult result)
         {
             new ConsoleTraceResultFormatter().Format(result);
-            using (Stream fileStream = File.Create("result.xml"))
+            using (Stream fileStream = File.Create("XmlResult.xml"))
             {
                 new XmlTraceResultFormatter(fileStream).Format(result);
+            }
+            using (Stream fileStream = File.Create("SerializationResult.xml"))
+            {
+                new SerializationTraceResultFormatter(fileStream).Format(result);
             }
         }
     }
