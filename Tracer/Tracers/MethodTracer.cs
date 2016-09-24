@@ -11,7 +11,12 @@ namespace Tracer.Tracers
 
         public MethodTracer(MethodBase methodBase)
         {
-            _methodTraceResult = new MethodTraceResult(methodBase);
+            _methodTraceResult = new MethodTraceResult()
+            {
+                Name = methodBase.Name,
+                ClassName = methodBase.DeclaringType?.Name,
+                ArgumentsCount = methodBase.GetParameters().Length
+            };
             StartTrace();
         }
 

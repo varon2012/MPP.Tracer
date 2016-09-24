@@ -8,9 +8,9 @@ namespace Tracer.Tracers
         private readonly Stack<MethodTracer> _callStack;
         private readonly ThreadTraceResult _threadTraceResult;
 
-        public ThreadTracer()
+        public ThreadTracer(int threadId)
         {
-            _threadTraceResult = new ThreadTraceResult();
+            _threadTraceResult = new ThreadTraceResult() { Id = threadId };
             _callStack = new Stack<MethodTracer>();
             MethodTracers = new List<MethodTracer>();
         }

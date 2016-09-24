@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace Tracer.Tracers
         {
             int currentThreadId = Thread.CurrentThread.ManagedThreadId;
             MethodBase currentMethod = new StackTrace().GetFrame(1).GetMethod();
-            ThreadTracer threadTracer = _threadTracers.GetOrAdd(currentThreadId, new ThreadTracer());
+            ThreadTracer threadTracer = _threadTracers.GetOrAdd(currentThreadId, new ThreadTracer(currentThreadId));
             threadTracer.StartMethodTrace(new MethodTracer(currentMethod));
         }
 
@@ -34,7 +35,12 @@ namespace Tracer.Tracers
 
         public TraceResult GetTraceResult()
         {
-            return new TraceResult(_threadTracers);
+            var traceResult = new TraceResult();           
+            foreach (KeyValuePair<int, ThreadTracer> threadTracerInfo in _threadTracers)
+            {
+                traceResult.ThreadsTraceResult.Add(threadTracerInfo.Value.GetTraceResult());
+            }
+            return traceResult;
         }
     }
 }
