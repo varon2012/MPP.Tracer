@@ -1,20 +1,18 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using Tracer.Tracers;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Tracer.Models
 {
+    [XmlRoot(ElementName = "root")]
     public class TraceResult
     {
-        public TraceResult(ConcurrentDictionary<int, ThreadTracer> threadTracers)
+
+        public TraceResult()
         {
-            ThreadsTraceResult = new Dictionary<int, ThreadTraceResult>();
-            foreach (KeyValuePair<int, ThreadTracer> threadTracer in threadTracers)
-            {
-                ThreadsTraceResult.Add(threadTracer.Key, threadTracer.Value.GetTraceResult());
-            }
+            ThreadsTraceResult = new List<ThreadTraceResult>();    
         }
 
-        public Dictionary<int, ThreadTraceResult> ThreadsTraceResult { get; }
+        [XmlElement(ElementName = "thread")]
+        public List<ThreadTraceResult> ThreadsTraceResult { get; set; }
     }
 }

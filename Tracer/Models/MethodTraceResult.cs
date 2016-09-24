@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
+using System.Xml.Serialization;
 
 namespace Tracer.Models
 {
     public class MethodTraceResult
     {
-        public MethodTraceResult(MethodBase methodBase)
+        public MethodTraceResult()
         {
-            Name = methodBase.Name;
-            ClassName = methodBase.DeclaringType?.Name;
-            ArgumentsCount = methodBase.GetParameters().Length;
             NestedMethodsTraceResult = new List<MethodTraceResult>();
         }
 
-        public string Name { get; }
-        public string ClassName { get; }
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+        [XmlAttribute("class")]
+        public string ClassName { get; set; }
+        [XmlAttribute("time")]
         public long Duration { get; set; }
-        public int ArgumentsCount { get; }
-        public List<MethodTraceResult> NestedMethodsTraceResult { get; }
-
+        [XmlAttribute("params")]
+        public int ArgumentsCount { get; set; }
+        [XmlElement(ElementName = "method")]
+        public List<MethodTraceResult> NestedMethodsTraceResult { get; set; }
+         
         public void AddNestedMethodResult(MethodTraceResult methodTraceResult)
         {
             NestedMethodsTraceResult.Add(methodTraceResult);
