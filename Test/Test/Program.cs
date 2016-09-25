@@ -42,7 +42,7 @@ namespace Test {
 
             ConsoleView c = new ConsoleView();
             c.Parse(a);
-            JsonView b = new JsonView();
+            JsonView b = new JsonView("out.json");
             b.Parse(a); 
 
             Console.ReadKey();

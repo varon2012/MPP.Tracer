@@ -11,12 +11,17 @@ using BSUIR.Mishin.Tracer.Types;
 
 namespace BSUIR.Mishin.Tracer.Formatter {
     public class JsonView: ITracerFormatter {
+        private string _fileName;
+
+        public JsonView(string fileName) {
+            _fileName = fileName;
+        }
+
         public void Parse(Dictionary<int, List<MethodsTree>> threadList)
         {
             string jsonString = JsonConvert.SerializeObject(threadList);
-            string fileName = "out.json";
 
-            FileStream file = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            FileStream file = new FileStream(_fileName, FileMode.Create, FileAccess.Write);
 
             using(StreamWriter writer = new StreamWriter(file))
             {

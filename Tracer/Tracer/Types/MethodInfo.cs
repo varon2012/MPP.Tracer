@@ -28,7 +28,7 @@ namespace BSUIR.Mishin.Tracer.Types
             _startTime = DateTime.UtcNow;
         }
 
-        internal bool isEqual(MethodBase method)
+        internal bool IsEqual(MethodBase method)
         {
             return ReferenceEquals(_currentMethod, method);
         }

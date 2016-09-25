@@ -59,13 +59,13 @@ namespace BSUIR.Mishin.Tracer.Types
         {
             if(_methodsStack.Count == 0)
             {
-                throw new Exception("Stack is empty.");
+                throw new InvalidOperationException("Stack is empty.");
             }
             MethodsTree lastMethodTreeElementInThread = _methodsStack.Peek();
 
-            if(!lastMethodTreeElementInThread.Element.isEqual(currentMethod))
+            if(!lastMethodTreeElementInThread.Element.IsEqual(currentMethod))
             {
-                throw new Exception("Error in the order of calls.");
+                throw new InvalidOperationException("Error in the order of calls.");
             }
 
             lastMethodTreeElementInThread.Element.StopMethodTrace();
