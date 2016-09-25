@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-
+using System.Collections.Generic;
 namespace Tracer.Formatters
 {
     public class ConsoleTraceResultFormatter : ITraceResultFormatter
@@ -21,7 +21,7 @@ namespace Tracer.Formatters
                 
                 tempTreadNode = traceResult.threadList.Values.ElementAt(i);
                 
-                builder.Append("\nthread = " + tempTreadNode.ID.ToString() +"\n");
+                builder.Append("\nthread = " + tempTreadNode.ID.ToString() + " time = "+tempTreadNode.ThreadWorkingTime  +"ms\n");
                 for(int j = 0; j < tempTreadNode.MethodsTree.Count; j++)
                 {
                     MethodNode tempMethod = tempTreadNode.MethodsTree.ElementAt(j);

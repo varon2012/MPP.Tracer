@@ -9,12 +9,14 @@ namespace Tracer
         public int ID { get; }
         public List<MethodNode> MethodsTree;
         private int ValueOfWorkingMethods;
+        public long ThreadWorkingTime { get; private set; }
 
         public ThreadNode(int id)
         {
             ID = id;
             MethodsTree = new List<MethodNode>();
             ValueOfWorkingMethods = 0;
+
         }
 
         public void AddMethod(MethodInfo method)
@@ -44,11 +46,16 @@ namespace Tracer
                         temp.Info.Time = time - temp.Info.Time;
                         temp.isWorking = false;
                         fixTime = true;
+                        if (ValueOfWorkingMethods == 1)
+                        {
+                            ThreadWorkingTime += temp.Info.Time;
+                        }
                     }
                     currentIndex--;
                 }
                 ValueOfWorkingMethods--;
             }
         }
+
     }
 }

@@ -22,7 +22,7 @@ namespace Tracer.Formatters
 
             foreach (var element in treadNodeList)
             {
-                var thread = new XElement("thread", new XAttribute("id", element.ID));
+                var thread = new XElement("thread", new XAttribute("id", element.ID), new XAttribute("time",element.ThreadWorkingTime));
                 AddMethodsToThread(thread, element.MethodsTree, 1, 0);
                 root.Add(thread);
             }
