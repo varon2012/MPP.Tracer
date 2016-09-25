@@ -15,38 +15,42 @@ namespace TracerProgram
         static void Main(string[] args)
         {
             a = new Tracer.Tracer();
-            a.StartTrace();
-            a.StopTrace();
+             a.StartTrace();
+             a.StopTrace();
 
 
-            a.StartTrace();
-            a.StartTrace();
-            a.StartTrace();
+             a.StartTrace();
+             a.StartTrace();
+             a.StartTrace();
 
-            Thread.Sleep(1000);
+             Thread.Sleep(1000);
 
-            var bgThread = new Thread(ThreadStart);
-            bgThread.Start();
+             var bgThread = new Thread(ThreadStart);
+             bgThread.Start();
 
-            OtherMethod();
+             OtherMethod();
 
-            a.StopTrace();
-            a.StopTrace();
-            a.StopTrace();
+             a.StopTrace();
+             a.StopTrace();
+             a.StopTrace();
 
-            bgThread.Join();
-           
-            
-            a.StartTrace();
-            Thread.Sleep(500);
-            a.StartTrace();
-            Thread.Sleep(500);
-            a.StartTrace();
-            Thread.Sleep(500);
+             bgThread.Join();
 
-            a.StopTrace();
-            a.StopTrace();
-            a.StopTrace();
+
+             a.StartTrace();
+             Thread.Sleep(500);
+             a.StartTrace();
+             Thread.Sleep(500);
+             a.StartTrace();
+             Thread.Sleep(500);
+
+             a.StopTrace();
+             a.StopTrace();
+             a.StopTrace();
+
+
+            LoopMethod(1, 1);
+            ThreadLoopMethod(1);
 
             ConsoleTraceResultFormatter formatter = new ConsoleTraceResultFormatter();
             formatter.Format(a.GetTraceResult());
@@ -58,6 +62,32 @@ namespace TracerProgram
 
             Console.WriteLine("Xml file \"info.xml\" sucessfully added ");
             Console.Read();
+        }
+
+        static void LoopMethod(int q,int w)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                TestMethod();
+            }
+        }
+
+        static void ThreadLoopMethod(int q)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var bgThread = new Thread(TestMethod);
+                bgThread.Start();
+                bgThread.Join();
+            }
+            
+        }
+
+        static void TestMethod()
+        {
+            a.StartTrace();
+            Thread.Sleep(500);
+            a.StopTrace();
         }
 
         static void ThreadStart()
