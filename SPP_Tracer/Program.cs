@@ -80,7 +80,7 @@ namespace SPP_Tracer
             var tracer = Tracer.Tracer.Instance;
             tracer.StartTrace();
 
-            Thread.Sleep(100);
+            Thread.Sleep(5000);
 
             tracer.StopTrace();
         }
@@ -110,7 +110,7 @@ namespace SPP_Tracer
                 var thread = new Thread(SomeMethod);
                 threads.Add(thread);
                 thread.Start();
-                thread.Join();
+                //thread.Join();
             }
 
             foreach (var thread in threads)

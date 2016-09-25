@@ -2,7 +2,7 @@
 
 namespace Tracer
 {
-    public class Tracer : ITracer
+    public sealed class Tracer : ITracer
     {
         public TraceResult TraceResult { get; }
 
@@ -28,7 +28,7 @@ namespace Tracer
             }
         }
 
-        protected Tracer()
+        private Tracer()
         {
             TraceResult = new TraceResult();
         }

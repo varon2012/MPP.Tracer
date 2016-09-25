@@ -4,7 +4,7 @@ namespace Tracer
 {
     public class XmlFormatter : ITraceResultFormatter
     {
-        private string _destinationPath;
+        private readonly string _destinationPath;
 
         public XmlFormatter(string path)
         {

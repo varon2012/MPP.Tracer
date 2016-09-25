@@ -5,11 +5,11 @@ using System.Threading;
 
 namespace Tracer
 {
-    public class TraceResult
+    public sealed class TraceResult
     {
         public Dictionary<int, List<MethodsTreeNode>> TraceTree { get; set; }
 
-        private Dictionary<int, MethodsTreeNode> _currentNodes;
+        private readonly Dictionary<int, MethodsTreeNode> _currentNodes;
 
         public Dictionary<int, long> ThreadTime { get; set; }
 
