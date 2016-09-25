@@ -8,10 +8,9 @@ using BSUIR.Mishin.Tracer.Types;
 
 namespace BSUIR.Mishin.Tracer {
     interface ITracer {
-        void Start();
-        List<TracerThreadTree> Stop();
-
         void StartTrace();
         void StopTrace();
+        void WaitStop();
+        Dictionary<int, List<MethodsTree>> GetTraceResult();
     }
 }

@@ -10,7 +10,6 @@ using BSUIR.Mishin.Tracer.Types;
 
 namespace BSUIR.Mishin.Tracer.Formatter {
     interface ITracerFormatter {
-        string Parse(List<TracerThreadTree> threadList);
-        Stream ParseToStream(List<TracerThreadTree> threadList);
+        void Parse(Dictionary<int, List<MethodsTree>> threadsList);
     }
 }

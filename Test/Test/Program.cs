@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Collections;
+using System.Collections.Concurrent;
 
 using BSUIR.Mishin.Tracer;
 using BSUIR.Mishin.Tracer.Formatter;
@@ -15,34 +17,41 @@ namespace Test {
     class Program {
         static void Main(string[] args) {
             Tracer.Instance.StartTrace();
+            Tracer.Instance.StartTrace();
+            Tracer.Instance.StartTrace();
             Thread.Sleep(50);
             Tracer.Instance.StopTrace();
+            Tracer.Instance.StopTrace();
+            Tracer.Instance.StopTrace();
+
 
             Tracer.Instance.StartTrace();
-            ErrorTrace(100);
+            OneTrace(30);
             Tracer.Instance.StopTrace();
 
             Tracer.Instance.StartTrace();
-            OneTrace(50);
-            DoubleNesting(150, 500);
+            OneTrace(20);
+            DoubleNesting(10, 10);
             Tracer.Instance.StopTrace();
 
             CreateThreads();
 
-            List<TracerThreadTree> traceList = Tracer.Instance.Stop();
+            Tracer.Instance.WaitStop();
 
-            ConsoleView consoleView = new ConsoleView();
-            consoleView.Parse(traceList);
-            JsonView jsonView = new JsonView();
-            Console.WriteLine("File name: " + jsonView.Parse(traceList));
+            Dictionary<int, List<MethodsTree>> a = Tracer.Instance.GetTraceResult();
+
+            ConsoleView c = new ConsoleView();
+            c.Parse(a);
+            JsonView b = new JsonView();
+            b.Parse(a); 
 
             Console.ReadKey();
         }
 
         public static void CreateThreads() {
             Tracer.Instance.StartTrace();
-            ThreadTracer.OneThreadOneTrace(3000);
-            ThreadTracer.OneThreadDoubleNesting(50);
+            ThreadTracer.OneThreadOneTrace(1000);
+            ThreadTracer.OneThreadDoubleNesting(1500);
             Tracer.Instance.StopTrace();
         }
 
@@ -57,7 +66,8 @@ namespace Test {
             Thread.Sleep(ms);
         }
 
-        public static void DoubleNesting(int ms1, int ms2) {
+        public static void DoubleNesting(int ms1, int ms2)
+        {
             Tracer.Instance.StartTrace();
 
             OneTrace(ms2);
@@ -81,15 +91,14 @@ namespace Test {
         }
 
         public static void OneThreadDoubleNesting(int ms) {
-            Thread thread = new Thread(_oneThreadDoubleNesting);
+            Thread thread = new Thread(OneThreadDoubleNesting);
             thread.Start(ms);
         }
 
-        private static void _oneThreadDoubleNesting(object ms) {
+        private static void OneThreadDoubleNesting(object ms) {
             Tracer.Instance.StartTrace();
-
             OneTrace(ms);
-
+            Thread.Sleep(500);
             Tracer.Instance.StopTrace();
         }
     }

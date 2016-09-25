@@ -9,47 +9,39 @@ using BSUIR.Mishin.Tracer.Types;
 
 namespace BSUIR.Mishin.Tracer.Formatter {
     public class ConsoleView: ITracerFormatter {
-        public string Parse(List<TracerThreadTree> threadList) {
+        public void Parse(Dictionary<int, List<MethodsTree>> threadsList)
+        {
             StringBuilder line = new StringBuilder();
 
-            for (int i = 0; i < threadList.Count; i++) {
-                line.Append("Thread number: ").AppendLine(threadList[i].ThreadId.ToString())
-                    .Append(GetTracersTree(threadList[i].Child, ""))
+            foreach(var thread in threadsList)
+            {
+                line.Append("Thread number: ").AppendLine(thread.Key.ToString())
+                    .Append(GetTracersTree(thread.Value, ""))
                     .AppendLine("------");
             }
 
             Console.WriteLine(line.ToString());
-            return string.Empty;
         }
 
-        private string GetTracersTree(List<TracerTree> tree, string separator) {
+        private string GetTracersTree(List<MethodsTree> tree, string separator)
+        {
             StringBuilder line = new StringBuilder();
 
-            for (int i = 0; i < tree.Count; i++) {
-                TracerTree tracer = tree[i];
-                TracerInfo tracerInfo = tracer.Element;
+            for(int i = 0; i < tree.Count; i++)
+            {
+                MethodsTree currentTree = tree[i];
+                MethodInfo methodInfo = currentTree.Element;
 
                 line.Append(separator)
-                    .Append("Method: ").Append(tracerInfo.MethodName).Append(", ")
-                    .Append("Count of Params: ").Append(tracerInfo.CountParams.ToString()).Append(", ")
-                    .Append(tracerInfo.ClassName).Append(". ")
-                    .Append("Milliseconds: ").Append(tracerInfo.Time.ToString())
+                    .Append("Method: ").Append(methodInfo.MethodName).Append(", ")
+                    .Append("Count of Params: ").Append(methodInfo.CountParams.ToString()).Append(", ")
+                    .Append(methodInfo.ClassName).Append(". ")
+                    .Append("Milliseconds: ").Append(methodInfo.Time.ToString())
                     .AppendLine();
-                if (tracer.Child.Count > 0) line.Append(GetTracersTree(tracer.Child, separator + "  "));
+                if(currentTree.Childs.Count > 0) line.Append(GetTracersTree(currentTree.Childs, separator + "  "));
             }
 
             return line.ToString();
-        }
-
-        public Stream ParseToStream(List<TracerThreadTree> threadList) {
-            string stringObj = Parse(threadList);
-            Stream stream = new MemoryStream();
-
-            using (StreamWriter writer = new StreamWriter(stream)) {
-                writer.Write(stringObj);
-            }
-
-            return stream;
         }
     }
 }
