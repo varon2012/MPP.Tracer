@@ -52,9 +52,12 @@ namespace TracerAPI
                             parentNode =  node;
                         else
                         {
+                            Node temp  = null;
                             if (parentNode == null && node.Children.Count > 0)
                             {
-                                GetParentNodeByName(parentMethodName, node);
+                              temp =  GetParentNodeByName(parentMethodName, node);
+                              if (temp != null)
+                                  return temp;
                             }
                         }
                     }
@@ -79,8 +82,13 @@ namespace TracerAPI
                             node = child;
                             break;
                         }
-                        if(node == null)
-                            GetNodeByName(methodName, child);
+                        Node temp = null;
+                        if (node == null) 
+                        { 
+                            temp = GetNodeByName(methodName, child);
+                            if (temp != null)
+                                return temp;
+                        }
                     }
                 }
             }

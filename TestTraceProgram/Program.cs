@@ -18,11 +18,11 @@ namespace TestTraceProgram
             {
                 y++;
             }
-            //Thread thread = new Thread(new ThreadStart(Method1));
-            //thread.Start();
+            Thread thread = new Thread(new ThreadStart(Method1));
+            thread.Start();
 
             Method1();
-            //thread.Join();
+            thread.Join();
             TraceResult result = Tracer.Instance.GetTraceResult();
             Console.ReadLine();
         }
