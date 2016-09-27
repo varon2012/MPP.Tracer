@@ -37,10 +37,10 @@ namespace TracerAPI
             {
                 XElement Method = new XElement("Method");
                 xElement.Add(Method);
-                Method.SetAttributeValue("name", tempParent.MethodName);
-                Method.SetAttributeValue("num-of-param", tempParent.NumberOfParameters);
-                Method.SetAttributeValue("method-class-name", tempParent.MethodClassName);
-                Method.SetAttributeValue("time", tempParent.WholeTime);
+                Method.SetAttributeValue("name", child.MethodName);
+                Method.SetAttributeValue("num-of-param", child.NumberOfParameters);
+                Method.SetAttributeValue("method-class-name", child.MethodClassName);
+                Method.SetAttributeValue("time", child.WholeTime);
                 if (child.Children.Count > 0)
                 {
                     AddChildrenToXElement(Method, child);
