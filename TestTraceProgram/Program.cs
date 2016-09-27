@@ -24,6 +24,9 @@ namespace TestTraceProgram
             Method1();
             thread.Join();
             TraceResult result = Tracer.Instance.GetTraceResult();
+            XMLFormatter f = new XMLFormatter();
+         
+            f.Format(result);
             Console.ReadLine();
         }
 
