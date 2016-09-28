@@ -13,15 +13,7 @@ namespace TestTraceProgram
     {
         static void Main(string[] args)
         {           
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
-            Thread thread = new Thread(new ThreadStart(Method1));
-            thread.Start();
-
-            Method1();
-            thread.Join();
+            Method1();            
             TraceResult result = Tracer.Instance.GetTraceResult();
             XMLFormatter f1 = new XMLFormatter();
             ConsoleFormatter f2 = new ConsoleFormatter(); 
@@ -32,11 +24,15 @@ namespace TestTraceProgram
 
         public static void Method1()
         {
+            Thread thread = new Thread(new ThreadStart(Method2));   
+            thread.Start();
+
             Tracer.Instance.StartTrace();
 
             Thread.Sleep(200);
             Method2();
             Method3();
+            thread.Join();
             Tracer.Instance.StopTrace();           
         }
 
