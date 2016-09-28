@@ -9,26 +9,19 @@ namespace TracerAPI
 {
     public class TraceResult
     {
-        public ConcurrentDictionary<int, Tree> Result = new ConcurrentDictionary<int, Tree>();
+        private ConcurrentDictionary<int, Tree> result = new ConcurrentDictionary<int, Tree>();
+        public ConcurrentDictionary<int, Tree> Result {get { return result; }}
 
         public Tree this[int id]
         {
-            set 
-            {
-                Result[id] = value;
-            }
-            get
-            {
-                return Result[id];
-            }
+            set { result[id] = value; }
+            get { return result[id];  }
         }
 
         public Tree GetTreeByThreadId(int threadId)
         {
             if (Result.ContainsKey(threadId))
-            {
-                return this[threadId];
-            }
+                return this[threadId];            
             else
             {
                 Tree tree = new Tree();

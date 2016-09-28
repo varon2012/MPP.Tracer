@@ -8,7 +8,8 @@ namespace TracerAPI
 {
     public class Tree
     {
-        public Node Root;
+        private Node root;
+        public Node Root { get { return root; } set { root = value; } }
 
         public Tree()
         {

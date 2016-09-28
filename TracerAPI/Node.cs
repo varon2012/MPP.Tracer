@@ -8,12 +8,15 @@ namespace TracerAPI
 {
     public class Node
     {
-        public string MethodName;
-        public string MethodClassName;
-        public DateTime StartTime;
-        public DateTime StopTime;
-        public long WholeTime;        
-        public int NumberOfParameters;
+        public string MethodName { get; set; }
+        public string MethodClassName { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime StopTime { get; set; }
+        public long WholeTime { get; set; }
+        public int NumberOfParameters { get; set; }
+
+        private List<Node> children = new List<Node>();
+        public List<Node> Children {get { return children; }}
 
         public Node(string methodName, int numberOfParams, string methodClassName, DateTime startTime)
         {
@@ -21,8 +24,6 @@ namespace TracerAPI
             NumberOfParameters = numberOfParams;
             MethodClassName = methodClassName;
             StartTime = startTime;
-        }
-
-        public List<Node> Children = new List<Node>();             
+        }                     
     }
 }
