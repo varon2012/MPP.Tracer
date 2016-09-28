@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TracerAPI
 {
-    public class ConsoleFormatter
+    public class ConsoleFormatter: ITraceResultFormatter
     {
         private List<string> stack = new List<string>();
-        private StringBuilder stringBuilder = new StringBuilder(string.Empty);
        
         public void Format(TraceResult traceResult)
         {

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace TracerAPI
 {
-    public class Tracer
+    public class Tracer: ITracer
     {
         private TraceResult TraceInfo;
         private static volatile Tracer instance = null;

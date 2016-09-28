@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TracerAPI
 {
-    public class XMLFormatter
+    public class XMLFormatter: ITraceResultFormatter
     {
         private XElement Root;
 
