@@ -22,8 +22,8 @@ namespace TracerAPI
                 Thread.Add(Method);
 
                 Method.SetAttributeValue("name",traceResult[key].Root.MethodName);
-                Method.SetAttributeValue("num-of-param", traceResult[key].Root.NumberOfParameters);
-                Method.SetAttributeValue("method-class-name", traceResult[key].Root.MethodClassName);
+                Method.SetAttributeValue("parameters", traceResult[key].Root.NumberOfParameters);
+                Method.SetAttributeValue("class-name", traceResult[key].Root.MethodClassName);
                 Method.SetAttributeValue("time", traceResult[key].Root.WholeTime);
 
                 AddChildrenToXElement(Method, traceResult[key].Root);
@@ -38,8 +38,8 @@ namespace TracerAPI
                 XElement Method = new XElement("Method");
                 xElement.Add(Method);
                 Method.SetAttributeValue("name", child.MethodName);
-                Method.SetAttributeValue("num-of-param", child.NumberOfParameters);
-                Method.SetAttributeValue("method-class-name", child.MethodClassName);
+                Method.SetAttributeValue("parameters", child.NumberOfParameters);
+                Method.SetAttributeValue("class-name", child.MethodClassName);
                 Method.SetAttributeValue("time", child.WholeTime);
                 if (child.Children.Count > 0)
                 {

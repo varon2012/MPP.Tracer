@@ -15,9 +15,10 @@ namespace TracerAPI
         public long WholeTime;        
         public int NumberOfParameters;
 
-        public Node(string methodName, string methodClassName, DateTime startTime)
+        public Node(string methodName, int numberOfParams, string methodClassName, DateTime startTime)
         {
             MethodName = methodName;
+            NumberOfParameters = numberOfParams;
             MethodClassName = methodClassName;
             StartTime = startTime;
         }

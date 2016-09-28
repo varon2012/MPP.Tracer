@@ -15,9 +15,9 @@ namespace TracerAPI
             Root = null;
         }
 
-        public void AddNode(string parentName, string methodName, string methodClassName, DateTime startTime)
+        public void AddNode(string parentName, string methodName, int numberOfParams, string methodClassName, DateTime startTime)
         {
-            Node newNode = new Node(methodName, methodClassName, startTime);
+            Node newNode = new Node(methodName, numberOfParams, methodClassName, startTime);
             Node parent = GetParentNodeByName(parentName, Root);
             if (parent == null)
             {
@@ -33,7 +33,12 @@ namespace TracerAPI
         {
             Node node = GetNodeByName(methodName, Root);
             node.StopTime = stopTime;
-            node.WholeTime = node.StopTime.Millisecond - node.StartTime.Millisecond;
+            node.WholeTime = node.StopTime.Millisecond +
+                             node.StopTime.Second * 1000 +
+                             node.StopTime.Minute * 1000 * 60 -
+                             (node.StartTime.Millisecond +
+                             node.StartTime.Second * 1000 +
+                             node.StartTime.Minute * 1000 * 60);
         }
         
 
@@ -42,24 +47,16 @@ namespace TracerAPI
             Node parentNode = null;
             if(Root != null)
             { 
-                if(parentMethodName == Root.MethodName)
-                    parentNode =  Root;
+                if(parentMethodName == tempNode.MethodName)
+                    parentNode =  tempNode;
                 else 
                 { 
-                    foreach (Node node in tempNode.Children)
+                    if(tempNode.Children.Count > 0)
                     {
-                        if (node.MethodName == parentMethodName)
-                            parentNode =  node;
-                        else
-                        {
-                            Node temp  = null;
-                            if (parentNode == null && node.Children.Count > 0)
-                            {
-                              temp =  GetParentNodeByName(parentMethodName, node);
-                              if (temp != null)
-                                  return temp;
-                            }
-                        }
+                        Node lastChild = tempNode.Children.Last();
+                        parentNode = GetParentNodeByName(parentMethodName, lastChild);
+                        if (parentNode != null)
+                            return parentNode;
                     }
                 }
             }
@@ -74,22 +71,11 @@ namespace TracerAPI
             else
             {
                 if (tempNode.Children.Count > 0) 
-                { 
-                    foreach(Node child in tempNode.Children)
-                    {
-                        if(child.MethodName == methodName)
-                        {
-                            node = child;
-                            break;
-                        }
-                        Node temp = null;
-                        if (node == null) 
-                        { 
-                            temp = GetNodeByName(methodName, child);
-                            if (temp != null)
-                                return temp;
-                        }
-                    }
+                {
+                    Node lastChild = tempNode.Children.Last();
+                    node = GetNodeByName(methodName, lastChild);
+                    if (node != null)
+                        return node;
                 }
             }
             return node;

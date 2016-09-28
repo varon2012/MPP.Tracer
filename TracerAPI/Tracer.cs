@@ -46,11 +46,32 @@ namespace TracerAPI
             StackFrame parentFrame = stackTrace.GetFrame(2);
             Thread thread = Thread.CurrentThread;
             int threadId = thread.ManagedThreadId; 
-            string methodName = methodFrame.GetMethod().ToString();
-            string parentName = parentFrame.GetMethod().ToString();
+
+            char  []separator = {' '};
+            string[] methodStrings = methodFrame.GetMethod().ToString().Split(separator);
+            int bracketIndex = methodStrings[1].IndexOf('(');
+            string methodName = methodStrings[1].Substring(0, bracketIndex);
+
+            int numberOfParams;
+            if (methodStrings.Count() == 2 && (methodStrings[1].IndexOf(')') -
+                methodStrings[1].IndexOf('(')) > 1)
+                numberOfParams = methodStrings.Count() - 1;
+            else
+            {
+                if(methodStrings.Count() > 2)
+                    numberOfParams = methodStrings.Count() - 1;
+                else
+                    numberOfParams = 0;
+            }
+
+            separator[0] = ' ';
+            string[] parentStrings = parentFrame.GetMethod().ToString().Split(separator);
+            bracketIndex = parentStrings[1].IndexOf('(');
+            string parentName = parentStrings[1].Substring(0, bracketIndex);
+
             string methodClassName = methodFrame.GetMethod().ReflectedType.ToString();
 
-            Tracer.AddStartInfo(threadId, parentName, methodName, methodClassName, startTime);
+            Tracer.AddStartInfo(threadId, parentName, methodName, numberOfParams, methodClassName, startTime);
   
         }
         public void StopTrace()
@@ -65,10 +86,12 @@ namespace TracerAPI
 
             Thread thread = Thread.CurrentThread;
             int threadId = thread.ManagedThreadId;
-            string methodName = methodStackFrame.GetMethod().ToString();
 
+            char[] separator = { ' ' };
+            string[] methodStrings = methodStackFrame.GetMethod().ToString().Split(separator);
+            int bracketIndex = methodStrings[1].IndexOf('(');
+            string methodName = methodStrings[1].Substring(0, bracketIndex);
             Tracer.AddStopInfo(threadId, methodName, stopTime);
-
         }
 
         public TraceResult GetTraceResult() 
@@ -77,12 +100,12 @@ namespace TracerAPI
         }
 
         public static void AddStartInfo(int threadId, string parentName,
-                                        string methodName, string methodClassName, 
+                                        string methodName, int numberOfParams, string methodClassName, 
                                         DateTime startTime)
         {
             Tree tree;           
             tree = Tracer.Instance.GetTraceResult().GetTreeByThreadId(threadId);           
-            tree.AddNode(parentName, methodName, methodClassName, startTime);
+            tree.AddNode(parentName, methodName, numberOfParams, methodClassName, startTime);
         }
 
         public static void AddStopInfo(int threadId, string methodName, DateTime stopTime)

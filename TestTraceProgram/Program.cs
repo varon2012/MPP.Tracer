@@ -11,7 +11,6 @@ namespace TestTraceProgram
 {
     class Program
     {
-
         static void Main(string[] args)
         {           
             for (int i = 0, y = 0; i < 5; i++)
@@ -34,11 +33,8 @@ namespace TestTraceProgram
         public static void Method1()
         {
             Tracer.Instance.StartTrace();
-            
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
+
+            Thread.Sleep(200);
             Method2();
             Method3();
             Tracer.Instance.StopTrace();           
@@ -47,42 +43,30 @@ namespace TestTraceProgram
         public static void Method2()
         {
             Tracer.Instance.StartTrace();
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
-            Method4();
+            Thread.Sleep(200);
+            Method4(4);
             Tracer.Instance.StopTrace();            
         }
 
         public static void Method3()
         {
             Tracer.Instance.StartTrace();
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
-            Method5();
+            Thread.Sleep(200);
+            Method5(4,3);
             Tracer.Instance.StopTrace();
         }
 
-        public static void Method4()
+        public static void Method4(int a)
         {
             Tracer.Instance.StartTrace();
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
+            Thread.Sleep(200);
             Tracer.Instance.StopTrace();
         }
 
-        public static void Method5()
+        public static void Method5(int a, int b)
         {
             Tracer.Instance.StartTrace();
-            for (int i = 0, y = 0; i < 5; i++)
-            {
-                y++;
-            }
+            Thread.Sleep(200);
             Tracer.Instance.StopTrace();
         }
     }
