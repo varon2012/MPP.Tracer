@@ -85,7 +85,7 @@ namespace TracerAPI
             return TraceInfo; 
         }
 
-        public static void AddStartInfo(int threadId, string parentName,
+        private static void AddStartInfo(int threadId, string parentName,
                                         string methodName, int numberOfParams, string methodClassName, 
                                         DateTime startTime)
         {
@@ -94,7 +94,7 @@ namespace TracerAPI
             tree.AddNode(parentName, methodName, numberOfParams, methodClassName, startTime);
         }
 
-        public static void AddStopInfo(int threadId, string methodName, DateTime stopTime)
+        private static void AddStopInfo(int threadId, string methodName, DateTime stopTime)
         {
             Tree tree;
             tree = Tracer.Instance.GetTraceResult().GetTreeByThreadId(threadId);
