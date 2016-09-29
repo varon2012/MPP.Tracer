@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracerApplication.UI", "TracerApplication\TracerApplication.UI.csproj", "{2C5C60FC-BB08-4A0C-98B3-14082189F2DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{34381868-29D2-4255-AD2E-0342E1BC5CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{CA05E9E6-21F0-4D36-B32B-1C75C7AE1EE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C5C60FC-BB08-4A0C-98B3-14082189F2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5C60FC-BB08-4A0C-98B3-14082189F2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5C60FC-BB08-4A0C-98B3-14082189F2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5C60FC-BB08-4A0C-98B3-14082189F2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34381868-29D2-4255-AD2E-0342E1BC5CB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34381868-29D2-4255-AD2E-0342E1BC5CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34381868-29D2-4255-AD2E-0342E1BC5CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34381868-29D2-4255-AD2E-0342E1BC5CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA05E9E6-21F0-4D36-B32B-1C75C7AE1EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA05E9E6-21F0-4D36-B32B-1C75C7AE1EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA05E9E6-21F0-4D36-B32B-1C75C7AE1EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA05E9E6-21F0-4D36-B32B-1C75C7AE1EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
