@@ -8,39 +8,51 @@ namespace TracerAPI
 {
     public class ConsoleFormatter: ITraceResultFormatter
     {
-        private List<string> stack = new List<string>();
+        private readonly Stack<string> stack = new Stack<string>();
        
         public void Format(TraceResult traceResult)
         {
             int level = 0;
-            
+            string indention;
+
             if (traceResult.Result.Count > 0) {
+
                 Console.WriteLine("Threads (");
-                stack.Add(")");
+                stack.Push(")");
+
                 level++;
+                indention = new String(' ', level * 2);
                 foreach (int key in traceResult.Result.Keys)
                 {
-                    Console.WriteLine( GetIndention(level)+"Thread id = {0}: (", key);
-                    stack.Add(")");
+                    Console.WriteLine(indention + "Thread id = {0}: (", key);
+                    stack.Push(")");
                     
                     AddMethodsToTread(traceResult[key].Root, level);
-                    Console.WriteLine(GetIndention(level) + stack.Last());
-                    stack.RemoveAt(stack.Count-1);
+                    Console.WriteLine(indention + stack.Last());
+                    stack.Pop();
                 }
+
                 level--;
-                Console.WriteLine(GetIndention(level) + stack.Last());
-                stack.RemoveAt(stack.Count-1);
+                indention = new String(' ', level * 2);
+                Console.WriteLine(indention + stack.Last());
+                stack.Pop();
             }
         }
 
         private void AddMethodsToTread(Node node, int level)
         {
+            string indention;
+
             level++;
-            Console.WriteLine(GetIndention(level) + "Method name = {0},",node.MethodName);
+            indention = new String(' ', level * 2);
+            Console.WriteLine(indention + "Method name = {0},",node.MethodName);
+
             level++;
-            Console.WriteLine(GetIndention(level) + "parameters = {0},", node.NumberOfParameters);
-            Console.WriteLine(GetIndention(level) + "class-name = {0},", node.MethodClassName); 
-            Console.Write(GetIndention(level) + "time = {0}:(", node.WholeTime);
+            indention = new String(' ', level * 2);
+            Console.WriteLine(indention + "parameters = {0},", node.NumberOfParameters);
+            Console.WriteLine(indention + "class-name = {0},", node.MethodClassName); 
+            Console.Write(indention + "time = {0}:(", node.WholeTime);
+
             level--;
             if (node.Children.Count == 0)
             {
@@ -49,21 +61,15 @@ namespace TracerAPI
             else
             {
                 Console.WriteLine();
-                stack.Add(")");
+                stack.Push(")");
                 foreach(Node child in node.Children){
                     AddMethodsToTread(child, level);
                 }
-                Console.WriteLine(GetIndention(level) + stack.Last());
-                stack.RemoveAt(stack.Count - 1);
-            }
-        }
 
-        private string GetIndention(int level)
-        {
-            StringBuilder stringBuilder = new StringBuilder(string.Empty);
-            for (int i = 0; i < level; i++)
-                stringBuilder.Append("  ");
-            return stringBuilder.ToString();
+                indention = new String(' ', level * 2);
+                Console.WriteLine(indention + stack.Last());
+                stack.Pop();
+            }
         }
     }
 }

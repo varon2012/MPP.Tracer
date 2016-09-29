@@ -45,29 +45,16 @@ namespace TracerAPI
             StackFrame methodFrame = stackTrace.GetFrame(1);
             StackFrame parentFrame = stackTrace.GetFrame(2);
             Thread thread = Thread.CurrentThread;
-            int threadId = thread.ManagedThreadId; 
+            int threadId = thread.ManagedThreadId;
 
-            char  []separator = {' '};
-            string[] methodStrings = methodFrame.GetMethod().ToString().Split(separator);
-            int bracketIndex = methodStrings[1].IndexOf('(');
-            string methodName = methodStrings[1].Substring(0, bracketIndex);
+            string signature = methodFrame.GetMethod().ToString();
+            string methodName = GetMethodNameFromSignature(signature);
 
-            int numberOfParams;
-            if (methodStrings.Count() == 2 && (methodStrings[1].IndexOf(')') -
-                methodStrings[1].IndexOf('(')) > 1)
-                numberOfParams = methodStrings.Count() - 1;
-            else
-            {
-                if(methodStrings.Count() > 2)
-                    numberOfParams = methodStrings.Count() - 1;
-                else
-                    numberOfParams = 0;
-            }
+            string parameters = GetMethodParametersFromSignature(signature);
+            int numberOfParams = GetNumberOfParameters(parameters);
 
-            separator[0] = ' ';
-            string[] parentStrings = parentFrame.GetMethod().ToString().Split(separator);
-            bracketIndex = parentStrings[1].IndexOf('(');
-            string parentName = parentStrings[1].Substring(0, bracketIndex);
+            signature = parentFrame.GetMethod().ToString();
+            string parentName = GetMethodNameFromSignature(signature);
 
             string methodClassName = methodFrame.GetMethod().ReflectedType.ToString();
 
@@ -87,10 +74,9 @@ namespace TracerAPI
             Thread thread = Thread.CurrentThread;
             int threadId = thread.ManagedThreadId;
 
-            char[] separator = { ' ' };
-            string[] methodStrings = methodStackFrame.GetMethod().ToString().Split(separator);
-            int bracketIndex = methodStrings[1].IndexOf('(');
-            string methodName = methodStrings[1].Substring(0, bracketIndex);
+            string signature = methodStackFrame.GetMethod().ToString();
+            string methodName = GetMethodNameFromSignature(signature);
+
             Tracer.AddStopInfo(threadId, methodName, stopTime);
         }
 
@@ -113,6 +99,54 @@ namespace TracerAPI
             Tree tree;
             tree = Tracer.Instance.GetTraceResult().GetTreeByThreadId(threadId);
             tree.CompleteNode(methodName, stopTime);
+        }
+
+        private bool HasOneParameter(string parametersString)
+        {
+            if(parametersString.IndexOf(')') - parametersString.IndexOf('(') > 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private string GetMethodNameFromSignature(string signature)
+        {
+            char[] separator = { ' ' };
+            string[] methodSignatureParts = signature.Split(separator);
+            int parametersStartPosition = methodSignatureParts[1].IndexOf('(');
+            string methodName = methodSignatureParts[1].Substring(0, parametersStartPosition);
+            return methodName;
+        }
+
+        private string GetMethodParametersFromSignature(string signature)
+        {
+            int startParametersPosition = signature.IndexOf('(');
+            string parameters = signature.Substring(startParametersPosition);
+            return parameters;
+        }
+
+        private int GetNumberOfParameters(string parameters)
+        {
+            int numberOfParams = 0;
+            char []separator = {','};
+            string []parametersParts = parameters.Split(separator);
+            if (parametersParts.Count() == 1)
+            {
+                if(HasOneParameter(parameters))
+                {
+                    numberOfParams = 1;
+                }
+            }
+            else
+            {
+                if(parametersParts.Count() > 1)
+                    numberOfParams = parametersParts.Count() - 1;
+            }
+            return numberOfParams;
         }
     }
 }

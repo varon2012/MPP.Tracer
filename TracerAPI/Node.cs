@@ -15,7 +15,7 @@ namespace TracerAPI
         public long WholeTime { get; set; }
         public int NumberOfParameters { get; set; }
 
-        private List<Node> children = new List<Node>();
+        private readonly List<Node> children = new List<Node>();
         public List<Node> Children {get { return children; }}
 
         public Node(string methodName, int numberOfParams, string methodClassName, DateTime startTime)

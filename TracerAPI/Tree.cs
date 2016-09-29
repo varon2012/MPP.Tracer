@@ -9,7 +9,11 @@ namespace TracerAPI
     public class Tree
     {
         private Node root;
-        public Node Root { get { return root; } set { root = value; } }
+        public Node Root 
+        { 
+            get { return root; }
+            set { root = value; }
+        }
 
         public Tree()
         {
