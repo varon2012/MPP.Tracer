@@ -58,7 +58,7 @@ namespace TracerAPI
 
             string methodClassName = methodFrame.GetMethod().ReflectedType.ToString();
 
-            Tracer.AddStartInfo(threadId, parentName, methodName, numberOfParams, methodClassName, startTime);
+            AddStartInfo(threadId, parentName, methodName, numberOfParams, methodClassName, startTime);
   
         }
         public void StopTrace()
@@ -77,7 +77,7 @@ namespace TracerAPI
             string signature = methodStackFrame.GetMethod().ToString();
             string methodName = GetMethodNameFromSignature(signature);
 
-            Tracer.AddStopInfo(threadId, methodName, stopTime);
+            AddStopInfo(threadId, methodName, stopTime);
         }
 
         public TraceResult GetTraceResult() 
@@ -85,7 +85,7 @@ namespace TracerAPI
             return TraceInfo; 
         }
 
-        private static void AddStartInfo(int threadId, string parentName,
+        private void AddStartInfo(int threadId, string parentName,
                                         string methodName, int numberOfParams, string methodClassName, 
                                         DateTime startTime)
         {
@@ -94,7 +94,7 @@ namespace TracerAPI
             tree.AddNode(parentName, methodName, numberOfParams, methodClassName, startTime);
         }
 
-        private static void AddStopInfo(int threadId, string methodName, DateTime stopTime)
+        private void AddStopInfo(int threadId, string methodName, DateTime stopTime)
         {
             Tree tree;
             tree = Tracer.Instance.GetTraceResult().GetTreeByThreadId(threadId);
@@ -103,14 +103,8 @@ namespace TracerAPI
 
         private bool HasOneParameter(string parametersString)
         {
-            if(parametersString.IndexOf(')') - parametersString.IndexOf('(') > 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (parametersString.IndexOf(')') - parametersString.IndexOf('(')) > 1;
+           
         }
 
         private string GetMethodNameFromSignature(string signature)
@@ -143,8 +137,10 @@ namespace TracerAPI
             }
             else
             {
-                if(parametersParts.Count() > 1)
-                    numberOfParams = parametersParts.Count() - 1;
+                if (parametersParts.Count() > 1)
+                {
+                    numberOfParams = parametersParts.Count();
+                }
             }
             return numberOfParams;
         }

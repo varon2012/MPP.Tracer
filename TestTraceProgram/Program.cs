@@ -15,7 +15,7 @@ namespace TestTraceProgram
         {           
             Method1();            
             TraceResult result = Tracer.Instance.GetTraceResult();
-            XMLFormatter f1 = new XMLFormatter();
+            XMLFormatter f1 = new XMLFormatter("ThreadsTree.xml");
             ConsoleFormatter f2 = new ConsoleFormatter(); 
             f1.Format(result);
             f2.Format(result);
@@ -41,6 +41,7 @@ namespace TestTraceProgram
             Tracer.Instance.StartTrace();
             Thread.Sleep(200);
             Method4(4);
+            Method7();
             Tracer.Instance.StopTrace();            
         }
 
@@ -56,10 +57,44 @@ namespace TestTraceProgram
         {
             Tracer.Instance.StartTrace();
             Thread.Sleep(200);
+
+            for (int i = 0; i < 7; i++)
+            {
+                Method6(4, 3);
+            }
+
             Tracer.Instance.StopTrace();
         }
 
         public static void Method5(int a, int b)
+        {
+            Tracer.Instance.StartTrace();
+            Thread.Sleep(200);
+            Tracer.Instance.StopTrace();
+        }
+
+        public static void Method6(int a, int b)
+        {
+            Tracer.Instance.StartTrace();
+            Thread.Sleep(200);
+            Tracer.Instance.StopTrace();
+        }
+
+        public static void Method7()
+        {
+            Tracer.Instance.StartTrace();
+            Thread.Sleep(200);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Thread thread = new Thread(Method8);
+                thread.Start();
+            }
+            
+            Tracer.Instance.StopTrace();
+        }
+
+        public static void Method8()
         {
             Tracer.Instance.StartTrace();
             Thread.Sleep(200);

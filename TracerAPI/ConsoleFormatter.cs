@@ -15,7 +15,8 @@ namespace TracerAPI
             int level = 0;
             string indention;
 
-            if (traceResult.Result.Count > 0) {
+            if (traceResult.Result.Count > 0) 
+            {
 
                 Console.WriteLine("Threads (");
                 stack.Push(")");
@@ -62,7 +63,8 @@ namespace TracerAPI
             {
                 Console.WriteLine();
                 stack.Push(")");
-                foreach(Node child in node.Children){
+                foreach(Node child in node.Children)
+                {
                     AddMethodsToTread(child, level);
                 }
 

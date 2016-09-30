@@ -53,7 +53,9 @@ namespace TracerAPI
             if(Root != null)
             { 
                 if(parentMethodName == tempNode.MethodName)
+                {
                     parentNode =  tempNode;
+                }
                 else 
                 { 
                     if(tempNode.Children.Count > 0)
@@ -61,7 +63,9 @@ namespace TracerAPI
                         Node lastChild = tempNode.Children.Last();
                         parentNode = GetParentNodeByName(parentMethodName, lastChild);
                         if (parentNode != null)
+                        { 
                             return parentNode;
+                        }
                     }
                 }
             }
@@ -71,8 +75,10 @@ namespace TracerAPI
         public Node GetNodeByName(string methodName, Node tempNode)
         {
             Node node = null;
-            if(tempNode.MethodName == methodName)
+            if(tempNode.MethodName == methodName) 
+            {
                 node = tempNode;
+            }
             else
             {
                 if (tempNode.Children.Count > 0) 
@@ -80,7 +86,9 @@ namespace TracerAPI
                     Node lastChild = tempNode.Children.Last();
                     node = GetNodeByName(methodName, lastChild);
                     if (node != null)
+                    { 
                         return node;
+                    }
                 }
             }
             return node;

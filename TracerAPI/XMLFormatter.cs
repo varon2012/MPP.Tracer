@@ -11,6 +11,13 @@ namespace TracerAPI
     {
         private XElement Root;
 
+        private string fileName;
+
+        public XMLFormatter(string name)
+        {
+            fileName = name;
+        }
+
         public void Format(TraceResult traceResult) 
         {
             Root = new XElement("Threads");
@@ -28,7 +35,7 @@ namespace TracerAPI
 
                 AddChildrenToXElement(Method, traceResult[key].Root);
             }
-            Root.Save("ThreadsTree.xml");
+            Root.Save(fileName);
         }
 
         private void AddChildrenToXElement(XElement xElement, Node tempParent)
